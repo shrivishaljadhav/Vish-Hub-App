@@ -24,6 +24,10 @@ service cloud.firestore {
         || (data[field] is string && data[field].size() <= maxLength);
     }
 
+    function optionalBoolean(data, field) {
+      return !(field in data) || data[field] is bool;
+    }
+
     function validElectives(data) {
       return !('electives' in data)
         || (data.electives is list
@@ -37,45 +41,99 @@ service cloud.firestore {
           ]));
     }
 
-    function validProfile(data, uid) {
+    function validProfileKeys(data) {
       return data.keys().hasOnly([
-          'uid', 'email', 'name', 'course', 'studentClass', 'division',
-          'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
-          'role', 'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
-        ])
-        && data.keys().hasAll([
-          'uid', 'email', 'name', 'course', 'studentClass', 'division',
-          'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar',
-          'role', 'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
-        ])
-        && data.uid is string && data.uid == uid
+        'uid', 'email', 'name', 'course', 'studentClass', 'division',
+        'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
+        'role', 'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
+      ]);
+    }
+
+    // A profile update may come from an older account that predates optional
+    // fields. Validate every supplied field, while the update allowlist below
+    // ensures a student cannot add, remove, or change unknown/privileged data.
+    function validProfileFields(data, uid) {
+      return (!('uid' in data) || (data.uid is string && data.uid == uid))
         && data.email is string && data.email.size() <= 254
-        && data.name is string && data.name.size() >= 2 && data.name.size() <= 100
-        && data.course is string && data.course.size() >= 1 && data.course.size() <= 80
-        && data.studentClass is string && data.studentClass.size() >= 1 && data.studentClass.size() <= 40
+        && optionalString(data, 'name', 100)
+        && optionalString(data, 'course', 80)
+        && optionalString(data, 'studentClass', 40)
         && optionalString(data, 'division', 80)
         && optionalString(data, 'rollNo', 40)
         && optionalString(data, 'prn', 40)
         && optionalString(data, 'whatsapp', 24)
         && optionalString(data, 'telegram', 40)
         && optionalString(data, 'bio', 500)
+        && optionalString(data, 'avatar', 32)
+        && validElectives(data)
+        // Profile roles are display data only. If present, they must remain
+        // unchanged by the affectedKeys check; authorization uses custom claims.
+        && (!('role' in data) || data.role is string)
+        && data.emailVerified is bool && data.emailVerified == true
+        && optionalBoolean(data, 'profileSetupComplete')
+        && data.updatedAt is timestamp
+        && data.updatedAt == request.time;
+    }
+
+    function validStudentProfileCreate(data, uid) {
+      return validProfileKeys(data)
+        && data.keys().hasAll([
+          'uid', 'email', 'name', 'course', 'studentClass', 'division',
+          'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar',
+          'role', 'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
+        ])
+        && validProfileFields(data, uid)
+        && data.uid is string && data.uid == uid
+        && data.name is string && data.name.size() >= 2 && data.name.size() <= 100
+        && data.course is string && data.course.size() >= 1 && data.course.size() <= 80
+        && data.studentClass is string
+        && data.studentClass.size() >= 1 && data.studentClass.size() <= 40
+        && data.division is string && data.division.size() <= 80
+        && data.rollNo is string && data.rollNo.size() <= 40
+        && data.prn is string && data.prn.size() <= 40
+        && data.whatsapp is string && data.whatsapp.size() <= 24
+        && data.telegram is string && data.telegram.size() <= 40
+        && data.bio is string && data.bio.size() <= 500
         && data.avatar is string
         && data.avatar in ['portrait', 'owl', 'book', 'fox', 'moon', 'star']
-        && validElectives(data)
         && data.role is string && data.role == 'Student'
-        && data.emailVerified is bool && data.emailVerified == true
-        && data.profileSetupComplete is bool
-        && data.createdAt is timestamp
-        && data.updatedAt is timestamp;
+        && data.profileSetupComplete is bool && data.profileSetupComplete == false
+        && data.createdAt is timestamp && data.createdAt == request.time;
     }
 
     function validSetupCompletion(data) {
-      return !data.profileSetupComplete
-        || (data.name != 'Student'
+      return !('profileSetupComplete' in data)
+        || (data.profileSetupComplete is bool && data.profileSetupComplete == false)
+        || (data.profileSetupComplete is bool && data.profileSetupComplete == true
+          && data.name is string && data.name.size() >= 2 && data.name != 'Student'
           && data.division is string
           && data.division.size() > 0
           && data.electives is list
           && data.electives.size() > 0);
+    }
+
+    function validProfileUpdate(data, uid) {
+      return validProfileFields(data, uid)
+        && data.email == request.auth.token.email
+        // Preserve UID, role, and creation metadata exactly as stored. In
+        // particular, a missing legacy role cannot be added by a student.
+        && (!('uid' in resource.data) || data.uid == resource.data.uid)
+        && (!('role' in resource.data) || data.role == resource.data.role)
+        && ((!('createdAt' in resource.data) && !('createdAt' in data))
+          || (('createdAt' in resource.data) && data.createdAt == resource.data.createdAt))
+        && (!('profileSetupComplete' in resource.data)
+          || resource.data.profileSetupComplete != true
+          || data.profileSetupComplete == true)
+        && ((('profileSetupComplete' in resource.data)
+          && resource.data.profileSetupComplete == true)
+          || !('profileSetupComplete' in data)
+          || data.profileSetupComplete != true
+          || validSetupCompletion(data))
+        && data.diff(resource.data).affectedKeys().hasOnly([
+          'email', 'name', 'course', 'studentClass', 'division', 'rollNo',
+          'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
+          'emailVerified', 'profileSetupComplete', 'updatedAt'
+        ]);
     }
 
     match /users/{uid} {
@@ -84,28 +142,13 @@ service cloud.firestore {
       allow list: if false;
 
       allow create: if verifiedStudent(uid)
-        && validProfile(request.resource.data, uid)
+        && validStudentProfileCreate(request.resource.data, uid)
         && request.resource.data.email == request.auth.token.email
         && request.resource.data.profileSetupComplete == false
-        && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time;
 
       allow update: if verifiedStudent(uid)
-        && validProfile(request.resource.data, uid)
-        && validSetupCompletion(request.resource.data)
-        && resource.data.role == 'Student'
-        && request.resource.data.role == resource.data.role
-        && request.resource.data.uid == resource.data.uid
-        && request.resource.data.email == request.auth.token.email
-        && request.resource.data.emailVerified == true
-        && request.resource.data.createdAt == resource.data.createdAt
-        && request.resource.data.updatedAt == request.time
-        && (!resource.data.profileSetupComplete || request.resource.data.profileSetupComplete)
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-          'email', 'name', 'course', 'studentClass', 'division', 'rollNo',
-          'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
-          'emailVerified', 'profileSetupComplete', 'updatedAt'
-        ]);
+        && validProfileUpdate(request.resource.data, uid);
 
       allow delete: if false;
     }

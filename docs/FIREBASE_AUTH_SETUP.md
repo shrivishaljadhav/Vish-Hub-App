@@ -29,4 +29,4 @@ Use `revoke` in place of `grant` to remove the claim while preserving any other 
 
 ## Rules deployment
 
-`firestore.rules` in the project root is updated locally only. Review and deploy it separately after confirming the app’s profile data fits the validation rules. Existing users with incomplete or legacy profile documents may be denied edits until their records are normalized. No rules were deployed and no Firebase Console setting was changed.
+`firestore.rules` in the project root is updated locally only. Profile creation remains strict; profile updates support older documents with missing optional fields while preserving identity, role, creation metadata, and unknown legacy fields. Invalid values in fields the client updates can still cause a denial. Publish the reviewed rules separately before expecting this permission fix to affect the live database. No rules were deployed and no Firebase Console setting was changed.

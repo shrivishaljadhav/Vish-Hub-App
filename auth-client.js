@@ -76,7 +76,10 @@ function progressFor(uid) {
 function sendToOnboarding(message) {
   const frame = document.querySelector('#studentProfilePage .uploaded-auth-frame');
   if (!frame?.contentWindow) return;
-  frame.contentWindow.postMessage({ source: 'vish-hub-firebase', ...message }, window.location.origin);
+  // file:// pages have an opaque origin. Only use '*' for that local preview;
+  // the receiver still verifies the exact iframe window and message source.
+  const targetOrigin = window.location.origin === 'null' ? '*' : window.location.origin;
+  frame.contentWindow.postMessage({ source: 'vish-hub-firebase', ...message }, targetOrigin);
 }
 
 function emitAuthState(user, profile, initial = false, error = null) {
@@ -116,7 +119,7 @@ function firebaseMessage(error) {
     'auth/popup-blocked': 'The Google sign-in popup was blocked. Allow popups and try again.',
     'auth/unauthorized-domain': 'This site is not authorized in Firebase Authentication. Add its domain in Firebase Console.',
     'auth/operation-not-allowed': 'This sign-in method is not enabled in Firebase Console.',
-    'permission-denied': 'Firestore denied the profile request. Publish the included Firestore rules.',
+    'permission-denied': 'Your profile was blocked by Firestore. The deployed rules may be outdated; ask the project owner to publish the reviewed rules.',
     'verification-required': 'Verify your email before continuing. Check your inbox, then refresh verification status.'
   };
   if (error?.code === 'auth/user-not-found') return 'If this email is registered, a reset link has been sent.';
@@ -314,6 +317,10 @@ async function saveStudentProfile(profile) {
   for (const key of PROFILE_EDIT_FIELDS) {
     if (Object.prototype.hasOwnProperty.call(profile, key)) updates[key] = profile[key];
   }
+  // Keep account-owned identity fields in sync when saving an older profile
+  // that predates email verification metadata or has a stale email address.
+  updates.email = user.email || '';
+  updates.emailVerified = true;
   if (!Object.prototype.hasOwnProperty.call(updates, 'profileSetupComplete')) {
     updates.profileSetupComplete = Boolean(snapshot.data().profileSetupComplete);
   }
@@ -393,20 +400,25 @@ window.addEventListener('message', async event => {
 });
 
 let initialAuthCheck = true;
+let authStateSequence = 0;
 onAuthStateChanged(auth, async user => {
+  const sequence = ++authStateSequence;
   const initial = initialAuthCheck;
   initialAuthCheck = false;
   let profile = null;
   let failure = null;
   try {
     await persistenceReady;
+    if (sequence !== authStateSequence) return;
     if (user) {
       await reload(user);
+      if (sequence !== authStateSequence || auth.currentUser?.uid !== user.uid) return;
       if (user.emailVerified) profile = await ensureStudentProfile(user);
     }
   } catch (error) {
     failure = error;
   }
+  if (sequence !== authStateSequence || (user && auth.currentUser?.uid !== user.uid)) return;
   authStatePromiseResolve?.();
   authStatePromiseResolve = null;
   emitAuthState(user, profile, initial, failure);

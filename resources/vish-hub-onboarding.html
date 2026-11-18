@@ -2506,7 +2506,7 @@
             reject(new Error('Authentication timed out. Check your connection and try again.'));
           }, 45000);
           firebaseRequests.set(requestId, { resolve, reject, timeout });
-          window.parent.postMessage({ source: 'vish-hub-onboarding', type: 'auth-request', requestId, action, payload }, window.location.origin);
+          window.parent.postMessage({ source: 'vish-hub-onboarding', type: 'auth-request', requestId, action, payload }, window.location.origin === 'null' ? '*' : window.location.origin);
         });
       }
 

@@ -42,7 +42,8 @@ function friendlyAuthError(error) {
     'auth/network-request-failed': 'Connection problem. Check your network and try again.',
     'auth/popup-closed-by-user': 'Google sign-in was closed before it finished.',
     'auth/popup-blocked': 'The Google sign-in popup was blocked. Allow popups and try again.',
-    'auth/unauthorized-domain': 'This domain is not authorized in Firebase Authentication.'
+    'auth/unauthorized-domain': 'This domain is not authorized in Firebase Authentication.',
+    'auth/account-exists-with-different-credential': 'This email already uses another sign-in method. Sign in with that method before using Google.'
   };
   return messages[error?.code] || 'Sign-in could not be completed. Check your account and try again.';
 }

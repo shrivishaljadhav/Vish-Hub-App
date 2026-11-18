@@ -1034,13 +1034,13 @@
           embeddedPdfBytes = decodePdfData(encodedPdf);
           embeddedPdfPromise = null;
         }
-        const loadedDocument = await pdfjs.getDocument({ data: embeddedPdfBytes.slice() }).promise;
+        const loadedDocument = await pdfjs.getDocument({ data: embeddedPdfBytes.slice(), isEvalSupported: false }).promise;
         if (request !== openSequence) { loadedDocument.destroy?.(); return; }
         pdfDocument = loadedDocument;
       } else {
         const source = pdfSource(resource);
         if (!source) throw new Error('No PDF source is available');
-        const loadedDocument = await pdfjs.getDocument({ url: source, withCredentials: false }).promise;
+        const loadedDocument = await pdfjs.getDocument({ url: source, withCredentials: false, isEvalSupported: false }).promise;
         if (request !== openSequence) { loadedDocument.destroy?.(); return; }
         pdfDocument = loadedDocument;
       }

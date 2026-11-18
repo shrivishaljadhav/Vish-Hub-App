@@ -107,7 +107,7 @@
       const pdfjs = await ensurePdfLibrary();
       if (pdfjs.GlobalWorkerOptions) pdfjs.GlobalWorkerOptions.workerSrc = 'js/vendor/pdf.worker.min.js';
       const source = scriptUrl ? { data: base64ToBytes(await loadEmbeddedVecPdf(scriptUrl)) } : { url: pdfUrl };
-      pdfDocument = await pdfjs.getDocument(source).promise;
+      pdfDocument = await pdfjs.getDocument({ ...source, isEvalSupported: false }).promise;
       const page = await pdfDocument.getPage(1);
       const baseViewport = page.getViewport({ scale: 1 });
       const scale = Math.min(1.25, 480 / baseViewport.width, 680 / baseViewport.height);
