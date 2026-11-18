@@ -1,0 +1,124 @@
+/* Cross-device layout safeguards for all non-Home pages and the Home grid. */
+html,body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
+#appContent,.app{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+#top-area{width:100%;max-width:100vw;min-width:0;box-sizing:border-box}
+img,video,canvas{max-width:100%;height:auto}
+iframe{max-width:100%}
+#youtubePlayer#youtubePlayer#youtubePlayer iframe,#pdfViewer#pdfViewer#pdfViewer iframe{width:100%;max-width:100%}
+:is(#videoPage#videoPage#videoPage,#booksPage#booksPage#booksPage,#syllabusPage#syllabusPage#syllabusPage,#searchPage#searchPage#searchPage,#categoryPage#categoryPage#categoryPage,#studyLoungePage#studyLoungePage#studyLoungePage,#studentProfilePage#studentProfilePage#studentProfilePage,#notificationPage#notificationPage#notificationPage,#scholarshipDetailsPage#scholarshipDetailsPage#scholarshipDetailsPage,#examTimetableDialog#examTimetableDialog#examTimetableDialog,#timetableDialog#timetableDialog#timetableDialog,#youtubePlayer#youtubePlayer#youtubePlayer,#pdfViewer#pdfViewer#pdfViewer){
+  box-sizing:border-box!important;
+  min-width:0!important;
+  max-width:100vw!important;
+  overflow-x:hidden!important;
+}
+:is(#videoPage#videoPage#videoPage,#booksPage#booksPage#booksPage,#syllabusPage#syllabusPage#syllabusPage,#searchPage#searchPage#searchPage,#categoryPage#categoryPage#categoryPage,#studyLoungePage#studyLoungePage#studyLoungePage,#studentProfilePage#studentProfilePage#studentProfilePage,#notificationPage#notificationPage#notificationPage,#scholarshipDetailsPage#scholarshipDetailsPage#scholarshipDetailsPage,#examTimetableDialog#examTimetableDialog#examTimetableDialog) :is(header,main,nav,section,article,form,label,div,ul,ol){
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+:is(#videoPage#videoPage#videoPage,#booksPage#booksPage#booksPage,#syllabusPage#syllabusPage#syllabusPage,#searchPage#searchPage#searchPage,#categoryPage#categoryPage#categoryPage,#studyLoungePage#studyLoungePage#studyLoungePage,#studentProfilePage#studentProfilePage#studentProfilePage,#notificationPage#notificationPage#notificationPage,#scholarshipDetailsPage#scholarshipDetailsPage#scholarshipDetailsPage,#examTimetableDialog#examTimetableDialog#examTimetableDialog) :is(input,select,textarea,button){
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+:is(#videoPage#videoPage#videoPage,#booksPage#booksPage#booksPage,#syllabusPage#syllabusPage#syllabusPage,#searchPage#searchPage#searchPage,#categoryPage#categoryPage#categoryPage,#studyLoungePage#studyLoungePage#studyLoungePage,#studentProfilePage#studentProfilePage#studentProfilePage,#notificationPage#notificationPage#notificationPage,#scholarshipDetailsPage#scholarshipDetailsPage#scholarshipDetailsPage,#examTimetableDialog#examTimetableDialog#examTimetableDialog) :is(h1,h2,h3,h4,p,strong,span,small,a){
+  overflow-wrap:anywhere;
+}
+#booksPage#booksPage#booksPage .books-search,#videoPage#videoPage#videoPage .video-page-search,#syllabusPage#syllabusPage#syllabusPage .syllabus-page-search,#searchPage#searchPage#searchPage .search-page-field,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-search{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+}
+#videoPage#videoPage#videoPage .video-browser-controls,#videoPage#videoPage#videoPage .video-page-content,#videoPage#videoPage#videoPage .video-library-results,#videoPage#videoPage#videoPage .video-youtube-grid,
+#booksPage#booksPage#booksPage .books-library-main,#booksPage#booksPage#booksPage .book-collections,#booksPage#booksPage#booksPage .book-cover-grid,
+#syllabusPage#syllabusPage#syllabusPage .syllabus-page-content,#syllabusPage#syllabusPage#syllabusPage .syllabus-library-main,
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-main,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-list,
+#searchPage#searchPage#searchPage .search-page-results,#categoryPage#categoryPage#categoryPage .syllabus-page-content{
+  min-width:0!important;
+  max-width:100%!important;
+}
+#videoPage#videoPage#videoPage .video-page-card,#videoPage#videoPage#videoPage .video-page-card-copy,
+#booksPage#booksPage#booksPage .book-cover-card,#booksPage#booksPage#booksPage .book-cover-frame,#booksPage#booksPage#booksPage .book-cover-details,
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-category-paper,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-paper-summary,
+#syllabusPage#syllabusPage#syllabusPage .syllabus-page-card,#syllabusPage#syllabusPage#syllabusPage .syllabus-major-group{
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+:is(#videoPage#videoPage#videoPage,#booksPage#booksPage#booksPage,#syllabusPage#syllabusPage#syllabusPage,#searchPage#searchPage#searchPage,#categoryPage#categoryPage#categoryPage,#studyLoungePage#studyLoungePage#studyLoungePage,#examTimetableDialog#examTimetableDialog#examTimetableDialog) table{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overscroll-behavior-x:contain!important;
+}
+:is(#videoPage#videoPage#videoPage,#booksPage#booksPage#booksPage,#syllabusPage#syllabusPage#syllabusPage,#searchPage#searchPage#searchPage,#categoryPage#categoryPage#categoryPage,#studyLoungePage#studyLoungePage#studyLoungePage,#examTimetableDialog#examTimetableDialog#examTimetableDialog) pre,
+:is(#videoPage#videoPage#videoPage,#booksPage#booksPage#booksPage,#syllabusPage#syllabusPage#syllabusPage,#searchPage#searchPage#searchPage,#categoryPage#categoryPage#categoryPage,#studyLoungePage#studyLoungePage#studyLoungePage,#examTimetableDialog#examTimetableDialog#examTimetableDialog) code{
+  max-width:100%!important;
+  overflow-x:auto!important;
+  overflow-wrap:anywhere!important;
+}
+
+/* Phone widths */
+@media(max-width:600px){
+  #appContent,.app{padding-left:12px!important;padding-right:12px!important}
+  #grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+  #grid .subject{min-width:0!important;min-height:0!important;padding:10px 8px!important;overflow-wrap:anywhere!important}
+  #videoPage#videoPage#videoPage.video-page{width:100vw!important;max-width:100vw!important;padding-left:12px!important;padding-right:12px!important}
+  #videoPage#videoPage#videoPage .video-youtube-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  #videoPage#videoPage#videoPage .video-page-card{min-width:0!important}
+  #videoPage#videoPage#videoPage .video-page-card-copy strong{font-size:clamp(10px,3vw,14px)!important}
+  #booksPage#booksPage#booksPage.book-library-page{width:100vw!important;max-width:100vw!important}
+  #booksPage#booksPage#booksPage .book-cover-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+  #booksPage#booksPage#booksPage .quick-access-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #booksPage#booksPage#booksPage .library-category-tabs,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-category-tabs,#syllabusPage#syllabusPage#syllabusPage .syllabus-category-tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important;overflow:visible!important;gap:7px!important}
+  #booksPage#booksPage#booksPage .library-category-tab,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-category-tabs .library-category-tab,#syllabusPage#syllabusPage#syllabusPage .syllabus-category-tabs .library-category-tab{width:100%!important;min-width:0!important;white-space:normal!important;overflow-wrap:normal!important;line-height:1.2!important}
+  #booksPage#booksPage#booksPage .library-subject-tabs{max-width:100%!important;overflow-x:auto!important;overscroll-behavior-x:contain!important}
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-list{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-subject-tabs{max-width:100%!important;overflow-x:auto!important}
+  #syllabusPage#syllabusPage#syllabusPage .syllabus-subject-tabs{max-width:100%!important;overflow-x:auto!important}
+  #videoPage#videoPage#videoPage .video-category-tabs.library-category-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:380px){
+  #appContent,.app{padding-left:9px!important;padding-right:9px!important}
+  #grid{grid-template-columns:minmax(0,1fr)!important}
+  #videoPage#videoPage#videoPage.video-page{padding-left:9px!important;padding-right:9px!important}
+  #videoPage#videoPage#videoPage .video-youtube-grid{grid-template-columns:minmax(0,1fr)!important}
+  #booksPage#booksPage#booksPage .library-category-tabs,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-category-tabs,#syllabusPage#syllabusPage#syllabusPage .syllabus-category-tabs{gap:5px!important}
+  #booksPage#booksPage#booksPage .library-category-tab,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-category-tabs .library-category-tab,#syllabusPage#syllabusPage#syllabusPage .syllabus-category-tabs .library-category-tab{font-size:9px!important;padding-left:4px!important;padding-right:4px!important}
+  .bottomnav{width:calc(100% - 12px)!important;gap:2px!important;padding:5px!important}
+  .bottomnav .navitem{min-width:0!important}
+  .bottomnav .navitem span{font-size:7px!important}
+}
+@media(min-width:601px) and (max-width:1024px){
+  #grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #booksPage#booksPage#booksPage .book-cover-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #booksPage#booksPage#booksPage .quick-access-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #videoPage#videoPage#videoPage .video-youtube-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-list{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(min-width:1025px){
+  #appContent,.app{max-width:1440px!important;margin-left:auto!important;margin-right:auto!important}
+  #booksPage#booksPage#booksPage .book-cover-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  #videoPage#videoPage#videoPage .video-youtube-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))!important}
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-list{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  :is(#booksPage#booksPage#booksPage,#videoPage#videoPage#videoPage,#syllabusPage#syllabusPage#syllabusPage,#examTimetableDialog#examTimetableDialog#examTimetableDialog) .library-subject-tabs,
+  #syllabusPage#syllabusPage#syllabusPage .syllabus-subject-tabs,
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-subject-tabs{justify-content:safe center!important}
+  #videoPage#videoPage#videoPage .video-browser-controls .video-subject-tabs.library-subject-tabs{justify-content:safe center!important}
+}
+
+/* Keep the wide category controls and horizontal subject rows inside their frames. */
+:is(#booksPage#booksPage#booksPage,#videoPage#videoPage#videoPage,#syllabusPage#syllabusPage#syllabusPage,#examTimetableDialog#examTimetableDialog#examTimetableDialog) :is(.library-category-tabs,.syllabus-category-tabs,.exam-category-tabs){
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+:is(#booksPage#booksPage#booksPage,#videoPage#videoPage#videoPage,#syllabusPage#syllabusPage#syllabusPage,#examTimetableDialog#examTimetableDialog#examTimetableDialog) :is(.library-subject-tabs,.syllabus-subject-tabs,.exam-subject-tabs){
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  overscroll-behavior-x:contain!important;
+}
+
+
+

@@ -1,0 +1,41 @@
+/* Authoritative global theme tokens. Values match the existing effective cascade. */
+:root{
+  --bg:#f6f7fa;
+  --paper:#fbfaf6!important;
+  --navy:#10294b!important;
+  --navy2:#1d3e69;
+  --gold:#c6a34b!important;
+  --gold2:#ead38e;
+  --ink:#122c50!important;
+  --muted:#68778d!important;
+  --line:#e5e8ed;
+  --soft:#f2f5f8;
+  --green:#55765a;
+  --serif:Georgia,"Times New Roman",serif!important;
+  --sans:Georgia,"Times New Roman",serif!important;
+  --page-ink:#10294b;
+  --page-gold:#c6a348;
+  --gold-soft:#e6d293!important;
+  --page-navy:#10294b;
+  --page-deep:#091a32;
+  --page-blue:#173a65;
+  --page-gold-light:#f2dfa0;
+  --page-copy:#17253a;
+  --page-muted:#727e8e;
+  --page-paper:#ffffff;
+  --page-soft:#f5f6f8;
+  --leaf-navy:#10294b;
+  --leaf-navy-deep:#091d37;
+  --leaf-gold:#c6a348;
+  --leaf-gold-light:#ead795;
+  --leaf-ivory:#fbf8ee;
+  --leaf-white:#fffefa;
+  --ease-premium:cubic-bezier(.4,0,.2,1);
+  --surface-shadow:0 8px 22px rgba(16,41,75,.08);
+  --surface-shadow-hover:0 14px 30px rgba(16,41,75,.14);
+  --finish-metal-edge:rgba(184,145,63,.38);
+  --finish-warm-highlight:rgba(255,255,255,.78);
+  --finish-ambient-shadow:rgba(13,34,62,.12);
+  --finish-navy-highlight:rgba(214,226,242,.13);
+  --leather-navy-base:linear-gradient(145deg,#10294b 0%,#07172d 56%,#0b2140 100%);
+}

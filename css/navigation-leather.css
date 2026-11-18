@@ -1,0 +1,95 @@
+/* Realistic navy leather and brass finish for the fixed bottom navigation. */
+#appContent nav.bottomnav {
+  border: 2px solid transparent !important;
+  border-radius: 20px !important;
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(111, 153, 196, .22), transparent 48%) padding-box,
+    radial-gradient(circle at 1px 1px, rgba(226, 237, 248, .15) 0 .45px, rgba(0, 7, 17, .34) .9px, transparent 1.45px) 0 0 / 5px 5px padding-box,
+    repeating-linear-gradient(133deg, rgba(211, 227, 243, .045) 0 1px, transparent 1px 5px) padding-box,
+    repeating-linear-gradient(17deg, rgba(0, 7, 18, .2) 0 1px, transparent 1px 6px) padding-box,
+    linear-gradient(145deg, #1a3859 0%, #0d2440 43%, #07172d 76%, #142f4e 100%) padding-box,
+    linear-gradient(132deg, #f7e9bd 0%, #98702a 13%, #e7cf82 29%, #73521e 51%, #e5cd83 73%, #80602a 100%) border-box !important;
+  box-shadow:
+    0 12px 24px rgba(4, 15, 31, .38),
+    0 3px 0 #5f481f,
+    inset 0 1px 0 rgba(255, 255, 255, .3),
+    inset 0 -10px 16px rgba(0, 5, 14, .4) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#appContent nav.bottomnav::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 0 !important;
+  inset: 5px !important;
+  display: block !important;
+  border: 1px dashed rgba(241, 216, 151, .55) !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  box-shadow: inset 0 0 0 1px rgba(2, 10, 22, .45) !important;
+  pointer-events: none !important;
+}
+
+#appContent nav.bottomnav button.navitem {
+  position: relative !important;
+  z-index: 1 !important;
+  border: 1px solid rgba(229, 199, 119, .25) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(155deg, rgba(63, 91, 120, .38), rgba(4, 14, 28, .34)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(226, 237, 246, .16),
+    inset 0 -3px 5px rgba(0, 5, 14, .42),
+    0 2px 3px rgba(0, 5, 14, .3) !important;
+  color: #eee6d2 !important;
+  -webkit-text-fill-color: currentColor !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .75) !important;
+}
+
+#appContent nav.bottomnav button.navitem.active {
+  border: 1px solid #f0d78d !important;
+  border-radius: 12px !important;
+  background: linear-gradient(155deg, #fff0bb 0%, #e7ca78 43%, #bd9849 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .94),
+    inset 0 -3px 4px rgba(99, 69, 20, .3),
+    0 3px 0 rgba(99, 71, 25, .76),
+    0 5px 9px rgba(0, 5, 14, .3) !important;
+  color: #102844 !important;
+  -webkit-text-fill-color: #102844 !important;
+  text-shadow: 0 1px 0 rgba(255, 248, 220, .8) !important;
+}
+
+#appContent nav.bottomnav button.navitem::after {
+  display: none !important;
+  content: none !important;
+}
+
+#appContent nav.bottomnav button.navitem > svg.nav-icon {
+  stroke: #e9cf83 !important;
+  color: #e9cf83 !important;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .72)) !important;
+}
+
+#appContent nav.bottomnav button.navitem.active > svg.nav-icon {
+  stroke: #17324f !important;
+  color: #17324f !important;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .45)) !important;
+}
+
+#appContent nav.bottomnav button.navitem > span {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+  font-weight: 700 !important;
+  text-shadow: inherit !important;
+}
+
+#appContent nav.bottomnav button.navitem:focus-visible {
+  outline: 2px solid #fff0b3 !important;
+  outline-offset: 2px !important;
+}
+
+@media (max-width: 380px) {
+  #appContent nav.bottomnav::before { inset: 4px !important; }
+  #appContent nav.bottomnav button.navitem { border-radius: 10px !important; }
+}

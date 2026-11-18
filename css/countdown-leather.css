@@ -1,0 +1,258 @@
+/* Tactile navy leather treatment for the home exam countdown. */
+#premiumExamCountdown {
+  position: relative !important;
+  box-sizing: border-box !important;
+  width: min(100%, 420px) !important;
+  max-width: 420px !important;
+  overflow: visible !important;
+  margin: 12px auto 16px !important;
+  perspective: 10000px !important;
+  touch-action: pan-y pinch-zoom !important;
+  perspective-origin: 50% 50% !important;
+  transform-style: preserve-3d !important;
+  isolation: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 8px 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#premiumExamCountdown .exam-countdown-cube-rotor {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+}
+
+#premiumExamCountdown .exam-countdown-cube-face {
+  position: relative;
+  box-sizing: border-box !important;
+  width: 100%;
+  margin: 0 !important;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  /* The card's older theme rule transitions transform in CSS. The cube's
+     orientation is owned by GSAP, including the post-turn face alignment. */
+  transition: none !important;
+  animation: none !important;
+  border: 1px solid rgba(234, 205, 133, .95) !important;
+  border-radius: 25px !important;
+  background: linear-gradient(135deg, #f5dfa0 0%, #a5792c 13%, #f1dc9a 23%, #805726 46%, #e9cf83 67%, #704d22 86%, #f0dda1 100%) !important;
+  box-shadow: 0 18px 34px rgba(7, 18, 34, .3), 0 5px 12px rgba(8, 23, 43, .2), inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 -2px 0 rgba(24, 35, 49, .42) !important;
+}
+
+/* Fine double saddle stitch set into the brass piping. */
+#premiumExamCountdown .exam-countdown-cube-face::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  inset: 10px;
+  border: 1px dashed rgba(248, 224, 163, .62);
+  border-radius: 17px;
+  box-shadow: inset 0 0 0 1px rgba(3, 14, 29, .28);
+  pointer-events: none;
+}
+
+#premiumExamCountdown .luxury-card-frame {
+  position: relative !important;
+  z-index: 2 !important;
+  transform: none !important;
+  transform-style: preserve-3d !important;
+  backface-visibility: hidden !important;
+  overflow: hidden !important;
+  padding: 8px 12px 8px !important;
+  border: 1px solid rgba(4, 14, 28, .96) !important;
+  border-radius: 23px !important;
+  background-color: #0b1b31 !important;
+  background-image:
+    radial-gradient(ellipse at 22% 8%, rgba(163, 190, 219, .2), transparent 34%),
+    radial-gradient(ellipse at 82% 93%, rgba(0, 0, 0, .34), transparent 46%),
+    radial-gradient(circle at 1.5px 1.5px, rgba(222, 234, 247, .12) 0 .42px, rgba(1, 7, 17, .25) .85px, transparent 1.3px),
+    repeating-radial-gradient(ellipse at 2px 2px, rgba(206, 223, 241, .045) 0 .45px, rgba(1, 7, 17, .18) .8px 1.15px, transparent 1.5px 4px),
+    repeating-linear-gradient(113deg, rgba(217, 231, 247, .027) 0 1px, transparent 1px 5px),
+    linear-gradient(145deg, #1b3a5e 0%, #102947 34%, #091a30 72%, #163456 100%) !important;
+  background-size: auto, auto, 5px 5px, 9px 8px, auto, auto !important;
+  background-blend-mode: screen, multiply, soft-light, overlay, soft-light, normal !important;
+  box-shadow:
+    inset 0 1px 0 rgba(226, 238, 249, .2),
+    inset 0 0 0 3px rgba(1, 8, 19, .43),
+    inset 0 0 0 5px rgba(209, 173, 104, .12),
+    inset 0 -16px 28px rgba(0, 0, 0, .38),
+    0 2px 4px rgba(1, 8, 19, .35) !important;
+  color: #fff5e4 !important;
+}
+
+/* Keep both turning panels on the same depth plane to prevent perspective growth. */
+#premiumExamCountdown .exam-countdown-cube-incoming {
+  position: absolute !important;
+  box-sizing: border-box !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  backface-visibility: hidden !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Keep text on the resting face at native scale; only composite the cube while it turns. */
+#premiumExamCountdown:not([aria-busy="true"]) .exam-countdown-cube-face {
+  transform: none !important;
+  will-change: auto;
+}
+
+#premiumExamCountdown[aria-busy="true"] .exam-countdown-cube-rotor {
+  will-change: transform;
+}
+
+/* Replace the moving shine with a permanent inset stitch line. */
+#premiumExamCountdown .luxury-card-frame::before {
+  z-index: 2 !important;
+  inset: 8px !important;
+  width: auto !important;
+  transform: none !important;
+  border: 1px dashed rgba(241, 209, 159, .38) !important;
+  border-radius: 15px !important;
+  background: none !important;
+  animation: none !important;
+  pointer-events: none !important;
+}
+
+#premiumExamCountdown .luxury-card-frame::after {
+  border-color: rgba(236, 197, 123, .1) !important;
+  box-shadow: 0 0 0 12px rgba(236, 197, 123, .018), 0 0 0 26px rgba(236, 197, 123, .012) !important;
+}
+
+/* Foil title plate with a pressed edge and a small leather shadow. */
+#premiumExamCountdown .luxury-card-label {
+  border-color: rgba(255, 231, 169, .96) !important;
+  background: linear-gradient(180deg, #274361 0%, #173252 52%, #0e2039 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 237, 204, .32), inset 0 -2px 0 rgba(0, 0, 0, .38), 0 2px 0 rgba(215, 177, 95, .75), 0 5px 10px rgba(0, 0, 0, .28) !important;
+  color: #f5df9d !important;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .8) !important;
+}
+
+#premiumExamCountdown .luxury-card-heading h2,
+#premiumExamCountdown .luxury-subject-heading {
+  color: #fff2dc !important;
+  text-shadow: 0 1px 0 rgba(255, 239, 218, .18), 0 2px 1px rgba(0, 0, 0, .8) !important;
+}
+
+/* Reserve identical heading space for every paper so long names cannot
+   change the card's measured height or push the sections below it. */
+#premiumExamCountdown .luxury-card-heading {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-content: start;
+  gap: 2px;
+  margin: 0 auto 4px !important;
+}
+
+#premiumExamCountdown .luxury-subject-heading {
+  display: -webkit-box !important;
+  height: 1.25em;
+  min-height: 1.25em;
+  margin: 0 0 5px !important;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+#premiumExamCountdown .luxury-card-heading h2 {
+  display: -webkit-box !important;
+  height: 2.36em;
+  min-height: 2.36em;
+  max-height: 2.36em;
+  margin: 0 !important;
+  overflow: hidden;
+  font-size: clamp(15px, 4vw, 18px) !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+#premiumExamCountdown .luxury-card-label {
+  min-height: 32px !important;
+  margin-bottom: 6px !important;
+  padding: 6px 0 !important;
+}
+
+#premiumExamCountdown .luxury-exam-details {
+  width: min(100%, 360px) !important;
+  margin: 0 auto 6px !important;
+}
+#premiumExamCountdown .luxury-detail { min-height: 42px !important; padding: 5px 7px !important; }
+#premiumExamCountdown .luxury-countdown-zone {
+  min-width: 0;
+  margin-top: 4px !important;
+  padding: 6px 7px !important;
+}
+#premiumExamCountdown .luxury-countdown-caption { margin-bottom: 4px !important; }
+#premiumExamCountdown .luxury-countdown-units { gap: 4px !important; }
+#premiumExamCountdown .luxury-unit { min-width: 0; }
+
+#premiumExamCountdown .luxury-detail,
+#premiumExamCountdown .luxury-unit {
+  border-color: rgba(219, 184, 112, .78) !important;
+  background-color: #0a1b31 !important;
+  background-image:
+    radial-gradient(circle at 1.5px 1.5px, rgba(222, 236, 250, .08) 0 .4px, transparent .85px),
+    linear-gradient(150deg, #1b3857 0%, #0a1b31 72%, #132c4a 100%) !important;
+  background-size: 5px 5px, auto !important;
+  box-shadow: inset 0 1px 0 rgba(226, 238, 249, .16), inset 0 -5px 9px rgba(0, 0, 0, .38), 0 3px 0 rgba(1, 8, 19, .54), 0 5px 9px rgba(0, 0, 0, .24) !important;
+}
+
+#premiumExamCountdown .luxury-digit {
+  color: #fff4df !important;
+  text-shadow: 0 1px 0 rgba(255, 238, 218, .16), 0 3px 4px rgba(0, 0, 0, .72) !important;
+}
+
+#premiumExamCountdown .luxury-unit > span {
+  background: linear-gradient(105deg, #f3dfa0, #c49a43 48%, #f4e3ae) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .92), inset 0 -2px 0 rgba(107, 75, 25, .24), 0 -1px 3px rgba(0, 0, 0, .34) !important;
+}
+
+#premiumExamCountdown .luxury-timetable-button {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 -2px 0 rgba(119, 87, 24, .22), 0 3px 0 rgba(78, 43, 17, .55), 0 5px 10px rgba(0, 0, 0, .25) !important;
+}
+
+@media (max-width: 440px) {
+  #premiumExamCountdown { width: calc(100% - 24px) !important; margin: 10px auto 14px !important; padding: 12px 0 !important; }
+  #premiumExamCountdown .luxury-card-frame { padding: 7px 9px 8px !important; }
+  #premiumExamCountdown .exam-countdown-cube-rotor { width: 100%; }
+  #premiumExamCountdown .luxury-card-heading h2 { font-size: clamp(14px, 3.6vw, 16px) !important; }
+  #premiumExamCountdown .luxury-subject-heading { font-size: clamp(10px, 2.9vw, 12px) !important; }
+  #premiumExamCountdown .luxury-detail > span { font-size: 6px !important; }
+  #premiumExamCountdown .luxury-detail > strong { font-size: 9px !important; }
+  #premiumExamCountdown .luxury-unit > span { font-size: 5px !important; }
+  #premiumExamCountdown .exam-countdown-cube-face::after { inset: 8px; }
+  #premiumExamCountdown .luxury-card-frame::before { inset: 6px !important; }
+}
+
+
+
+
+
+#premiumExamCountdown .luxury-countdown-caption {
+  margin: 0 0 4px !important;
+  color: rgba(244, 224, 164, .86) !important;
+  font-size: 7px !important;
+  letter-spacing: .13em !important;
+}
+#premiumExamCountdown .luxury-card-bottom .exam-countdown-carousel {
+  justify-content: flex-start !important;
+  gap: 7px !important;
+  margin: 0 !important;
+}
+#premiumExamCountdown .luxury-card-bottom .exam-countdown-carousel button {
+  width: 23px !important;
+  height: 23px !important;
+}
+#premiumExamCountdown .luxury-countdown-caption {
+  color: #fff !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .65) !important;
+}

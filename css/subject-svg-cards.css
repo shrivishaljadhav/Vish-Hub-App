@@ -1,0 +1,133 @@
+/* Raised ivory study cards with a softly grained finish and inset brass trim. */
+#appContent#appContent #grid#grid>.subject.home-category-tile {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+  border: 1px solid transparent !important;
+  border-radius: 17px !important;
+  background:
+    radial-gradient(ellipse at 20% 0%,rgba(255,255,255,.92),transparent 55%) padding-box,
+    repeating-linear-gradient(135deg,rgba(153,125,67,.025) 0 1px,transparent 1px 6px) padding-box,
+    linear-gradient(145deg,#fffdf7 0%,#f4eedf 52%,#e8dfcb 100%) padding-box,
+    linear-gradient(145deg,#fff3c7 0%,#b38b38 18%,#f3df9c 42%,#95702c 72%,#e6d193 100%) border-box !important;
+  box-shadow:
+    0 7px 13px rgba(29,40,51,.16),
+    0 2px 3px rgba(127,94,34,.16),
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 0 0 1px rgba(255,255,255,.56),
+    inset 0 -3px 6px rgba(104,79,36,.13) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease !important;
+}
+
+#appContent#appContent #grid#grid>.subject.home-category-tile::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 0 !important;
+  inset: 4px !important;
+  border: 1px solid rgba(164,129,57,.28) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(115deg,rgba(255,255,255,.4),transparent 38%,rgba(179,143,66,.055)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.78), inset 0 -1px 0 rgba(139,104,39,.08) !important;
+  pointer-events: none !important;
+}
+
+#appContent#appContent #grid#grid>.subject.home-category-tile::after {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 0 !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+  width: auto !important;
+  height: 1px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.95) 24%,rgba(255,255,255,.45) 72%,transparent) !important;
+  box-shadow: none !important;
+  opacity: .9 !important;
+  transform: none !important;
+  animation: none !important;
+  pointer-events: none !important;
+}
+
+#appContent#appContent #grid#grid>.subject.home-category-tile>* { position: relative !important; z-index: 2 !important; }
+#appContent#appContent #grid#grid>.subject.home-category-tile .subject-head {
+  width: 44px !important; min-width: 44px !important; height: 44px !important; min-height: 44px !important;
+}
+#appContent#appContent #grid#grid>.subject.home-category-tile .sub-icon {
+  width: 40px !important; min-width: 40px !important; height: 40px !important; min-height: 40px !important;
+  overflow: visible !important;
+  border: 1px solid rgba(157,120,43,.67) !important;
+  border-radius: 12px !important;
+  background:
+    radial-gradient(ellipse at 28% 12%,rgba(255,255,255,.98),transparent 48%),
+    linear-gradient(145deg,#fff8dc 0%,#ead18a 49%,#c29d4d 100%) !important;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -2px 3px rgba(92,67,22,.22),
+    0 2px 0 rgba(117,87,34,.48),
+    0 4px 7px rgba(58,48,29,.18) !important;
+  transition: transform .18s ease, box-shadow .18s ease !important;
+}
+#appContent#appContent #grid#grid>.subject.home-category-tile .sub-icon::before {
+  inset: 3px !important;
+  border: 1px solid rgba(255,255,255,.7) !important;
+  border-radius: 9px !important;
+  background: linear-gradient(145deg,rgba(255,255,255,.3),transparent 56%) !important;
+  pointer-events: none !important;
+}
+#appContent#appContent #grid#grid>.subject.home-category-tile .sub-icon svg.subject-art-svg {
+  width: 34px !important; height: 34px !important; min-width: 34px !important; min-height: 34px !important;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.7)) drop-shadow(0 2px 1px rgba(51,42,25,.2)) !important;
+}
+#appContent#appContent #grid#grid>.subject.home-category-tile .subject-content { padding-left: 1px !important; }
+#appContent#appContent #grid#grid>.subject.home-category-tile .subject-title {
+  color: #18334f !important;
+  -webkit-text-fill-color: #18334f !important;
+  text-shadow: 0 1px 0 #fff, 0 1px 2px rgba(48,43,31,.16) !important;
+  font-family: Georgia,'Times New Roman',serif !important;
+  font-weight: 750 !important;
+}
+#appContent#appContent #grid#grid>.subject.home-category-tile .subject-arrow { display: none !important; }
+
+#appContent#appContent #grid#grid>.subject.home-category-tile[data-subject-id="psychology"] { --subject-accent:#826fa0; }
+#appContent#appContent #grid#grid>.subject.home-category-tile[data-subject-id="philosophy"] { --subject-accent:#9b7c43; }
+#appContent#appContent #grid#grid>.subject.home-category-tile[data-subject-id="economics"] { --subject-accent:#66876a; }
+#appContent#appContent #grid#grid>.subject.home-category-tile[data-subject-id="english"] { --subject-accent:#9c6c58; }
+#appContent#appContent #grid#grid>.subject.home-category-tile[data-subject-id="history"] { --subject-accent:#a27e43; }
+#appContent#appContent #grid#grid>.subject.home-category-tile[data-subject-id="politics"] { --subject-accent:#627c9d; }
+#appContent#appContent #grid#grid>.subject.home-category-tile[data-category-id="sec"] { --subject-accent:#64826e; }
+#appContent#appContent #grid#grid>.subject.home-category-tile[data-category-id="oe"] { --subject-accent:#5e8791; }
+
+#appContent#appContent #grid#grid>.subject.home-category-tile:hover,
+#appContent#appContent #grid#grid>.subject.home-category-tile:focus-visible {
+  transform: translateY(-2px) !important;
+  border-color: transparent !important;
+  box-shadow: 0 11px 18px rgba(29,40,51,.2),0 3px 5px rgba(127,94,34,.18),inset 0 1px 0 #fff,inset 0 -2px 5px rgba(104,79,36,.1) !important;
+  outline: 2px solid rgba(185,146,57,.55) !important;
+  outline-offset: 2px !important;
+  filter: brightness(1.025) !important;
+}
+#appContent#appContent #grid#grid>.subject.home-category-tile:hover .sub-icon,
+#appContent#appContent #grid#grid>.subject.home-category-tile:focus-visible .sub-icon {
+  transform: translateY(-1px) !important;
+  box-shadow: inset 0 1px 0 #fff,inset 0 -2px 3px rgba(92,67,22,.18),0 3px 0 rgba(117,87,34,.42),0 5px 8px rgba(58,48,29,.2) !important;
+}
+#appContent#appContent #grid#grid>.subject.home-category-tile:active {
+  transform: translateY(2px) !important;
+  box-shadow: inset 0 2px 5px rgba(91,68,31,.19),inset 0 1px 0 rgba(255,255,255,.8),0 1px 1px rgba(38,35,28,.14) !important;
+  filter: brightness(.99) !important;
+}
+
+@media(max-width:390px) {
+  #appContent#appContent #grid#grid>.subject.home-category-tile .subject-head { width:36px !important; min-width:36px !important; height:36px !important; min-height:36px !important; }
+  #appContent#appContent #grid#grid>.subject.home-category-tile .sub-icon { width:34px !important; min-width:34px !important; height:34px !important; min-height:34px !important; border-radius:10px !important; }
+  #appContent#appContent #grid#grid>.subject.home-category-tile .sub-icon svg.subject-art-svg { width:29px !important; height:29px !important; min-width:29px !important; min-height:29px !important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  #appContent#appContent #grid#grid>.subject.home-category-tile,
+  #appContent#appContent #grid#grid>.subject.home-category-tile .sub-icon { transition:none !important; }
+}

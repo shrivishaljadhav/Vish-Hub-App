@@ -1,0 +1,182 @@
+/* Reduce oversized vertical gaps across section pages; preserve each page's visual theme. */
+#videoPage#videoPage#videoPage .video-page-header{margin-bottom:8px!important}
+#videoPage#videoPage#videoPage .video-page-search{min-height:40px!important;margin:0 0 7px!important;padding:7px 12px!important}
+#videoPage#videoPage#videoPage .video-page-content{display:grid!important;gap:8px!important;padding:0 0 10px!important}
+#videoPage#videoPage#videoPage .video-browser-controls{gap:4px!important}
+#videoPage#videoPage#videoPage .video-category-tabs{margin-top:5px!important;padding-top:6px!important;padding-bottom:5px!important}
+#videoPage#videoPage#videoPage .video-subject-tabs{min-height:38px!important;padding-top:4px!important;padding-bottom:5px!important}
+#videoPage#videoPage#videoPage .video-library-results{display:grid!important;gap:5px!important;min-width:0!important}
+#videoPage#videoPage#videoPage .video-results-bar{min-height:0!important;margin:0!important;padding:8px 12px!important}
+#videoPage#videoPage#videoPage .video-results-bar h2{margin:2px 0!important}
+#videoPage#videoPage#videoPage .video-youtube-grid{row-gap:11px!important;column-gap:9px!important}
+#videoPage#videoPage#videoPage .video-page-card{row-gap:5px!important}
+
+#booksPage#booksPage#booksPage>.resource-library-intro{margin-bottom:8px!important}
+#booksPage#booksPage#booksPage .books-search{min-height:40px!important;margin:0 0 7px!important;padding:7px 12px!important}
+#booksPage#booksPage#booksPage .books-library-main{padding-top:8px!important}
+#booksPage#booksPage#booksPage .library-results-bar{margin-bottom:8px!important;padding:9px 11px!important}
+#booksPage#booksPage#booksPage .book-collections{gap:10px!important}
+#booksPage#booksPage#booksPage .book-collection-section{margin:0!important;padding:10px!important}
+#booksPage#booksPage#booksPage .book-cover-grid{gap:9px!important}
+#booksPage#booksPage#booksPage .quick-access{margin-top:12px!important;padding:12px!important}
+#booksPage#booksPage#booksPage .quick-access-heading{margin-bottom:8px!important}
+
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-head{min-height:96px!important;padding:16px 16px 13px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog #examTimetableTitle{margin:4px 0!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-search{min-height:40px!important;margin:8px 12px 6px!important;padding:7px 12px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-main{padding-top:8px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .library-results-bar{margin-bottom:8px!important;padding:9px 11px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-head-actions{gap:8px!important;padding:8px 12px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-tools{gap:6px!important;padding:8px 12px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-list{gap:9px!important;padding:10px 12px calc(env(safe-area-inset-bottom) + 14px)!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-category-paper{gap:8px!important}
+
+#syllabusPage#syllabusPage#syllabusPage .syllabus-page-header{margin-bottom:8px!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-page-search{min-height:40px!important;margin:0 0 7px!important;padding:7px 12px!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-library-main{padding-top:8px!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-page-summary{margin:0 0 8px!important;padding:10px 12px!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-major-group{margin:0 0 9px!important}
+
+#searchPage#searchPage#searchPage .search-page-header{margin-bottom:8px!important;padding-bottom:10px!important}
+#searchPage#searchPage#searchPage .search-page-field{min-height:40px!important;margin:0 0 8px!important;padding:7px 12px!important}
+#searchPage#searchPage#searchPage .search-page-summary{gap:4px!important;margin:0 0 9px!important;padding:9px 11px!important}
+#searchPage#searchPage#searchPage .search-page-results{gap:8px!important}
+#searchPage#searchPage#searchPage .search-page-empty{margin:0!important;padding:14px!important}
+
+#categoryPage#categoryPage#categoryPage .syllabus-page-header{margin-bottom:8px!important}
+#categoryPage#categoryPage#categoryPage .syllabus-page-content{gap:9px!important}
+#studentProfilePage#studentProfilePage#studentProfilePage .profile-page-head{margin-bottom:8px!important;padding-bottom:10px!important}
+#studentProfilePage#studentProfilePage#studentProfilePage .profile-auth-card{gap:10px!important;padding:14px!important}
+#notificationPage#notificationPage#notificationPage .profile-page-head{margin-bottom:8px!important;padding-bottom:10px!important}
+#notificationPage#notificationPage#notificationPage .notification-toolbar{margin:0 0 8px!important;padding:8px 10px!important}
+#notificationPage#notificationPage#notificationPage .notification-list{gap:8px!important}
+#notificationPage#notificationPage#notificationPage .notification-note{margin:8px 0 0!important}
+
+#studyLoungePage#studyLoungePage#studyLoungePage .sl-content{gap:10px!important}
+#studyLoungePage#studyLoungePage#studyLoungePage .sl-search{margin-bottom:8px!important}
+#studyLoungePage#studyLoungePage#studyLoungePage .sl-search-results{margin-top:6px!important}
+#studyLoungePage#studyLoungePage#studyLoungePage .sl-footer{margin-top:10px!important}
+
+@media(max-width:600px){
+  #videoPage#videoPage#videoPage .video-youtube-grid{row-gap:9px!important;column-gap:8px!important}
+  #booksPage#booksPage#booksPage .books-library-main{padding-top:6px!important}
+  #booksPage#booksPage#booksPage .book-collections{gap:8px!important}
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-head{min-height:88px!important;padding:14px 12px 11px!important}
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-list{padding:8px 10px calc(env(safe-area-inset-bottom) + 12px)!important}
+}
+
+/* Vertical rhythm correction: tighten the stack between header, search, and selectors.
+   Inline/side padding is intentionally left untouched. */
+#videoPage#videoPage#videoPage .video-page-header{margin-bottom:4px!important}
+#videoPage#videoPage#videoPage .video-page-search{margin-top:0!important;margin-bottom:3px!important}
+#videoPage#videoPage#videoPage .video-page-content{gap:0!important;padding-top:0!important}
+#videoPage#videoPage#videoPage .video-browser-controls{gap:0!important}
+#videoPage#videoPage#videoPage .video-category-tabs.library-category-tabs{margin-top:0!important;margin-bottom:0!important;padding-top:2px!important;padding-bottom:2px!important}
+#videoPage#videoPage#videoPage .video-subject-tabs.library-subject-tabs{min-height:34px!important;margin-top:0!important;padding-top:2px!important;padding-bottom:2px!important}
+#videoPage#videoPage#videoPage .video-library-results{margin-top:3px!important}
+
+#booksPage#booksPage#booksPage>.resource-library-intro{margin-bottom:4px!important}
+#booksPage#booksPage#booksPage .books-search{margin-top:0!important;margin-bottom:3px!important}
+#booksPage#booksPage#booksPage .library-category-tabs{margin-top:0!important;margin-bottom:0!important;padding-top:2px!important;padding-bottom:2px!important}
+#booksPage#booksPage#booksPage .library-subject-tabs{min-height:34px!important;margin-top:0!important;padding-top:2px!important;padding-bottom:2px!important}
+#booksPage#booksPage#booksPage .books-library-main{padding-top:4px!important}
+
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-head{margin-bottom:4px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-search{margin-top:3px!important;margin-bottom:3px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-category-tabs.library-category-tabs{margin-top:0!important;margin-bottom:0!important;padding-top:2px!important;padding-bottom:2px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-subject-tabs.library-subject-tabs{min-height:34px!important;margin-top:0!important;padding-top:2px!important;padding-bottom:2px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-main{padding-top:4px!important}
+
+#syllabusPage#syllabusPage#syllabusPage .syllabus-page-header{margin-bottom:4px!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-page-search{margin-top:0!important;margin-bottom:3px!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-category-tabs{margin-top:0!important;padding-top:2px!important;padding-bottom:2px!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-subject-tabs{min-height:34px!important;margin-top:0!important;padding-top:2px!important;padding-bottom:2px!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-library-main{padding-top:4px!important}
+
+#searchPage#searchPage#searchPage .search-page-header{margin-bottom:4px!important}
+#searchPage#searchPage#searchPage .search-page-field{margin-top:0!important;margin-bottom:4px!important}
+#categoryPage#categoryPage#categoryPage .syllabus-page-header{margin-bottom:4px!important}
+
+/* Restore the established page gutters, center header copy, and stretch search controls. */
+#videoPage#videoPage#videoPage.video-page{inset:0 auto 0 50%!important;width:min(100%,1280px)!important;max-width:none!important;padding-left:11px!important;padding-right:11px!important;box-sizing:border-box!important}
+#videoPage#videoPage#videoPage .video-page-header{display:flex!important;grid-template-columns:minmax(0,1fr)!important;justify-content:center!important;align-items:center!important;min-width:0!important;text-align:center!important}
+#videoPage#videoPage#videoPage .video-page-header .books-hero-copy,#booksPage#booksPage#booksPage .resource-library-intro .books-hero-copy,#syllabusPage#syllabusPage#syllabusPage .syllabus-page-header .books-hero-copy{display:flex!important;justify-content:center!important;align-items:center!important;width:100%!important;max-width:none!important;min-width:0!important;margin-left:auto!important;margin-right:auto!important;text-align:center!important}
+#videoPage#videoPage#videoPage .video-page-header .books-hero-title,#booksPage#booksPage#booksPage .resource-library-intro .books-hero-title,#syllabusPage#syllabusPage#syllabusPage .syllabus-page-header .books-hero-title{width:100%!important;max-width:none!important;min-width:0!important;margin-left:auto!important;margin-right:auto!important;text-align:center!important}
+#videoPage#videoPage#videoPage .video-page-header :is(h1,p),#booksPage#booksPage#booksPage .resource-library-intro :is(h1,p),#syllabusPage#syllabusPage#syllabusPage .syllabus-page-header :is(h1,p),#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-head :is(h1,p){width:100%!important;text-align:center!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-head{display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-head .books-hero-copy,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-head .books-hero-title{width:100%!important;max-width:none!important;min-width:0!important;margin-inline:auto!important;text-align:center!important}
+
+/* Search fields share the full available content width on every section page. */
+#videoPage#videoPage#videoPage .video-page-search,#booksPage#booksPage#booksPage .books-search,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-search,#syllabusPage#syllabusPage#syllabusPage .syllabus-page-search,#searchPage#searchPage#searchPage .search-page-field{display:flex!important;align-self:stretch!important;justify-self:stretch!important;width:100%!important;max-width:none!important;min-width:0!important;margin-left:0!important;margin-right:0!important;box-sizing:border-box!important}
+#videoPage#videoPage#videoPage .video-page-search input,#booksPage#booksPage#booksPage .books-search input,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-search input,#syllabusPage#syllabusPage#syllabusPage .syllabus-page-search input,#searchPage#searchPage#searchPage .search-page-field input{flex:1 1 auto!important;width:100%!important;min-width:0!important;max-width:none!important;box-sizing:border-box!important}
+
+/* Wider desktop canvas and shrink-safe grids prevent cards and headings overlapping. */
+@media(min-width:900px){
+  #videoPage#videoPage#videoPage .video-youtube-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))!important;align-items:start!important;gap:14px!important;min-width:0!important}
+  #videoPage#videoPage#videoPage .video-page-card,#videoPage#videoPage#videoPage .video-page-card-copy,#booksPage#booksPage#booksPage .book-cover-grid,#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-list{min-width:0!important}
+}
+
+/* Align search and filter edges to each page's existing content gutter. */
+:root{--section-page-gutter:clamp(11px,1.4vw,18px)}
+#videoPage#videoPage#videoPage.video-page{padding-left:var(--section-page-gutter)!important;padding-right:var(--section-page-gutter)!important}
+#videoPage#videoPage#videoPage .video-category-tabs.library-category-tabs,
+#videoPage#videoPage#videoPage .video-subject-tabs.library-subject-tabs{padding-left:0!important;padding-right:0!important}
+#booksPage#booksPage#booksPage .books-search{width:calc(100% - 2 * var(--section-page-gutter))!important;margin-left:auto!important;margin-right:auto!important}
+#booksPage#booksPage#booksPage .library-category-tabs,
+#booksPage#booksPage#booksPage .library-subject-tabs,
+#booksPage#booksPage#booksPage .books-library-main{padding-left:var(--section-page-gutter)!important;padding-right:var(--section-page-gutter)!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-search{width:calc(100% - 24px)!important;margin-left:12px!important;margin-right:12px!important}
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-category-tabs,
+#examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-subject-tabs{padding-left:12px!important;padding-right:12px!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-page-search{width:100%!important}
+#syllabusPage#syllabusPage#syllabusPage .syllabus-category-tabs,
+#syllabusPage#syllabusPage#syllabusPage .syllabus-subject-tabs{padding-left:0!important;padding-right:0!important}
+@media(min-width:900px){
+  #videoPage#videoPage#videoPage .video-page-content,
+  #videoPage#videoPage#videoPage .video-browser-controls,
+  #videoPage#videoPage#videoPage .video-library-results,
+  #videoPage#videoPage#videoPage .video-results-bar,
+  #videoPage#videoPage#videoPage .video-page-card{width:100%!important;max-width:none!important;min-width:0!important}
+  #videoPage#videoPage#videoPage .video-page-header .books-hero-title{max-width:760px!important}
+}
+
+#booksPage#booksPage#booksPage .resource-library-intro,
+#syllabusPage#syllabusPage#syllabusPage .syllabus-page-header{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  min-width:0!important;
+}
+@media(min-width:900px){
+  #booksPage#booksPage#booksPage .books-library-main,
+  #booksPage#booksPage#booksPage .book-collections,
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-main,
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-timetable-list,
+  #examTimetableDialog#examTimetableDialog#examTimetableDialog .exam-category-paper{
+    min-width:0!important;
+    max-width:100%!important;
+  }
+}
+
+
+/* Separate Video Lessons selectors from search and lesson content. */
+#videoPage#videoPage#videoPage .video-browser-controls{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:4px!important;width:100%!important;min-width:0!important;margin:0!important;padding:8px 10px!important;border:1px solid #c5a750!important;border-radius:15px!important;background:linear-gradient(145deg,#fffdf7 0%,#f4ecd8 54%,#fffaf0 100%)!important;box-shadow:0 4px 10px rgba(35,43,52,.1),inset 0 1px 0 rgba(255,255,255,.95)!important;box-sizing:border-box!important}
+#videoPage#videoPage#videoPage .video-browser-controls .video-category-tabs.library-category-tabs{margin:0!important;padding-top:0!important;padding-bottom:2px!important}
+#videoPage#videoPage#videoPage .video-browser-controls .video-subject-tabs.library-subject-tabs{min-height:34px!important;margin:0!important;padding-top:2px!important;padding-bottom:2px!important}
+
+#videoPage#videoPage#videoPage .video-browser-controls .video-category-tabs.library-category-tabs,
+#videoPage#videoPage#videoPage .video-browser-controls .video-subject-tabs.library-subject-tabs{padding-left:8px!important;padding-right:8px!important}
+#videoPage#videoPage#videoPage .video-browser-controls .video-subject-tabs .library-subject-tab{flex:0 0 auto!important;margin:0!important;transform:none!important}
+
+/* Keep secondary subject controls transparent; strengthen the gold outline. */
+#videoPage#videoPage#videoPage .video-browser-controls .video-subject-tabs .library-subject-tab:not(.active):not([aria-pressed="true"]){background-color:#e8eef5!important;background-image:linear-gradient(145deg,#f4f7fb 0%,#e8eef5 100%)!important;border:1.5px solid #b5944a!important;color:#294359!important;-webkit-text-fill-color:#294359!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.92),0 1px 3px rgba(26,54,83,.1)!important;text-shadow:none!important}
+
+
+#videoPage#videoPage#videoPage .video-browser-controls .video-category-tabs.library-category-tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important;justify-content:stretch!important;gap:6px!important;width:100%!important}
+#videoPage#videoPage#videoPage .video-browser-controls .video-category-tabs .library-category-tab{display:inline-flex!important;width:100%!important;min-width:0!important;justify-content:center!important;text-align:center!important}
+
+/* Refined single light-blue card for the complete Video Lessons selector section. */
+#videoPage#videoPage#videoPage .video-browser-controls{padding:10px 12px!important;gap:5px!important;border:1px solid #b99b50!important;border-radius:17px!important;background-color:#e8eef5!important;background-image:radial-gradient(ellipse at 50% -20%,rgba(255,255,255,.92),transparent 58%),linear-gradient(145deg,#f3f7fb 0%,#e5ecf4 52%,#f1f5f9 100%)!important;box-shadow:0 5px 13px rgba(32,54,76,.12),inset 0 1px 0 rgba(255,255,255,.96),inset 0 0 0 1px rgba(190,163,91,.18)!important}
+#videoPage#videoPage#videoPage .video-browser-controls .video-category-tabs.library-category-tabs{background:transparent!important}
+#videoPage#videoPage#videoPage .video-browser-controls .video-subject-tabs.library-subject-tabs{background:transparent!important}

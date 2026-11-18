@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 320" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="hide" x2="0" y2="1"><stop stop-color="#173757"/><stop offset=".48" stop-color="#102b49"/><stop offset="1" stop-color="#091b31"/></linearGradient>
+    <radialGradient id="glow" cx="50%" cy="0%" r="90%"><stop stop-color="#53779b" stop-opacity=".33"/><stop offset="1" stop-color="#163653" stop-opacity="0"/></radialGradient>
+    <linearGradient id="pebble" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#a4b9ce" stop-opacity=".18"/><stop offset=".42" stop-color="#496985" stop-opacity=".07"/><stop offset="1" stop-color="#020c1b" stop-opacity=".27"/></linearGradient>
+    <filter id="softLeather" x="-2%" y="-5%" width="104%" height="110%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".63" numOctaves="2" seed="38" stitchTiles="stitch" result="grain"/><feColorMatrix in="grain" type="saturate" values="0" result="mono"/><feComponentTransfer in="mono" result="contrast"><feFuncR type="linear" slope=".62" intercept=".18"/><feFuncG type="linear" slope=".62" intercept=".18"/><feFuncB type="linear" slope=".62" intercept=".18"/><feFuncA type="table" tableValues=".08 .24"/></feComponentTransfer><feBlend in="SourceGraphic" in2="contrast" mode="soft-light"/></filter>
+    <pattern id="grainPebble" width="92" height="72" patternUnits="userSpaceOnUse">
+      <g fill="url(#pebble)" stroke="#b5c7d8" stroke-opacity=".09" stroke-width=".7">
+        <path d="M7 8 Q12 3 18 7 Q22 11 18 16 Q13 20 8 16 Q4 12 7 8Z"/><path d="M31 3 Q36 0 41 4 Q45 9 40 13 Q35 16 31 12 Q27 8 31 3Z"/>
+        <path d="M58 9 Q63 4 69 8 Q74 12 70 17 Q65 21 60 17 Q55 14 58 9Z"/><path d="M79 2 Q84 -1 89 3 Q94 8 89 12 Q84 15 80 11 Q76 7 79 2Z"/>
+        <path d="M18 32 Q23 27 29 31 Q33 35 30 40 Q25 45 20 41 Q15 37 18 32Z"/><path d="M45 26 Q50 22 56 26 Q60 30 57 36 Q52 40 47 36 Q42 32 45 26Z"/>
+        <path d="M70 33 Q75 28 81 32 Q86 36 82 42 Q77 46 72 42 Q67 38 70 33Z"/><path d="M1 54 Q6 49 12 53 Q16 57 13 63 Q8 67 3 63 Q-2 59 1 54Z"/>
+        <path d="M31 54 Q36 49 42 53 Q47 57 43 63 Q38 67 33 63 Q28 59 31 54Z"/><path d="M57 52 Q62 47 68 51 Q73 55 69 61 Q64 65 59 61 Q54 57 57 52Z"/>
+        <path d="M81 56 Q86 51 92 55 Q97 59 93 65 Q88 69 83 65 Q78 61 81 56Z"/>
+      </g>
+      <g fill="none" stroke="#020d1b" stroke-opacity=".22" stroke-width=".75" stroke-linecap="round">
+        <path d="M5 12 Q12 22 20 13 M29 8 Q36 18 43 9 M56 14 Q64 23 72 14 M77 7 Q85 17 92 8"/>
+        <path d="M16 37 Q24 48 32 37 M43 31 Q51 43 59 32 M68 38 Q76 49 84 38 M0 59 Q7 70 15 59"/>
+        <path d="M29 59 Q37 70 45 59 M55 57 Q63 68 71 57 M79 61 Q87 72 95 61"/>
+      </g>
+    </pattern>
+    <linearGradient id="edgeGold" x2="0" y2="1"><stop stop-color="#f2dfaa" stop-opacity=".55"/><stop offset=".55" stop-color="#c6a654" stop-opacity=".25"/><stop offset="1" stop-color="#f5e4b5" stop-opacity=".45"/></linearGradient>
+  </defs>
+  <rect width="1400" height="320" rx="38" fill="url(#hide)"/>
+  <rect width="1400" height="320" rx="38" fill="url(#glow)"/>
+  <rect width="1400" height="320" rx="38" fill="url(#grainPebble)" opacity=".76"/>
+  <rect width="1400" height="320" rx="38" fill="#fff" opacity=".15" filter="url(#softLeather)"/>
+  <g fill="none" stroke="url(#edgeGold)" stroke-width="1.5" opacity=".52">
+    <path d="M28 70 Q28 28 70 28 H205 M1195 28 H1330 Q1372 28 1372 70 V105"/>
+    <path d="M28 250 V250 Q28 292 70 292 H205 M1195 292 H1330 Q1372 292 1372 250 V215"/>
+  </g>
+  <g fill="none" stroke="#d6bd7c" stroke-opacity=".21" stroke-width="1">
+    <path d="M36 82 C65 74 77 61 83 36 M36 238 C65 246 77 259 83 284 M1364 82 C1335 74 1323 61 1317 36 M1364 238 C1335 246 1323 259 1317 284"/>
+    <path d="M48 88 Q66 84 74 68 M48 232 Q66 236 74 252 M1352 88 Q1334 84 1326 68 M1352 232 Q1334 236 1326 252"/>
+  </g>
+</svg>

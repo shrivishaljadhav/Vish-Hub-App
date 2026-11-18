@@ -1,0 +1,51 @@
+#launchScreen {
+  position: fixed;
+  z-index: 100000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  isolation: isolate;
+  padding: max(22px, env(safe-area-inset-top)) 22px max(24px, env(safe-area-inset-bottom));
+  color: #f5f0e5;
+  background:
+    radial-gradient(ellipse at 50% 8%, rgba(245, 239, 220, .22), transparent 42%),
+    radial-gradient(ellipse at 8% 92%, rgba(221, 215, 199, .13), transparent 34%),
+    radial-gradient(ellipse at 94% 88%, rgba(233, 227, 213, .12), transparent 33%),
+    radial-gradient(ellipse at 50% 52%, #112d4b 0%, #0b2038 46%, #061326 82%, #030914 100%);
+}
+html:has(body.splash-active), body.splash-active { background: #061326 !important; }
+body.splash-active #appContent { opacity: 0 !important; pointer-events: none !important; }
+#launchScreen[hidden] { display: none !important; }
+.launch-texture, .launch-spotlight, .launch-light-sweep { position: absolute; pointer-events: none; }
+.launch-texture { z-index: 0; inset: -3%; opacity: 0; background-color: #081a30; background-image: linear-gradient(135deg, rgba(10, 35, 59, .12), rgba(1, 9, 21, .3)), url("navy-leather-grain.svg"), repeating-linear-gradient(92deg, rgba(239, 241, 240, .012) 0 1px, transparent 1px 4px), radial-gradient(ellipse at 50% 48%, transparent 5%, rgba(1, 8, 19, .12) 68%, rgba(1, 7, 17, .54) 100%); background-position: center, center, center, center; background-size: cover, 260px 260px, auto, cover; background-repeat: no-repeat, repeat, repeat, no-repeat; }
+.launch-spotlight { z-index: 1; inset: -15%; opacity: 0; background: radial-gradient(ellipse 48% 37% at 50% 47%, rgba(247, 242, 229, .19), rgba(181, 196, 211, .08) 48%, transparent 78%); filter: blur(14px); }
+.launch-light-sweep { z-index: 2; top: -18%; bottom: -18%; left: -68%; width: 42%; transform: skewX(-16deg); opacity: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.025) 27%, rgba(255,250,235,.48) 50%, rgba(221,225,229,.16) 65%, transparent); mix-blend-mode: screen; }
+.launch-content { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; width: min(100%, 900px); margin-top: -2vh; text-align: center; perspective: 1200px; }
+.launch-mark { position: relative; display: block; width: min(72vw, 680px); aspect-ratio: 2170 / 725; max-height: 40svh; transform-style: preserve-3d; }
+.launch-logo { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; opacity: 0; filter: drop-shadow(0 10px 20px rgba(0,0,0,.5)); transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; }
+.launch-rule { display: block; width: clamp(112px, 23vw, 220px); height: 1px; margin-top: clamp(22px, 4vh, 34px); transform: scaleX(0); transform-origin: center; background: linear-gradient(90deg, transparent, #b9b7ad, #fff9e8, #c5c2b8, transparent); box-shadow: 0 0 12px rgba(239, 232, 212, .3); opacity: 0; }
+.launch-caption { margin: 13px 0 0; color: rgba(247, 243, 233, .92); font: 600 9px/1.5 var(--sans, Arial, sans-serif); letter-spacing: .2em; text-transform: uppercase; opacity: 0; }
+.launch-status { position: absolute; z-index: 4; right: 20px; bottom: max(28px, calc(env(safe-area-inset-bottom) + 20px)); left: 20px; display: flex; flex-direction: column; align-items: center; gap: 11px; opacity: 0; }
+.launch-status-label { color: rgba(238, 232, 217, .8); font: 700 8px/1.4 var(--sans, Arial, sans-serif); letter-spacing: .2em; text-transform: uppercase; }
+.launch-progress { display: block; width: min(48vw, 190px); height: 2px; overflow: hidden; border-radius: 99px; background: rgba(229, 238, 247, .2); }
+.launch-progress > span { display: block; width: 100%; height: 100%; transform: scaleX(.02); transform-origin: left center; border-radius: inherit; background: linear-gradient(90deg, #7f94aa, #d9e4ee 55%, #fff); box-shadow: 0 0 8px rgba(213, 229, 243, .56); }
+#launchScreen.is-leaving { pointer-events: none; }
+@media (max-width: 520px) {
+  #launchScreen { padding-right: 18px; padding-left: 18px; }
+  .launch-mark { width: 76vw; max-height: 32svh; }
+  .launch-logo { max-height: 32svh; }
+  .launch-rule { margin-top: 22px; }
+  .launch-caption { font-size: 8px; letter-spacing: .14em; }
+  .launch-status { bottom: max(22px, calc(env(safe-area-inset-bottom) + 14px)); }
+}
+@media (max-height: 520px) {
+  .launch-mark, .launch-logo { max-height: 34svh; }
+  .launch-rule { margin-top: 12px; }
+  .launch-caption { margin-top: 8px; }
+  .launch-status { bottom: max(12px, calc(env(safe-area-inset-bottom) + 8px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #launchScreen *, #launchScreen::before, #launchScreen::after { animation: none !important; transition: none !important; }
+}

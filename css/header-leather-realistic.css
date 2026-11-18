@@ -1,0 +1,52 @@
+/* Full padded leather header, finished with pebble grain, welted gold piping and saddle stitches. */
+#appContent #top-area#top-area {
+  border: 4px solid transparent !important;
+  border-radius: 26px !important;
+  background:
+    url("header-leather-trim.svg") center / 100% 100% no-repeat padding-box,
+    url("header-leather-pebble.svg") 0 0 / 112px 84px repeat padding-box,
+    radial-gradient(ellipse at 50% 4%, rgba(104,132,159,.16), transparent 54%) padding-box,
+    radial-gradient(ellipse at 50% 118%, rgba(0,4,13,.42), transparent 62%) padding-box,
+    linear-gradient(145deg,#173552 0%,#102942 27%,#0c2239 65%,#0a1c31 100%) padding-box,
+    linear-gradient(155deg,#fff0bd 0%,#a17a34 10%,#f0d98c 22%,#75541f 42%,#d6b65f 58%,#fff0b7 74%,#6f511f 100%) border-box !important;
+  box-shadow: 0 13px 24px rgba(1,6,15,.34), 0 3px 0 #5e4518,
+    inset 0 2px 0 rgba(255,255,255,.42), inset 0 0 0 1px rgba(255,241,198,.18),
+    inset 0 0 0 4px rgba(3,12,24,.38), inset 0 -4px 0 rgba(0,2,8,.7),
+    inset 0 -12px 21px rgba(0,2,8,.28) !important;
+}
+#appContent #top-area#top-area > header.topline {
+  min-height: 72px !important;
+  isolation: isolate !important;
+}
+#appContent #top-area#top-area > header.topline > .header-brand > .header-logo {
+  filter: drop-shadow(0 2px 1px rgba(0,0,0,.62)) drop-shadow(0 0 5px rgba(220,187,100,.17)) !important;
+}
+#appContent #top-area#top-area > header.topline > #menuToggle#menuToggle,
+#appContent #top-area#top-area > header.topline > #headerSearchToggle,
+#appContent #top-area#top-area > header.topline > #bell#bell {
+  border: 1px solid rgba(239,213,147,.9) !important;
+  border-radius: 10px !important;
+  background:
+    url("header-leather-pebble.svg") 0 0 / 74px 56px repeat,
+    linear-gradient(145deg,rgba(36,69,99,.96),rgba(12,33,54,.98) 62%,rgba(6,20,35,.99)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.32), inset 0 0 0 2px rgba(3,12,23,.4),
+    inset 0 -3px 4px rgba(0,0,0,.46), 0 2px 0 #765a25, 0 4px 7px rgba(0,0,0,.3) !important;
+  color: #f0d58a !important;
+}
+#appContent #top-area#top-area > header.topline > #menuToggle#menuToggle span {
+  height: 1.4px !important;
+  border-radius: 2px !important;
+  background: linear-gradient(90deg,#dfc77f,#fff0b7 48%,#bf9a4e) !important;
+  box-shadow: 0 1px 1px rgba(0,0,0,.72) !important;
+}
+#appContent #top-area#top-area > header.topline > #headerSearchToggle svg,
+#appContent #top-area#top-area > header.topline > #bell#bell svg {
+  color: #f0d58a !important;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.72)) !important;
+}
+#appContent #top-area#top-area > header.topline > #menuToggle#menuToggle:active,
+#appContent #top-area#top-area > header.topline > #headerSearchToggle:active,
+#appContent #top-area#top-area > header.topline > #bell#bell:active {
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.52), inset 0 0 0 2px rgba(3,12,23,.46),
+    0 1px 0 #765a25 !important;
+}

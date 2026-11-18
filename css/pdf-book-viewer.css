@@ -1,0 +1,710 @@
+/* 3D book presentation for the PDF reader. */
+/* Keep the reader above the product-details page (1250) and its scrim.
+   main.css had a later global override that forced the reader to z-index:80,
+   so the details screen covered the actual reader after the cover animation. */
+#pdfViewer#pdfViewer#pdfViewer {
+  z-index: 1300 !important;
+}
+
+#pdfViewerScrim#pdfViewerScrim {
+  z-index: 1290 !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer.pdf-book-mode {
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+  gap: 12px !important;
+  overflow: hidden !important;
+  padding: max(14px, env(safe-area-inset-top)) clamp(12px, 2vw, 24px) max(12px, env(safe-area-inset-bottom)) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: radial-gradient(ellipse at 50% 45%, #fffdf7 0%, #e5e9ec 70%, #d3d9df 100%) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer :is(.pdf-book-toolbar,.pdf-book-reader,.pdf-book-fallback-message)[hidden],
+#pdfViewer#pdfViewer#pdfViewer iframe[hidden] {
+  display: none !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-toolbar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-height: 46px !important;
+  padding: 6px 9px !important;
+  border: 1px solid rgba(167,139,78,.48) !important;
+  border-radius: 15px !important;
+  background: linear-gradient(135deg,#f8fafb 0%,#dce2e6 30%,#f7f8f7 60%,#d3dbe0 100%) !important;
+  box-shadow: inset 0 1px 0 #fff, 0 5px 13px rgba(20,39,60,.11) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-controls,
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-zoom-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  min-width: 0 !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-tool {
+  display: grid !important;
+  place-items: center !important;
+  min-width: 34px !important;
+  height: 32px !important;
+  padding: 0 9px !important;
+  border: 1px solid #b89b58 !important;
+  border-radius: 9px !important;
+  background: linear-gradient(145deg,#fffdf4,#efdfb8 55%,#d9bf7d) !important;
+  box-shadow: inset 0 1px 0 #fff, 0 2px 5px rgba(24,40,57,.13) !important;
+  color: #183653 !important;
+  font: 750 13px/1 var(--sans,Arial,sans-serif) !important;
+  cursor: pointer !important;
+  transition: transform .18s ease, box-shadow .18s ease !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-tool:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+  box-shadow: inset 0 1px 0 #fff, 0 4px 9px rgba(24,40,57,.16) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-tool:disabled {
+  opacity: .42 !important;
+  cursor: default !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-input {
+  width: 52px !important;
+  min-width: 48px !important;
+  height: 30px !important;
+  padding: 3px 5px !important;
+  border: 1px solid #b8c0c6 !important;
+  border-radius: 8px !important;
+  background: linear-gradient(180deg,#fff,#eef1f3) !important;
+  color: #183653 !important;
+  font: 750 11px/1 var(--sans,Arial,sans-serif) !important;
+  text-align: center !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-total,
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-zoom-value {
+  color: #566477 !important;
+  font: 750 9px/1.3 var(--sans,Arial,sans-serif) !important;
+  white-space: nowrap !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-zoom-value { min-width: 39px !important; text-align: center !important; }
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-reader {
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  touch-action: pan-y pinch-zoom !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-reader:focus-visible {
+  outline: 2px solid #bd9b4e !important;
+  outline-offset: 2px !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-stage {
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  box-sizing: border-box !important;
+  padding: clamp(7px, 1.1vw, 14px) !important;
+  overflow: hidden !important;
+  border: 1px solid #c2a45c !important;
+  border-radius: clamp(12px, 1.5vw, 20px) !important;
+  perspective: 1350px !important;
+  perspective-origin: 48% 46% !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y pinch-zoom !important;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.94), rgba(239,236,222,.96) 48%, rgba(218,222,224,.96)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 0 0 3px rgba(255,255,255,.62),
+    inset 0 0 0 4px rgba(187,151,65,.38),
+    0 12px 28px rgba(55,48,33,.16) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer.pdf-book-pageflip-active .pdf-book-object { display: none !important; }
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host {
+  position: absolute !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  transform-style: preserve-3d !important;
+  filter: none !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host .stf__parent {
+  position: relative !important;
+  margin: auto !important;
+  background: transparent !important;
+  box-shadow:
+    0 18px 24px rgba(32, 36, 38, .20),
+    0 5px 9px rgba(32, 36, 38, .12) !important;
+  transform-style: preserve-3d !important;
+}
+
+/* Recessed center gutter between facing pages, with a soft raised paper ridge. */
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host .stf__parent::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  width: 26px !important;
+  z-index: 40 !important;
+  transform: translateX(-50%) !important;
+  pointer-events: none !important;
+  background: linear-gradient(90deg,
+    rgba(55, 45, 29, 0) 0%,
+    rgba(55, 45, 29, .10) 24%,
+    rgba(40, 34, 26, .30) 46%,
+    rgba(32, 29, 24, .42) 50%,
+    rgba(255, 255, 255, .72) 54%,
+    rgba(255, 255, 255, .24) 65%,
+    rgba(55, 45, 29, .10) 80%,
+    rgba(55, 45, 29, 0) 100%) !important;
+  box-shadow: 0 0 12px rgba(39, 33, 24, .19), 0 2px 5px rgba(39, 33, 24, .10) !important;
+  opacity: .96 !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host .stf__parent::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  width: 1px !important;
+  z-index: 41 !important;
+  transform: translateX(-50%) !important;
+  pointer-events: none !important;
+  background: linear-gradient(180deg,
+    rgba(105, 85, 49, .18) 0%,
+    rgba(45, 38, 27, .64) 18%,
+    rgba(37, 32, 25, .72) 50%,
+    rgba(255, 255, 255, .86) 53%,
+    rgba(112, 94, 61, .25) 100%) !important;
+  box-shadow: 0 0 4px rgba(42, 36, 27, .38), 1px 0 2px rgba(255, 255, 255, .7) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-pageflip-host .stf__parent::before,
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-pageflip-host .stf__parent::after {
+  display: none !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host .pdf-reader-page {
+  /* StPageFlip positions and transforms each sheet absolutely. Relative
+     positioning makes the PDF stay in normal flow while only the curl layer
+     appears to move. */
+  position: absolute !important;
+  display: block !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  backface-visibility: hidden !important;
+  transform-style: preserve-3d !important;
+}
+
+/* Keep the PDF raster attached to the StPageFlip sheet during its curl. */
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host .pdf-reader-page-image {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: fill !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  backface-visibility: visible !important;
+  pointer-events: none !important;
+}
+
+/* Fine exposed paper edges add book depth while StPageFlip supplies the
+   moving curl and its changing light and shadow during a turn. */
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host .pdf-reader-page.--simple::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 1px !important;
+  bottom: 1px !important;
+  width: 5px !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  opacity: .72 !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host .pdf-reader-page.--simple.--left::after {
+  left: 0 !important;
+  background: linear-gradient(90deg, rgba(92, 78, 49, .22), rgba(255, 255, 255, .08), transparent) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host .pdf-reader-page.--simple.--right::after {
+  right: 0 !important;
+  background: linear-gradient(270deg, rgba(92, 78, 49, .22), rgba(255, 255, 255, .08), transparent) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-reader-page-number { display: none !important; }
+
+#pdfViewer#pdfViewer#pdfViewer.pdf-book-mode .pdf-book-pageflip-host .stf__block {
+  background: transparent !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host,
+  #pdfViewer#pdfViewer#pdfViewer .pdf-reader-page { scroll-behavior: auto !important; }
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-object {
+  position: relative !important;
+  flex: 0 0 auto !important;
+  width: var(--pdf-spread-width, 1120px) !important;
+  height: var(--pdf-page-height, 760px) !important;
+  transform-style: preserve-3d !important;
+  transform: rotateY(calc(-4deg + var(--book-tilt-y, 0deg))) rotateX(calc(.7deg + var(--book-tilt-x, 0deg))) !important;
+  filter: drop-shadow(20px 23px 17px rgba(16,34,50,.26)) drop-shadow(0 2px 2px rgba(16,34,50,.1)) !important;
+  transition: filter .32s ease, transform .18s ease-out !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-stack,
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-base,
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 3px 8px 8px 3px !important;
+  transform-style: preserve-3d !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-stack {
+  z-index: 0 !important;
+  border: 1px solid #b6a577 !important;
+  background: repeating-linear-gradient(0deg,rgba(104,87,51,.1) 0 1px,transparent 1px 4px),linear-gradient(90deg,#c7b98f,#f6f0e2 9%,#ece3d1 49.5%,#c8b991 50%,#f8f0dc 51%,#ece3d1 96%,#c8b991) !important;
+  box-shadow: 2px 3px 0 #fff9e9, 4px 5px 0 #e5dcc9, 6px 7px 0 #d8ccb1, 8px 9px 0 #cbbd9a, 10px 11px 0 #b9a980, 13px 16px 15px rgba(12,29,47,.24) !important;
+  transform: translateZ(-12px) translateX(3px) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-stack::after {
+  position: absolute !important;
+  inset: 1px 0 1px auto !important;
+  width: 13px !important;
+  border-radius: 0 7px 7px 0 !important;
+  background: repeating-linear-gradient(0deg,rgba(94,75,42,.17) 0 1px,rgba(255,253,245,.72) 1px 3px),linear-gradient(90deg,#c8b98e,#fff9e9) !important;
+  box-shadow: inset 2px 0 4px rgba(90,70,38,.16) !important;
+  content: "" !important;
+  transform: translateZ(1px) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-stack::before {
+  position: absolute !important;
+  inset: 0 auto 0 0 !important;
+  z-index: 2 !important;
+  width: 12px !important;
+  border-radius: 4px 0 0 4px !important;
+  background: linear-gradient(90deg,rgba(96,68,28,.28),rgba(255,252,241,.42),transparent) !important;
+  content: "" !important;
+  transform: translateZ(2px) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-base {
+  z-index: 1 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+  align-items: center !important;
+  justify-items: center !important;
+  overflow: hidden !important;
+  border: 1px solid #b6a577 !important;
+  background: linear-gradient(90deg,#fffdf8 0%,#fffdf7 48.8%,#e7dfcf 49.7%,#c9bda4 50%,#eee7d9 50.35%,#fffdf7 51.2%,#fffdf8 100%) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.8), inset 8px 0 14px -13px rgba(64,47,22,.54), inset -8px 0 14px -13px rgba(64,47,22,.42), 2px 2px 5px rgba(23,37,49,.16) !important;
+  transform: translateZ(0) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-left-page { justify-self: end !important; border-radius: 5px 1px 1px 5px !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-right-page { justify-self: start !important; border-radius: 1px 5px 5px 1px !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-base::after {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  background: linear-gradient(90deg,transparent 48.9%,rgba(68,54,31,.11) 49.55%,rgba(255,255,255,.48) 50%,rgba(68,54,31,.09) 50.45%,transparent 51.1%) !important;
+  content: "" !important;
+  pointer-events: none !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-canvas {
+  display: block !important;
+  max-width: none !important;
+  background: #fffdf7 !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet {
+  z-index: 2 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform-style: preserve-3d !important;
+  will-change: transform, filter !important;
+  filter: drop-shadow(5px 7px 5px var(--turn-shadow, rgba(29,33,37,.16))) !important;
+  width: var(--pdf-turn-page-width, 560px) !important;
+  height: 100% !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.turn-next,
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.turn-previous {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.turn-next { left: 50% !important; right: auto !important; transform-origin: left center !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.turn-previous { left: 0 !important; right: auto !important; transform-origin: right center !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.is-dragging { transition: none !important; }
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-bend-layer {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  visibility: hidden !important;
+  overflow: visible !important;
+  transform-style: preserve-3d !important;
+  pointer-events: none !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.has-page-mesh .pdf-book-bend-layer { visibility: visible !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.has-page-mesh .pdf-book-turn-face { visibility: hidden !important; }
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-bend-strip {
+  position: absolute !important;
+  top: 0 !important;
+  height: 100% !important;
+  transform-style: preserve-3d !important;
+  will-change: transform, filter !important;
+  overflow: visible !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.turn-next .pdf-book-bend-strip { transform-origin: left center !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.turn-previous .pdf-book-bend-strip { transform-origin: right center !important; }
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-bend-face {
+  position: absolute !important;
+  inset: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  background: #fffdf7 !important;
+  backface-visibility: hidden !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-bend-face::after {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  content: "" !important;
+  opacity: calc((var(--strip-curl, 0) * .32) + (var(--strip-pressure, 0) * .3)) !important;
+  pointer-events: none !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-bend-front::after {
+  background: linear-gradient(90deg,rgba(24,30,37,.35),rgba(24,30,37,.06) 42%,rgba(255,255,255,.64)) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-bend-back::after {
+  background: linear-gradient(270deg,rgba(24,30,37,.35),rgba(24,30,37,.06) 42%,rgba(255,255,255,.6)) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-bend-front { box-shadow: inset -1px 0 2px rgba(92,72,38,.18) !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-bend-back { transform: rotateY(180deg) !important; box-shadow: inset 1px 0 3px rgba(92,72,38,.2) !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-bend-canvas { display: block !important; width: 100% !important; height: 100% !important; max-width: none !important; }
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-face {
+  position: absolute !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+  border: 1px solid #b6a577 !important;
+  border-radius: 2px 6px 6px 2px !important;
+  background: #fffdf7 !important;
+  backface-visibility: hidden !important;
+  transform-style: preserve-3d !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-back { transform: rotateY(180deg) !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-face > .pdf-book-canvas { justify-self: center !important; align-self: center !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-front { box-shadow: inset 3px 0 9px rgba(76,59,27,.14), inset -2px 0 3px rgba(255,255,255,.72) !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-back { box-shadow: inset -4px 0 10px rgba(76,59,27,.16), inset 2px 0 3px rgba(255,255,255,.7) !important; }
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet::after {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 3 !important;
+  border-radius: inherit !important;
+  background: radial-gradient(ellipse 62px 72% at var(--curl-edge-position,50%) var(--curl-fold-y,50%),rgba(255,255,255,.78),rgba(116,94,56,.28) 34%,transparent 100%), linear-gradient(90deg,rgba(39,34,24,.3),transparent 16%,transparent 74%,rgba(92,76,47,.22)), linear-gradient(180deg,rgba(255,255,255,.38),transparent 18%,transparent 84%,rgba(44,36,24,.16)) !important;
+  content: "" !important;
+  opacity: var(--page-curl, .2) !important;
+  pointer-events: none !important;
+  mix-blend-mode: multiply !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet::before {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 4 !important;
+  width: auto !important;
+  background: linear-gradient(90deg,transparent 0%,transparent calc(var(--curl-edge-position,50%) - 18px),rgba(255,255,255,.18) calc(var(--curl-edge-position,50%) - 9px),rgba(255,255,255,.88) var(--curl-edge-position,50%),rgba(92,76,47,.32) calc(var(--curl-edge-position,50%) + 8px),transparent calc(var(--curl-edge-position,50%) + 20px),transparent 100%) !important;
+  content: "" !important;
+  opacity: var(--page-curl, 0) !important;
+  pointer-events: none !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.turn-previous::before {
+  inset: 0 !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet.turn-previous::after {
+  background: radial-gradient(ellipse 62px 72% at var(--curl-edge-position,50%) var(--curl-fold-y,50%),rgba(255,255,255,.78),rgba(116,94,56,.28) 34%,transparent 100%), linear-gradient(270deg,rgba(39,34,24,.3),transparent 16%,transparent 74%,rgba(92,76,47,.22)), linear-gradient(180deg,rgba(255,255,255,.38),transparent 18%,transparent 84%,rgba(44,36,24,.16)) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-touch-hint {
+  position: absolute !important;
+  inset: auto 12px 12px !important;
+  z-index: 3 !important;
+  width: fit-content !important;
+  max-width: calc(100% - 24px) !important;
+  justify-self: center !important;
+  margin: 0 auto !important;
+  padding: 6px 10px !important;
+  border: 1px solid rgba(183,156,94,.28) !important;
+  border-radius: 999px !important;
+  background: rgba(255,253,246,.72) !important;
+  color: rgba(57,70,81,.76) !important;
+  font: 700 9px/1.2 var(--sans,Arial,sans-serif) !important;
+  letter-spacing: .025em !important;
+  pointer-events: none !important;
+  transition: opacity .3s ease !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-reader:active .pdf-book-touch-hint { opacity: .28 !important; }
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-loading {
+  position: absolute !important;
+  inset: auto 16px 14px !important;
+  z-index: 4 !important;
+  width: fit-content !important;
+  max-width: calc(100% - 32px) !important;
+  margin-inline: auto !important;
+  padding: 8px 12px !important;
+  border: 1px solid rgba(175,147,83,.5) !important;
+  border-radius: 999px !important;
+  background: rgba(255,252,242,.94) !important;
+  box-shadow: 0 3px 12px rgba(16,34,51,.12) !important;
+  color: #4e5c6a !important;
+  font: 700 10px/1.3 var(--sans,Arial,sans-serif) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-fallback-message {
+  padding: 8px 11px !important;
+  border: 1px solid rgba(177,149,84,.4) !important;
+  border-radius: 11px !important;
+  background: linear-gradient(135deg,#fffdf6,#eee5d1) !important;
+  color: #5b5a50 !important;
+  font: 600 10px/1.4 var(--sans,Arial,sans-serif) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-download-footer { flex: 0 0 auto !important; }
+
+@media (max-width: 700px) {
+  #pdfViewer#pdfViewer#pdfViewer.pdf-book-mode { gap: 8px !important; padding: max(10px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom)) !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-toolbar { min-height: 42px !important; padding: 5px !important; gap: 5px !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-page-controls,
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-zoom-controls { gap: 4px !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-tool { min-width: 30px !important; height: 29px !important; padding-inline: 6px !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-page-input { width: 42px !important; min-width: 42px !important; height: 28px !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-stage { padding: 0 !important; perspective: 920px !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-object { width: var(--pdf-page-width, 560px) !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-page-base { grid-template-columns: minmax(0,1fr) !important; background: #fff !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-page-stack { background: #fff !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-right-page { display: none !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-left-page { justify-self: center !important; border-radius: 4px 7px 7px 4px !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-page-base::after { display: none !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-turn-sheet.turn-next,
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-turn-sheet.turn-previous { left: 0 !important; width: 100% !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-turn-sheet.turn-next { transform-origin: left center !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-turn-sheet.turn-previous { transform-origin: right center !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-touch-hint { inset: auto 8px 8px !important; font-size: 8px !important; }
+}
+
+@media (min-width: 701px) {
+  /* JS measures the visible PDF page bounds and supplies the exact offset. */
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-pageflip-host {
+    transform: translateX(var(--pageflip-center-offset, 0px)) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-turn-sheet { transition: none !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-tool { transition: none !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-object { transition: none !important; }
+}
+
+/* Silver, ivory and champagne-gold finish for the reader surface. */
+#pdfViewer#pdfViewer#pdfViewer {
+  color: #403a30 !important;
+  background:
+    repeating-linear-gradient(0deg, rgba(93, 91, 84, .025) 0 1px, transparent 1px 5px),
+    linear-gradient(145deg, #f9f8f3 0%, #e6e8e8 38%, #f6f3e9 72%, #dfe2e3 100%) !important;
+  border: 1px solid #c5a958 !important;
+  box-shadow: 0 18px 48px rgba(53, 49, 39, .24), inset 0 1px 0 rgba(255,255,255,.95) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-viewer-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  min-height: 82px !important;
+  padding: 15px 18px !important;
+  border: 1px solid transparent !important;
+  border-radius: 16px !important;
+  background:
+    linear-gradient(135deg, #fffef9, #f0eee6 48%, #dfe3e5 100%) padding-box,
+    linear-gradient(120deg, #fff7d9, #b18a37 22%, #fff1b8 47%, #9c782d 68%, #f4dda0) border-box !important;
+  box-shadow: 0 5px 13px rgba(70, 63, 46, .13), inset 0 1px 0 #fff !important;
+  outline: 1px solid rgba(255,255,255,.8) !important;
+  outline-offset: -5px !important;
+  color: #39352e !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-viewer-head .profile-page-kicker {
+  color: #8c7134 !important;
+  text-shadow: none !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-viewer-head h2 {
+  margin: 4px 0 0 !important;
+  color: #34332f !important;
+  text-shadow: 0 1px 0 #fff !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-viewer-head .profile-page-close {
+  flex: 0 0 auto !important;
+  border: 1px solid #b99950 !important;
+  border-radius: 11px !important;
+  background: linear-gradient(145deg, #fffdf4 0%, #f0e2b9 45%, #d8bd75 100%) !important;
+  color: #544524 !important;
+  box-shadow: inset 0 1px 0 #fff, 0 3px 7px rgba(72, 60, 35, .18) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer.pdf-book-mode {
+  background:
+    repeating-linear-gradient(0deg, rgba(96, 94, 86, .022) 0 1px, transparent 1px 5px),
+    linear-gradient(145deg, #fbfaf6 0%, #e5e8e9 42%, #f8f5eb 74%, #dfe3e5 100%) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-toolbar {
+  border-color: rgba(159, 137, 82, .56) !important;
+  background:
+    repeating-linear-gradient(0deg, rgba(75, 84, 88, .025) 0 1px, transparent 1px 4px),
+    linear-gradient(135deg, #fffefa 0%, #dfe3e5 35%, #f8f7f2 68%, #d5dadd 100%) !important;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px rgba(83, 89, 90, .12), 0 5px 13px rgba(55, 57, 53, .12) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-tool {
+  border-color: #b39a5b !important;
+  background: linear-gradient(145deg, #fffef8 0%, #e7e9e8 48%, #cfd5d7 100%) !important;
+  color: #4c4638 !important;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px rgba(78, 81, 79, .13), 0 2px 5px rgba(50, 54, 53, .14) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-tool:hover:not(:disabled) {
+  border-color: #a88435 !important;
+  background: linear-gradient(145deg, #fffdf4 0%, #f0dfad 52%, #d2b45d 100%) !important;
+  box-shadow: inset 0 1px 0 #fff, 0 4px 9px rgba(74, 61, 35, .2) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-input {
+  border-color: #b8b9b2 !important;
+  background: linear-gradient(180deg, #fffefa, #e8ebeb) !important;
+  color: #45423b !important;
+  box-shadow: inset 0 1px 3px rgba(66, 65, 57, .1), 0 1px 0 #fff !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-page-total,
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-zoom-value {
+  color: #686354 !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-stage {
+  background: linear-gradient(145deg, rgba(255,255,255,.94), rgba(239,236,222,.96) 48%, rgba(218,222,224,.96)) !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-touch-hint,
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-loading {
+  border-color: rgba(166, 137, 67, .46) !important;
+  background: rgba(255, 254, 248, .96) !important;
+  color: #62583e !important;
+  box-shadow: 0 4px 12px rgba(65, 60, 46, .14), inset 0 1px #fff !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-download-footer {
+  display: flex !important;
+  justify-content: flex-end !important;
+  padding-top: 2px !important;
+}
+
+#pdfViewer#pdfViewer#pdfViewer .pdf-download-footer .reader-download {
+  min-height: 42px !important;
+  padding: 9px 18px !important;
+  border: 1px solid #aa873d !important;
+  border-radius: 11px !important;
+  background: linear-gradient(145deg, #fffdf3 0%, #f0dfa9 48%, #cfad53 100%) !important;
+  color: #514323 !important;
+  box-shadow: inset 0 1px 0 #fff, 0 4px 10px rgba(68, 58, 36, .18) !important;
+}
+
+@media (max-width: 700px) {
+  #pdfViewer#pdfViewer#pdfViewer .pdf-viewer-head { min-height: 70px !important; padding: 12px 14px !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-download-footer { justify-content: center !important; }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-download-footer .reader-download { min-height: 38px !important; }
+  /* In portrait mode StPageFlip keeps the active sheet in the right half of
+     its spread-sized surface. Shift that surface one half-width to center the
+     single sheet inside the phone frame; page turning remains interactive. */
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-single-page .pdf-book-pageflip-host {
+    transform: translateX(-50%) !important;
+  }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-stage {
+    padding: 7px !important;
+    border-radius: 13px !important;
+  }
+  #pdfViewer#pdfViewer#pdfViewer .pdf-book-object {
+    transform: none !important;
+    filter: drop-shadow(5px 10px 12px rgba(55, 52, 44, .2)) !important;
+  }
+}
+
+/* Keep the fallback book static; StPageFlip owns page-turn motion. */
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-object { transform: none !important; filter: none !important; transition: none !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-tool { transition: none !important; }
+#pdfViewer#pdfViewer#pdfViewer .pdf-book-tool:hover:not(:disabled) { transform: none !important; }

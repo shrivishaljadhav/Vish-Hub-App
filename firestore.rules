@@ -1,0 +1,126 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function verifiedStudent(uid) {
+      return signedIn()
+        && request.auth.uid == uid
+        && request.auth.token.email_verified == true;
+    }
+
+    // Admin status comes only from a trusted Firebase Admin SDK custom claim.
+    // The client-writable users/{uid}.role field is never an authorization source.
+    function trustedAdmin() {
+      return signedIn()
+        && request.auth.token.admin == true
+        && request.auth.token.email_verified == true;
+    }
+
+    function optionalString(data, field, maxLength) {
+      return !(field in data)
+        || (data[field] is string && data[field].size() <= maxLength);
+    }
+
+    function validElectives(data) {
+      return !('electives' in data)
+        || (data.electives is list
+          && data.electives.size() <= 20
+          && data.electives.hasOnly([
+            'AEC', 'VEC', 'IKS',
+            'Psychology', 'Philosophy', 'Economics', 'English', 'History',
+            'Politics', 'Geography', 'SEC Psychology', 'SEC Economics',
+            'SEC English', 'SEC Politics', 'SEC History', 'OE Zoology',
+            'OE Botany', 'OE Electronics', 'OE Geology', 'OE Geography'
+          ]));
+    }
+
+    function validProfile(data, uid) {
+      return data.keys().hasOnly([
+          'uid', 'email', 'name', 'course', 'studentClass', 'division',
+          'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
+          'role', 'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasAll([
+          'uid', 'email', 'name', 'course', 'studentClass', 'division',
+          'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar',
+          'role', 'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
+        ])
+        && data.uid is string && data.uid == uid
+        && data.email is string && data.email.size() <= 254
+        && data.name is string && data.name.size() >= 2 && data.name.size() <= 100
+        && data.course is string && data.course.size() >= 1 && data.course.size() <= 80
+        && data.studentClass is string && data.studentClass.size() >= 1 && data.studentClass.size() <= 40
+        && optionalString(data, 'division', 80)
+        && optionalString(data, 'rollNo', 40)
+        && optionalString(data, 'prn', 40)
+        && optionalString(data, 'whatsapp', 24)
+        && optionalString(data, 'telegram', 40)
+        && optionalString(data, 'bio', 500)
+        && data.avatar is string
+        && data.avatar in ['portrait', 'owl', 'book', 'fox', 'moon', 'star']
+        && validElectives(data)
+        && data.role is string && data.role == 'Student'
+        && data.emailVerified is bool && data.emailVerified == true
+        && data.profileSetupComplete is bool
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function validSetupCompletion(data) {
+      return !data.profileSetupComplete
+        || (data.name != 'Student'
+          && data.division is string
+          && data.division.size() > 0
+          && data.electives is list
+          && data.electives.size() > 0);
+    }
+
+    match /users/{uid} {
+      // Private profile documents are visible only to the verified owner.
+      allow get: if verifiedStudent(uid);
+      allow list: if false;
+
+      allow create: if verifiedStudent(uid)
+        && validProfile(request.resource.data, uid)
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.profileSetupComplete == false
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+
+      allow update: if verifiedStudent(uid)
+        && validProfile(request.resource.data, uid)
+        && validSetupCompletion(request.resource.data)
+        && resource.data.role == 'Student'
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.emailVerified == true
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time
+        && (!resource.data.profileSetupComplete || request.resource.data.profileSetupComplete)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'email', 'name', 'course', 'studentClass', 'division', 'rollNo',
+          'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
+          'emailVerified', 'profileSetupComplete', 'updatedAt'
+        ]);
+
+      allow delete: if false;
+    }
+
+    // Admin overview aggregates are written only by trusted server processes.
+    match /admin/{document=**} {
+      allow get, list: if trustedAdmin();
+      allow create, update, delete: if false;
+    }
+
+    // Activity entries are append-only from trusted server code (Admin SDK bypasses
+    // client rules). Admin clients may inspect them but cannot forge or edit history.
+    match /adminActivity/{logId} {
+      allow get, list: if trustedAdmin();
+      allow create, update, delete: if false;
+    }
+  }
+}

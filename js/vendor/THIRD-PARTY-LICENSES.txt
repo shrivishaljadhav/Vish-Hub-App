@@ -1,0 +1,20 @@
+Third-party libraries bundled for the VISH HUB PDF reader
+
+PDF.js 3.11.174
+Source: https://github.com/mozilla/pdf.js
+License: Apache License 2.0
+
+StPageFlip (package: page-flip) 2.0.7
+Source: https://github.com/Nodlik/StPageFlip
+License: MIT
+
+These libraries are distributed in their original minified browser builds.
+
+GSAP 3.15.1
+Source: https://gsap.com
+License: Standard 'no charge' license
+License terms: https://gsap.com/standard-license
+
+Three.js 0.152.2
+Source: https://github.com/mrdoob/three.js
+License: MIT

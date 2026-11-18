@@ -1,0 +1,11 @@
+{
+  "name": "vish-hub-admin-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "grant-admin": "node set-admin-claim.mjs"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0"
+  }
+}

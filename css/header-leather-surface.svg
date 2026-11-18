@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="320" viewBox="0 0 1400 320" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="hide" x1="0" y1="0" x2="0.9" y2="1">
+      <stop stop-color="#102b48"/>
+      <stop offset=".42" stop-color="#0b2038"/>
+      <stop offset="1" stop-color="#07172b"/>
+    </linearGradient>
+    <radialGradient id="worn" cx="42%" cy="4%" r="92%">
+      <stop stop-color="#354e68" stop-opacity=".11"/>
+      <stop offset=".52" stop-color="#213a53" stop-opacity=".035"/>
+      <stop offset="1" stop-color="#010914" stop-opacity=".34"/>
+    </radialGradient>
+    <filter id="fineGrain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".7 1.05" numOctaves="2" seed="29" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0" result="mono"/>
+      <feComponentTransfer in="mono" result="softNoise">
+        <feFuncR type="linear" slope=".3" intercept=".34"/>
+        <feFuncG type="linear" slope=".3" intercept=".34"/>
+        <feFuncB type="linear" slope=".3" intercept=".34"/>
+        <feFuncA type="table" tableValues=".04 .2"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="softNoise" mode="soft-light"/>
+    </filter>
+    <filter id="threadShadow" x="-2%" y="-8%" width="104%" height="116%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.4" result="blur"/>
+      <feOffset dy="1.5" result="offset"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".48"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1400" height="320" fill="url(#hide)"/>
+  <rect width="1400" height="320" fill="url(#worn)"/>
+  <rect width="1400" height="320" fill="#334963" opacity=".16" filter="url(#fineGrain)"/>
+  <path d="M45 72 C220 65 360 78 520 68 M815 70 C1000 78 1185 65 1352 73" fill="none" stroke="#8da0b1" stroke-opacity=".08" stroke-width="1"/>
+  <path d="M48 248 C230 258 380 240 555 251 M840 250 C1020 240 1190 259 1350 247" fill="none" stroke="#010b17" stroke-opacity=".18" stroke-width="2"/>
+  <path d="M34 52 C240 39 434 48 620 43 S1010 53 1365 42" fill="none" stroke="#b4c5d2" stroke-opacity=".045" stroke-width="2"/>
+  <path d="M44 275 C310 287 489 271 712 279 S1132 269 1350 281" fill="none" stroke="#020d1a" stroke-opacity=".2" stroke-width="10"/>
+  <rect x="16" y="16" width="1368" height="288" rx="23" fill="none" stroke="#d8c27e" stroke-opacity=".24" stroke-width="1"/>
+  <rect x="22" y="22" width="1356" height="276" rx="19" fill="none" stroke="#eddda8" stroke-opacity=".54" stroke-width="1.5" stroke-dasharray="1.5 7" stroke-linecap="round" filter="url(#threadShadow)"/>
+</svg>

@@ -1,0 +1,1104 @@
+/* Resource Library book covers: responsive, scrollable 3D carousel. */
+#booksPage#booksPage#booksPage .book-carousel-shell {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  perspective: 1250px !important;
+  perspective-origin: 50% 45% !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-toolbar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  min-height: 34px !important;
+  margin: 0 1px 8px !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-status {
+  flex: 0 0 auto !important;
+  min-width: 52px !important;
+  color: #8c6a2d !important;
+  font: 800 8px/1.3 var(--sans, Arial, sans-serif) !important;
+  letter-spacing: .15em !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-progress {
+  position: relative !important;
+  display: block !important;
+  flex: 1 1 auto !important;
+  min-width: 28px !important;
+  max-width: 170px !important;
+  height: 4px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(169,133,57,.35) !important;
+  border-radius: 999px !important;
+  background: linear-gradient(180deg, #e3e6e7, #fdfbf5) !important;
+  box-shadow: inset 0 1px 2px rgba(20,38,56,.13), 0 1px 0 rgba(255,255,255,.75) !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-progress-fill {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: inherit !important;
+  background: linear-gradient(90deg, #a67a2d, #f4df9e 38%, #c39a46 70%, #fff1c5) !important;
+  box-shadow: 0 0 8px rgba(204,166,78,.46) !important;
+  transform: scaleX(.1);
+  transform-origin: left center !important;
+  transition: none !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-control {
+  display: grid !important;
+  place-items: center !important;
+  width: 32px !important;
+  height: 30px !important;
+  min-width: 32px !important;
+  padding: 0 !important;
+  border: 1px solid #b7954e !important;
+  border-radius: 10px !important;
+  background: linear-gradient(145deg, #fffdf4 0%, #f1e4c2 48%, #d8bd78 100%) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 3px 7px rgba(18,39,64,.13), inset 0 -2px 2px rgba(130,94,29,.13) !important;
+  color: #173451 !important;
+  font: 24px/1 Georgia, serif !important;
+  cursor: pointer !important;
+  transition: none !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-control:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  filter: brightness(1.04) !important;
+  box-shadow: inset 0 1px 0 #fff, 0 6px 11px rgba(18,39,64,.17), inset 0 -2px 2px rgba(130,94,29,.13) !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-control:disabled {
+  opacity: .42 !important;
+  cursor: default !important;
+  filter: grayscale(.35) !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-viewport {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 10px 7px 20px !important;
+  perspective: 1250px !important;
+  perspective-origin: 50% 45% !important;
+  overscroll-behavior-x: contain !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-padding-inline: 10px !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(173,137,61,.6) rgba(19,46,76,.08) !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-x pan-y !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-viewport:focus-visible {
+  outline: 2px solid #c5a14e !important;
+  outline-offset: 2px !important;
+}
+
+#booksPage#booksPage#booksPage .book-carousel-track {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: clamp(12px, 2vw, 22px) !important;
+  width: max-content !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 10px 4px !important;
+  transform-style: preserve-3d !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide {
+  position: relative !important;
+  display: flex !important;
+  flex: 0 0 clamp(190px, 22vw, 252px) !important;
+  flex-direction: column !important;
+  align-self: stretch !important;
+  width: clamp(190px, 22vw, 252px) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: rotateY(var(--book-carousel-angle, 0deg)) rotateX(var(--book-tilt-x, 0deg)) rotateY(var(--book-tilt-y, 0deg)) translateZ(var(--book-carousel-depth, 0px)) scale(var(--book-carousel-scale, 1)) !important;
+  transform-origin: center center !important;
+  transform-style: preserve-3d !important;
+  opacity: var(--book-carousel-opacity, 1) !important;
+  scroll-snap-align: center !important;
+  backface-visibility: hidden !important;
+  will-change: transform, opacity !important;
+  transition: none !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide::before {
+  content: none !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:hover {
+  z-index: 3 !important;
+  filter: brightness(1.025) drop-shadow(0 17px 15px rgba(16,36,59,.24)) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide.is-carousel-active {
+  filter: drop-shadow(0 7px 8px rgba(16,36,59,.12)) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  gap: 9px !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  aspect-ratio: .70 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  perspective: 1050px !important;
+  perspective-origin: 0% 50% !important;
+  transform-style: preserve-3d !important;
+  transform: translateZ(8px) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-book,
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame {
+  transform-style: preserve-3d !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-back,
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-pages,
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  border-radius: 4px 9px 9px 4px !important;
+  transform-style: preserve-3d !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-back {
+  z-index: 0 !important;
+  border: 1px solid #9d792f !important;
+  background: linear-gradient(145deg, #17375a, #0b203a 60%, #142e4e) !important;
+  box-shadow: inset 0 0 0 2px rgba(227,194,114,.55), 3px 4px 9px rgba(15,34,53,.24) !important;
+  transform: translateZ(-5px) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-back::before {
+  position: absolute !important;
+  inset: 0 auto 0 0 !important;
+  width: 12px !important;
+  border-right: 1px solid rgba(245,220,151,.6) !important;
+  border-radius: 4px 0 0 4px !important;
+  background: linear-gradient(90deg,rgba(0,0,0,.46),rgba(240,215,150,.24),transparent) !important;
+  content: "" !important;
+  transform: translateZ(1px) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-pages {
+  inset: 2px 3px 3px 5px !important;
+  z-index: 1 !important;
+  border: 1px solid rgba(169,145,96,.75) !important;
+  background: repeating-linear-gradient(0deg, rgba(115,95,55,.12) 0 1px, transparent 1px 4px), linear-gradient(90deg,#d9c99f 0%,#fffdf4 9%,#f4ecd9 88%,#d8c79d 100%) !important;
+  box-shadow: 3px 4px 0 #e7dcc2, 6px 6px 0 #d9cba9, 8px 8px 8px rgba(11,29,48,.2) !important;
+  transform: translateZ(0) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-pages::after {
+  position: absolute !important;
+  inset: 1px 0 1px auto !important;
+  width: 9px !important;
+  border-radius: 0 6px 6px 0 !important;
+  background: repeating-linear-gradient(0deg,rgba(102,83,48,.22) 0 1px,#fffdf4 1px 3px) !important;
+  box-shadow: inset 2px 0 4px rgba(89,67,35,.2) !important;
+  content: "" !important;
+  transform: translateZ(1px) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover {
+  z-index: 2 !important;
+  inset: 0 1px 1px 0 !important;
+  transform-origin: left center !important;
+  transform: rotateY(0deg) translateZ(3px) !important;
+  transition: none !important;
+  filter: drop-shadow(2px 2px 2px rgba(13,29,48,.25));
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:hover .book-3d-cover,
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:focus-within .book-3d-cover {
+  transform: rotateY(0deg) translateZ(3px) !important;
+  filter: drop-shadow(4px 5px 5px rgba(13,29,48,.3)) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-face {
+  position: absolute !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+  border: 1px solid #a78237 !important;
+  border-radius: 4px 9px 9px 4px !important;
+  backface-visibility: hidden !important;
+  transform-style: preserve-3d !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-front {
+  z-index: 2 !important;
+  background: linear-gradient(145deg,#fffdf7,#eee2c8) !important;
+  box-shadow: inset 1px 0 0 rgba(255,255,255,.94), inset -3px 0 0 rgba(120,83,24,.16), 2px 2px 5px rgba(14,33,54,.18) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-front::before {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  border-radius: inherit !important;
+  background: linear-gradient(105deg,transparent 22%,rgba(255,255,255,.26) 38%,rgba(255,255,255,.04) 46%,transparent 60%), linear-gradient(90deg,rgba(255,255,255,.2),transparent 14%,transparent 92%,rgba(72,47,13,.12)) !important;
+  content: "" !important;
+  opacity: .72 !important;
+  pointer-events: none !important;
+  transform: translateZ(1px) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-front img {
+  position: relative !important;
+  z-index: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  backface-visibility: hidden !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-front::after {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  border-radius: inherit !important;
+  background: radial-gradient(circle at var(--book-glare-x, 50%) var(--book-glare-y, 45%), rgba(255,255,255,.35), transparent 34%), linear-gradient(118deg, transparent 30%, rgba(255,255,255,.22) 43%, rgba(255,255,255,.04) 49%, transparent 62%) !important;
+  opacity: 0 !important;
+  content: "" !important;
+  mix-blend-mode: screen !important;
+  pointer-events: none !important;
+  transition: none !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:hover .book-3d-cover-front::after,
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:focus-within .book-3d-cover-front::after {
+  opacity: .9 !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-inside {
+  z-index: 1 !important;
+  border-color: #c5a357 !important;
+  background: radial-gradient(ellipse at center, rgba(239,220,163,.26), transparent 60%), repeating-linear-gradient(135deg,rgba(137,107,50,.035) 0 1px,transparent 1px 6px), linear-gradient(145deg,#fff8e6,#e9d8ad) !important;
+  box-shadow: inset 0 0 0 5px rgba(255,255,255,.36), inset 0 0 0 6px rgba(161,125,49,.28) !important;
+  transform: rotateY(180deg) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-inside::after {
+  color: rgba(115,85,34,.68) !important;
+  content: "VISH HUB  ·  STUDY EDITION" !important;
+  font: 800 7px/1.4 var(--sans, Arial, sans-serif) !important;
+  letter-spacing: .16em !important;
+  text-align: center !important;
+  transform: rotate(90deg) !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details {
+  min-height: 56px !important;
+  padding: 4px 3px 3px !important;
+  text-align: left !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details strong {
+  color: #122d4b !important;
+  font: 700 12px/1.35 Georgia, 'Times New Roman', serif !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details small {
+  color: #6f6757 !important;
+  font-size: 9px !important;
+}
+
+#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-card-actions {
+  top: 15px !important;
+  right: 15px !important;
+  transform: translateZ(12px) !important;
+}
+
+@media (max-width: 680px) {
+  #booksPage#booksPage#booksPage .book-carousel-viewport { padding: 8px 4px 17px !important; }
+  #booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide {
+    flex-basis: min(74vw, 252px) !important;
+    width: min(74vw, 252px) !important;
+  }
+}
+
+/* A restrained cover peek: the front lifts on its left hinge to show the
+   page block behind it, while remaining closed as a thumbnail. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover {
+  transform: rotateY(-3deg) translateZ(5px) !important;
+  transform-origin: left center !important;
+  transition: none !important;
+  backface-visibility: visible !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:hover .book-3d-cover,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:focus-within .book-3d-cover {
+  transform: rotateY(-16deg) translateZ(8px) !important;
+  filter: drop-shadow(6px 8px 8px rgba(13, 29, 48, .34)) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover {
+    transition: none !important;
+  }
+}
+
+.book-transition-canvas {
+  position: fixed;
+  z-index: 140;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  visibility: visible;
+  opacity: 1;
+  contain: strict;
+}
+@media (prefers-reduced-motion: reduce) {
+  #booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide,
+  #booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover,
+  #booksPage#booksPage#booksPage .book-carousel-control { transition: none !important; }
+  #booksPage#booksPage#booksPage .book-carousel-viewport { scroll-behavior: auto !important; }
+}
+
+/* Three.js renders the visible cover; the original image remains loaded only
+   as its texture source and for graceful fallback when WebGL is unavailable. */
+#booksPage#booksPage#booksPage .book-cover-frame.book-three-ready {
+  isolation: isolate !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+#booksPage#booksPage#booksPage .book-cover-frame.book-three-ready > img {
+  display: none !important;
+}
+#booksPage#booksPage#booksPage .book-three-thumbnail {
+  position: absolute !important;
+  z-index: 5 !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  pointer-events: none !important;
+  transform-origin: 50% 60% !important;
+  will-change: transform, opacity !important;
+}
+#booksPage#booksPage#booksPage .book-cover-frame.book-three-failed > img {
+  display: block !important;
+}
+
+/* Restore visible 3D volume for the real cover thumbnail. Later library
+   sizing rules clipped the transformed pages and book-cover layers. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame {
+  overflow: visible !important;
+  perspective: 1100px !important;
+  perspective-origin: 0% 50% !important;
+  transform-style: preserve-3d !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-back,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-pages,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover {
+  transform-style: preserve-3d !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-pages {
+  inset: 3px 4px 4px 6px !important;
+  border-right: 1px solid rgba(123, 101, 60, .42) !important;
+  background: repeating-linear-gradient(0deg, rgba(110, 91, 54, .16) 0 1px, transparent 1px 4px), linear-gradient(90deg, #d7c9a8 0%, #fffdf5 12%, #f3ecd9 88%, #d1c19d 100%) !important;
+  box-shadow: 3px 3px 0 #e6dcc5, 6px 6px 0 #d5c6a4, 9px 9px 13px rgba(12, 27, 43, .25) !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover {
+  transform: rotateY(-5deg) translateZ(5px) !important;
+  transform-origin: left center !important;
+  filter: drop-shadow(3px 5px 5px rgba(13, 29, 48, .32)) !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:hover .book-3d-cover,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:focus-within .book-3d-cover {
+  transform: rotateY(-2deg) translateZ(9px) !important;
+  filter: drop-shadow(5px 8px 8px rgba(13, 29, 48, .36)) !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-front img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* Premium thumbnail card shell around the dimensional book. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide {
+  box-sizing: border-box !important;
+  padding: 10px 10px 9px !important;
+  border: 1px solid #b89a54 !important;
+  border-radius: 16px !important;
+  background:
+    repeating-linear-gradient(0deg, rgba(93, 83, 61, .025) 0 1px, transparent 1px 5px),
+    linear-gradient(145deg, #fffefa 0%, #f3f2ec 40%, #e2e5e6 72%, #f8f6ed 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 0 0 3px rgba(255,255,255,.48),
+    0 7px 16px rgba(24, 39, 52, .15),
+    0 2px 4px rgba(135, 103, 43, .15) !important;
+  transition: none !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:hover,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:focus-within {
+  border-color: #9d792f !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 0 0 3px rgba(255,255,255,.58),
+    0 14px 25px rgba(18, 34, 50, .22),
+    0 3px 8px rgba(135, 103, 43, .2) !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open {
+  gap: 9px !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame {
+  width: calc(100% - 12px) !important;
+  margin: 2px auto 0 !important;
+  border-radius: 8px !important;
+  background: linear-gradient(145deg, #d8d0bd, #fffefa 25%, #e6e3d8 100%) !important;
+  filter: drop-shadow(0 9px 9px rgba(16, 31, 45, .2)) !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details {
+  box-sizing: border-box !important;
+  min-height: 58px !important;
+  margin: 6px 0 0 !important;
+  padding: 9px 10px 8px !important;
+  border: 1px solid rgba(177, 151, 91, .48) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, #fffef8, #ecebe5 54%, #f8f5e9) !important;
+  box-shadow: inset 0 1px 0 #fff, 0 2px 5px rgba(36, 41, 41, .08) !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details strong {
+  color: #132e4b !important;
+  -webkit-text-fill-color: #132e4b !important;
+  font: 700 12px/1.32 Georgia, 'Times New Roman', serif !important;
+  text-shadow: 0 1px rgba(255,255,255,.78) !important;
+}
+
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details small {
+  color: #78653e !important;
+  -webkit-text-fill-color: #78653e !important;
+  font-size: 9px !important;
+  letter-spacing: .07em !important;
+}
+
+@media (max-width: 680px) {
+  #booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide {
+    padding: 8px 8px 7px !important;
+    border-radius: 13px !important;
+  }
+  #booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details {
+    min-height: 52px !important;
+    padding: 7px 8px !important;
+  }
+}
+
+/* The library may be opened from file://, where Chromium can display the local
+   cover <img> but refuse to upload it as a WebGL texture. Keep that real image
+   as the visible front cover; the Three.js canvas supplies the book depth. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-ready {
+  isolation: isolate !important;
+  overflow: visible !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-ready > .book-three-thumbnail {
+  z-index: 1 !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-ready > img {
+  position: absolute !important;
+  z-index: 8 !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: perspective(900px) rotateY(-3deg) translateZ(12px) !important;
+  transform-origin: left center !important;
+  filter: drop-shadow(2px 3px 3px rgba(10, 22, 34, .24)) !important;
+  backface-visibility: hidden !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage:hover .book-cover-frame.book-three-ready > img,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage:focus-within .book-cover-frame.book-three-ready > img {
+  transform: perspective(900px) rotateY(-1.5deg) translateZ(15px) !important;
+  filter: drop-shadow(4px 5px 5px rgba(10, 22, 34, .3)) !important;
+}
+
+/* Swap the framed catalogue thumbnail for a compact, closed hardcover model. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage:hover.book-cover-card.book-carousel-slide,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage.book-cover-card.book-carousel-slide:focus-within {
+  filter: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open {
+  gap: 2px !important;
+  overflow: visible !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame.book-three-ready {
+  width: 100% !important;
+  aspect-ratio: .70 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  filter: drop-shadow(0 11px 10px rgba(15, 27, 28, .2)) !important;
+  transform-style: preserve-3d !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame.book-three-ready > .book-three-thumbnail {
+  z-index: 1 !important;
+  transform: scale(1.08, 1.02) translateX(-1%) !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame.book-three-ready > img {
+  inset: 1% 0 1% 9% !important;
+  width: 91% !important;
+  height: 98% !important;
+  border: 1px solid rgba(198, 158, 59, .9) !important;
+  border-left-color: rgba(235, 208, 127, .92) !important;
+  border-radius: 1px 7px 7px 1px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: perspective(1000px) rotateY(-4deg) translateZ(20px) !important;
+  transform-origin: left center !important;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.42), 3px 5px 8px rgba(7, 26, 19, .25) !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:hover .book-cover-frame.book-three-ready > img,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide:focus-within .book-cover-frame.book-three-ready > img {
+  transform: perspective(1000px) rotateY(-2deg) translateZ(24px) !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details {
+  width: 92% !important;
+  min-height: 0 !important;
+  margin: 5px auto 0 !important;
+  padding: 7px 4px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(183, 145, 58, .52) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
+
+/* Always retain the hardcover silhouette, including on devices where WebGL is
+   unavailable. When Three.js is active, this spine sits over its matching 3D
+   spine while the canvas provides the light, depth and moving perspective. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: .70 !important;
+  overflow: visible !important;
+  perspective: 1100px !important;
+  transform-style: preserve-3d !important;
+  background: transparent !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame::before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 7 !important;
+  inset: 1.5% auto 1.5% 1% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 15% !important;
+  box-sizing: border-box !important;
+  border: 1px solid #bd963f !important;
+  border-radius: 6px 1px 1px 6px !important;
+  background-image:
+    linear-gradient(90deg, rgba(0,0,0,.32), transparent 22%, rgba(255,255,255,.08) 48%, transparent 74%, rgba(0,0,0,.28)),
+    url("../resources/vec-environment-studies-cover-spine.png") !important;
+  background-position: center !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-color: #06442f !important;
+  box-shadow: inset 1px 0 rgba(255,255,255,.24), inset -3px 0 4px rgba(0,0,0,.32), 2px 3px 5px rgba(8,25,18,.32) !important;
+  color: #f4e6b7 !important;
+  font: 700 8px/1 Georgia, 'Times New Roman', serif !important;
+  letter-spacing: .12em !important;
+  text-align: center !important;
+  text-shadow: 0 1px 3px #001a12 !important;
+  writing-mode: vertical-rl !important;
+  transform: perspective(900px) rotateY(-8deg) translateZ(9px) !important;
+  transform-origin: right center !important;
+  pointer-events: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame::after {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 5 !important;
+  inset: 3% 0 2.5% auto !important;
+  width: 4% !important;
+  border: 1px solid rgba(176,139,54,.74) !important;
+  border-left: 0 !important;
+  border-radius: 0 5px 5px 0 !important;
+  background: repeating-linear-gradient(0deg, rgba(118,91,44,.28) 0 1px, #f8efd9 1px 3px) !important;
+  box-shadow: 2px 4px 5px rgba(8,25,18,.2) !important;
+  transform: skewY(-1deg) translateZ(2px) !important;
+  pointer-events: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame > img:not([hidden]) {
+  position: absolute !important;
+  z-index: 8 !important;
+  inset: 1.5% 0 1.5% 15% !important;
+  display: block !important;
+  width: 85% !important;
+  height: 97% !important;
+  max-width: none !important;
+  max-height: none !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(198,158,59,.94) !important;
+  border-left-color: rgba(235,208,127,.94) !important;
+  border-radius: 1px 7px 7px 1px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: perspective(1000px) rotateY(-4deg) translateZ(20px) !important;
+  transform-origin: left center !important;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.38), 3px 5px 8px rgba(7,26,19,.27) !important;
+  backface-visibility: hidden !important;
+}
+@media (max-width: 680px) {
+  #booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame::before {
+    font-size: 7px !important;
+  }
+}
+
+/* A successful Three.js render owns the full thumbnail. Keep the HTML image
+   and CSS spine only for the explicit WebGL fallback, never over the model. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame.book-three-ready > img:not([hidden]) {
+  display: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame.book-three-ready::before,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame.book-three-ready::after {
+  display: none !important;
+  content: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame.book-three-ready > .book-three-thumbnail {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 10 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-failed > img:not([hidden]) {
+  display: block !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-failed::before,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-failed::after {
+  display: block !important;
+  content: "" !important;
+}
+
+/* The Three.js book is the thumbnail; remove the old framed-card shell. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide.vec-realistic-cover {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide.vec-realistic-cover .book-cover-frame.book-three-ready {
+  width: 100% !important;
+  max-width: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide.vec-realistic-cover .book-cover-frame.book-three-ready > img:not([hidden]) {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 12 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: perspective(1000px) rotateY(-4deg) translateZ(12px) !important;
+  transform-origin: center !important;
+  pointer-events: none !important;
+}
+
+/* If WebGL is unavailable, show a plain 2D rendering of PDF page one. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide.vec-realistic-cover .book-cover-frame.book-three-failed {
+  display: block !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide.vec-realistic-cover .book-cover-frame.book-three-failed::before,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide.vec-realistic-cover .book-cover-frame.book-three-failed::after {
+  display: none !important;
+  content: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide.vec-realistic-cover .book-cover-frame.book-three-failed > img:not([hidden]) {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.pdf-front-page-loading {
+  background: transparent !important;
+}
+
+/* Universal fallback: PDF page one (when available), otherwise the source cover image. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-failed {
+  display: block !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-failed::before,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-failed::after {
+  display: none !important;
+  content: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-frame.book-three-failed > img:not([hidden]) {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+}
+
+/* Let the book render as a free-standing 3D object without a thumbnail mat. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame {
+  width: 100% !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame::before,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame::after {
+  content: none !important;
+  display: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-face {
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-front::before {
+  content: none !important;
+  display: none !important;
+}
+/* Final library thumbnail layout: floating book above a separate title card. */#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide,#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide.vec-realistic-cover {
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  aspect-ratio: .70 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform-style: preserve-3d !important;
+}#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame::before,#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-face {
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-3d-cover-front::before {
+  display: none !important;
+  content: none !important;
+}#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame > img:not([hidden]) {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+}#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details {
+  box-sizing: border-box !important;
+  width: 96% !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  border-top: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
+
+/* Independent, centered library cover and title with no title panel. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open {
+  display: grid !important;
+  grid-template-rows: auto auto !important;
+  justify-items: center !important;
+  align-content: start !important;
+  gap: 16px !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame {
+  flex: 0 0 auto !important;
+  justify-self: center !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details {
+  position: static !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  justify-items: center !important;
+  align-content: start !important;
+  gap: 4px !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details strong,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details small {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+/* The animated source is the cover viewport only; its title is a separate row. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: auto !important;
+  flex: none !important;
+}
+
+/* The supplied cover already includes its spine: fit it centered in the full frame. */
+
+
+/* No enclosing focus/frame box around the floating thumbnail and label. */
+
+/* Keep save control outside the moving cover artwork. */
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-card-actions {
+  position: static !important;
+  inset: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  min-height: 0 !important;
+  margin: 5px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-card-actions .book-save {
+  position: static !important;
+  inset: auto !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 22px !important;
+  min-width: 22px !important;
+  height: 22px !important;
+  min-height: 22px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: #9a7a35 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-card-actions .book-save svg {
+  width: 14px !important;
+  height: 14px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.8 !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-card-actions .book-save.is-saved {
+  background: transparent !important;
+  color: #c09532 !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-card-actions .book-save:focus-visible {
+  outline: 2px solid rgba(173, 139, 57, .65) !important;
+  outline-offset: 2px !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open:hover,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open:focus,
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-open:focus-visible {
+  outline: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide, #booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-frame, #booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.book-carousel-slide .book-cover-details {
+  outline: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage#booksPage .book-cover-card.vec-realistic-cover.book-carousel-slide .book-cover-frame > img:not([hidden]) {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: none !important;
+  transform-origin: center center !important;
+}

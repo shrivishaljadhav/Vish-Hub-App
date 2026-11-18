@@ -1,0 +1,82 @@
+/* Deep navy leather with fine grain, a raised welt, and visible saddle stitching. */
+#appContent #top-area#top-area {
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 30 !important;
+  isolation: isolate !important;
+  margin: 9px 0 13px !important;
+  padding: 8px !important;
+  overflow: visible !important;
+  border: 2px solid transparent !important;
+  border-radius: 22px !important;
+  background:
+    url("header-leather-surface.svg") center / 100% 100% no-repeat padding-box,
+    linear-gradient(145deg,#e4d092 0%,#92702e 22%,#d2b96c 46%,#785c28 70%,#c4a75b 100%) border-box !important;
+  box-shadow: 0 8px 16px rgba(4,16,30,.24), 0 2px 0 #60491f,
+    inset 0 1px 0 rgba(255,255,255,.2), inset 0 0 0 1px rgba(255,241,195,.08),
+    inset 0 -4px 8px rgba(0,4,12,.34) !important;
+}
+#appContent #top-area#top-area::before {
+  content: none !important;
+  display: none !important;
+}
+#appContent #top-area#top-area::after { content: none !important; display:none !important; }
+#appContent #top-area#top-area > header.topline {
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 1 !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0,1fr) 34px 34px !important;
+  grid-template-rows: minmax(64px,auto) !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-height: 64px !important;
+  margin: 0 !important;
+  padding: 0 4px !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+#appContent #top-area#top-area > header.topline > #menuToggle#menuToggle { grid-column:1!important;grid-row:1!important;justify-self:start!important; }
+#appContent #top-area#top-area > header.topline > .header-brand { grid-column:2!important;grid-row:1!important;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:100%!important;min-width:0!important;margin:0!important;padding:0!important;overflow:hidden!important; }
+#appContent #top-area#top-area > header.topline > .header-brand > .header-logo { display:block!important;width:min(100%,270px)!important;max-width:100%!important;height:auto!important;max-height:68px!important;margin:auto!important;object-fit:contain!important;filter:drop-shadow(0 2px 1px rgba(0,0,0,.58))!important; }
+#appContent #top-area#top-area > header.topline > #headerSearchToggle { grid-column:3!important;grid-row:1!important;justify-self:end!important; }
+#appContent #top-area#top-area > header.topline > #bell#bell { grid-column:4!important;grid-row:1!important;justify-self:end!important; }
+#appContent #top-area#top-area > header.topline > #menuToggle#menuToggle,
+#appContent #top-area#top-area > header.topline > #headerSearchToggle,
+#appContent #top-area#top-area > header.topline > #bell#bell {
+  box-sizing:border-box!important;position:relative!important;z-index:2!important;display:grid!important;place-items:center!important;
+  flex:0 0 34px!important;width:34px!important;min-width:34px!important;max-width:34px!important;height:34px!important;min-height:34px!important;max-height:34px!important;
+  margin:0!important;padding:0!important;overflow:visible!important;border:1px solid rgba(229,205,140,.78)!important;border-radius:10px!important;
+  background:url("header-leather-surface.svg") center/470px 108px no-repeat,linear-gradient(150deg,#1b3a57,#102943 76%,#0c2037)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 -2px 4px rgba(0,0,0,.22),0 1px 0 #806735,0 2px 3px rgba(0,0,0,.16)!important;
+  color:#f0d991!important;filter:none!important;transform:none!important;cursor:pointer!important;
+}
+#appContent #top-area#top-area > header.topline > #menuToggle#menuToggle span { width:11px!important;height:1.3px!important;border-radius:2px!important;background:#f0d991!important;box-shadow:0 1px 1px rgba(0,0,0,.65)!important; }
+#appContent #top-area#top-area > header.topline > #headerSearchToggle svg,
+#appContent #top-area#top-area > header.topline > #bell#bell svg { display:block!important;width:14px!important;height:14px!important;color:#f0d991!important;stroke:currentColor!important;filter:drop-shadow(0 1px 1px rgba(0,0,0,.55))!important; }
+#appContent #top-area#top-area > header.topline > #bell#bell i { right:2px!important;top:2px!important;width:6px!important;height:6px!important; }
+#appContent #top-area#top-area > header.topline > #menuToggle#menuToggle:active,
+#appContent #top-area#top-area > header.topline > #headerSearchToggle:active,
+#appContent #top-area#top-area > header.topline > #bell#bell:active { box-shadow:inset 0 2px 5px rgba(0,0,0,.48),inset 0 0 0 2px rgba(0,8,18,.24),0 1px 0 #6d5324!important; }
+#appContent #top-area#top-area > header.topline > #menuToggle#menuToggle:focus-visible,
+#appContent #top-area#top-area > header.topline > #headerSearchToggle:focus-visible,
+#appContent #top-area#top-area > header.topline > #bell#bell:focus-visible { outline:2px solid #fff0b3!important;outline-offset:2px!important; }
+@media(max-width:420px) {
+  #appContent #top-area#top-area { margin:7px 0 11px!important;padding:7px!important;border-radius:19px!important; }
+  #appContent #top-area#top-area > header.topline { grid-template-columns:30px minmax(0,1fr) 30px 30px!important;grid-template-rows:minmax(58px,auto)!important;gap:5px!important;min-height:58px!important;padding:0 3px!important; }
+  #appContent #top-area#top-area > header.topline > #menuToggle#menuToggle,
+  #appContent #top-area#top-area > header.topline > #headerSearchToggle,
+  #appContent #top-area#top-area > header.topline > #bell#bell { flex-basis:30px!important;width:30px!important;min-width:30px!important;max-width:30px!important;height:30px!important;min-height:30px!important;max-height:30px!important;border-radius:8px!important; }
+  #appContent #top-area#top-area > header.topline > .header-brand > .header-logo { max-height:56px!important; }
+}
+@media(max-width:360px) {
+  #appContent #top-area#top-area > header.topline { grid-template-columns:28px minmax(0,1fr) 28px 28px!important;gap:4px!important; }
+  #appContent #top-area#top-area > header.topline > #menuToggle#menuToggle,
+  #appContent #top-area#top-area > header.topline > #headerSearchToggle,
+  #appContent #top-area#top-area > header.topline > #bell#bell { flex-basis:28px!important;width:28px!important;min-width:28px!important;max-width:28px!important;height:28px!important;min-height:28px!important;max-height:28px!important; }
+}
