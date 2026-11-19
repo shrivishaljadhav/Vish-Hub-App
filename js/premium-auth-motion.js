@@ -5,18 +5,18 @@
   const card = page?.querySelector('.auth-portal, .uploaded-auth-frame');
   const onboardingFrame = page?.querySelector('.uploaded-auth-frame');
   const authView = document.getElementById('profileAuthView');
-  const detailsView = document.getElementById('profileDetailsView');
-  const profileMenu = document.querySelector('#headerMenu .auth-profile-menu');
+
+  const signOutMenu = document.querySelector('#headerMenu .auth-signout-menu');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const gsap = window.gsap;
-  if (!page || !app || !card || !authView || !detailsView) return;
+  if (!page || !app || !card || !authView) return;
 
   const enterGate = () => {
     body.classList.remove('auth-gate-pending');
     body.classList.add('auth-gate-active');
     app.setAttribute('inert', '');
     authView.hidden = false;
-    detailsView.hidden = true;
+
     page.classList.add('open', 'auth-gate');
     page.setAttribute('aria-modal', 'true');
     if (!gsap || reduced) return;
@@ -67,7 +67,7 @@
 
   });
   let hadSession = false;
-  if (profileMenu) profileMenu.hidden = true;
+
 
   function finishAuthGate() {
     exitGate();
@@ -82,7 +82,7 @@
   window.addEventListener('vishhub-auth-state', event => {
     const signedIn = Boolean(event.detail?.user && event.detail?.emailVerified);
     const profileComplete = Boolean(event.detail?.profileSetupComplete || event.detail?.profile?.profileSetupComplete);
-    if (profileMenu) profileMenu.hidden = !(signedIn && profileComplete);
+    if (signOutMenu) signOutMenu.hidden = !(signedIn && profileComplete);
     if (event.detail?.initial) {
       hadSession = signedIn;
       if (signedIn && profileComplete) finishAuthGate();
