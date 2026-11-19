@@ -421,6 +421,7 @@ async function loadWorkspace(page) {
   activePage = page; $('#overviewPage').hidden = true; $('#studentsPage').hidden = true; $('#workspacePage').hidden = false;
   $('#workspaceError').hidden = true; $('#administratorManager').hidden = page !== 'administrators';
   $('#analyticsTrendPanel').hidden = page !== 'analytics';
+  $('#workspaceRecords').hidden = ['analytics', 'settings', 'administrators'].includes(page);
   $('#workspaceEyebrow').textContent = config.eyebrow; $('#workspaceTitle').textContent = config.title; $('#workspaceDescription').textContent = config.description;
   fillCollectionOptions(config); $('#workspaceStats').replaceChildren();
   document.querySelector('.settings-editor')?.remove();

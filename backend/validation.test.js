@@ -193,25 +193,20 @@ test('content collection allowlist rejects unsupported collection names', () => 
   assert.throws(() => validateContent('users', { title: 'No' }), /not supported/);
 });
 
-test('Firestore keeps Admin authority claim-based and managed content client-write protected', () => {
+test('Firestore exposes only explicit verified student and trusted Admin operations', () => {
   const rules = readFileSync(new URL('../firestore.rules', import.meta.url), 'utf8');
-  assert.match(rules, /request\.auth\.token\.admin\s*==\s*true\s*\|\|\s*request\.auth\.token\.superAdmin\s*==\s*true/);
+  assert.match(rules, /function trustedAdmin\(\)\s*\{\s*return verifiedUser\(\)\s*&& request\.auth\.token\.admin\s*==\s*true/);
   assert.match(rules, /allow list:\s*if trustedAdmin\(\)/);
   assert.match(rules, /match \/users\/\{uid\}[\s\S]*?allow get: if isOwner\(uid\) \|\| trustedAdmin\(\)/);
-  for (const collection of ['notices', 'announcements', 'studyMaterials', 'notifications', 'communityPosts', 'studentActivity']) {
+  for (const collection of ['notices', 'announcements', 'communityUpdates', 'studyMaterials', 'timetable', 'scholarships', 'submissions', 'adminActivity']) {
     assert.ok(rules.includes(`match /${collection}/`), `${collection} Firestore match is missing`);
   }
-  assert.match(rules, /match \/studyMaterials\/\{materialId\}[\s\S]*?allow create, update, delete: if false/);
-  assert.match(rules, /match \/communityPosts\/\{recordId\}[\s\S]*?allow create, update, delete: if false/);
-  assert.match(rules, /match \/questions\/\{recordId\} \{ allow get, list: if trustedAdmin\(\)/);
-  assert.match(rules, /match \/communityComments\/\{recordId\} \{ allow get, list: if trustedAdmin\(\)/);
-  assert.match(rules, /match \/studentActivity\/\{eventId\}[\s\S]*?allow get, list: if trustedAdmin\(\)[\s\S]*?allow create, update, delete: if false/);
-  assert.match(rules, /match \/subjectEvents\/\{eventId\}[\s\S]*?allow get, list: if trustedAdmin\(\)[\s\S]*?allow create, update, delete: if false/);
-  assert.match(rules, /match \/assessmentAttempts\/\{attemptId\}[\s\S]*?allow get, list: if trustedAdmin\(\)[\s\S]*?allow create, update, delete: if false/);
-  assert.match(rules, /match \/communityRateLimits\/\{uid\}[\s\S]*?allow get, list: if trustedAdmin\(\)[\s\S]*?allow create, update, delete: if false/);
-  assert.match(rules, /match \/resourceEvents\/\{eventId\}[\s\S]*?allow read, write: if false/);
-  assert.match(rules, /function studentMatchesAudience\(data\)/);
-  assert.match(rules, /match \/notifications\/\{notificationId\}[\s\S]*?canReadTargetedPublishedRecord\(\)/);
+  assert.match(rules, /match \/studyMaterials\/\{materialId\}[\s\S]*?allow get, list: if trustedAdmin\(\) \|\| \(verifiedStudent\(\) && resource\.data\.status == 'published'\)/);
+  assert.match(rules, /match \/submissions\/\{submissionId\}[\s\S]*?validAdminSubmissionReview\(resource\.data, request\.resource\.data\)/);
+  assert.match(rules, /match \/adminActivity\/\{logId\}[\s\S]*?allow get, list: if trustedAdmin\(\)[\s\S]*?allow create, update, delete: if false/);
+  for (const serverOnlyCollection of ['notifications', 'communityPosts', 'assessmentAttempts', 'subjectEvents']) {
+    assert.equal(rules.includes(`match /${serverOnlyCollection}/`), false, `${serverOnlyCollection} must remain behind verified server endpoints`);
+  }
   const indexes = JSON.parse(readFileSync(new URL('../firestore.indexes.json', import.meta.url), 'utf8'));
   assert.ok(indexes.fieldOverrides.some(item => item.collectionGroup === 'studentActivity' && item.fieldPath === 'expireAt' && item.ttl === true), 'student activity TTL policy is missing');
   assert.ok(indexes.fieldOverrides.some(item => item.collectionGroup === 'subjectEvents' && item.fieldPath === 'expireAt' && item.ttl === true), 'subject analytics TTL policy is missing');
