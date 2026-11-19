@@ -5,143 +5,227 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function verifiedOwner(uid) {
-      return signedIn()
-        && request.auth.uid == uid
-        && request.auth.token.email_verified == true;
+    function verifiedUser() {
+      return signedIn() && request.auth.token.email_verified == true;
     }
 
-    // Admin authorization is exclusively a trusted Firebase Auth custom claim.
-    // A users/{uid}.role field is profile data and is never used for access.
+    // Admin authority comes only from a Firebase Admin SDK custom claim.
+    // A users/{uid}.role field is never used to authorize administrative access.
     function trustedAdmin() {
-      return signedIn()
-        && request.auth.token.admin == true
-        && request.auth.token.email_verified == true;
+      return verifiedUser() && request.auth.token.admin == true;
     }
 
-    function optionalString(data, field, maxLength) {
-      return !(field in data)
-        || (data[field] is string && data[field].size() <= maxLength);
+    function isOwner(uid) {
+      return verifiedUser() && request.auth.uid == uid;
     }
 
-    function optionalTimestamp(data, field) {
-      return !(field in data) || data[field] is timestamp;
+    function verifiedStudent() {
+      return verifiedUser()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.uid == request.auth.uid
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Student';
     }
 
-    function validElectives(data) {
-      return !('electives' in data)
-        || (data.electives is list
-          && data.electives.size() <= 20
-          && data.electives.hasOnly([
-            'AEC', 'VEC', 'IKS',
-            'Psychology', 'Philosophy', 'Economics', 'English', 'History',
-            'Politics', 'Geography', 'SEC Psychology', 'SEC Economics',
-            'SEC English', 'SEC Politics', 'SEC History', 'OE Zoology',
-            'OE Botany', 'OE Electronics', 'OE Geology', 'OE Geography'
-          ]));
+    function validOptionalProfileFields(data) {
+      return (!data.keys().hasAny(['email']) || data.email is string && data.email.size() <= 254)
+        && (!data.keys().hasAny(['name']) || data.name is string && data.name.size() <= 100)
+        // Course and StudentClass remain accepted for compatibility, but are optional.
+        && (!data.keys().hasAny(['course']) || data.course is string && data.course.size() <= 80)
+        && (!data.keys().hasAny(['studentClass']) || data.studentClass is string && data.studentClass.size() <= 80)
+        && (!data.keys().hasAny(['division']) || data.division is string && data.division.size() <= 40)
+        && (!data.keys().hasAny(['rollNo']) || data.rollNo is string && data.rollNo.size() <= 40)
+        && (!data.keys().hasAny(['prn']) || data.prn is string && data.prn.size() <= 40)
+        && (!data.keys().hasAny(['whatsapp']) || data.whatsapp is string && data.whatsapp.size() <= 30)
+        && (!data.keys().hasAny(['telegram']) || data.telegram is string && data.telegram.size() <= 100)
+        && (!data.keys().hasAny(['bio']) || data.bio is string && data.bio.size() <= 1000)
+        && (!data.keys().hasAny(['avatar']) || data.avatar is string && data.avatar.size() <= 2048)
+        && (!data.keys().hasAny(['electives']) || data.electives is list && data.electives.size() <= 20)
+        && (!data.keys().hasAny(['emailVerified']) || data.emailVerified == true)
+        && (!data.keys().hasAny(['profileSetupComplete']) || data.profileSetupComplete is bool)
+        && (!data.keys().hasAny(['createdAt']) || data.createdAt is timestamp)
+        && (!data.keys().hasAny(['updatedAt']) || data.updatedAt is timestamp);
     }
 
-    // Validate any supported profile data without requiring optional details.
-    // Course and class remain accepted for legacy profiles but new app profiles
-    // use the shared academic configuration instead.
-    function validProfileValues(data, uid) {
-      return (!('uid' in data) || (data.uid is string && data.uid == uid))
-        && optionalString(data, 'email', 254)
-        && (!('email' in data) || data.email == request.auth.token.email)
-        && optionalString(data, 'name', 100)
-        && optionalString(data, 'course', 80)
-        && optionalString(data, 'studentClass', 40)
-        && optionalString(data, 'division', 80)
-        && optionalString(data, 'rollNo', 40)
-        && optionalString(data, 'prn', 40)
-        && optionalString(data, 'whatsapp', 24)
-        && optionalString(data, 'telegram', 40)
-        && optionalString(data, 'bio', 500)
-        && (!('avatar' in data) || (data.avatar is string
-          && data.avatar in ['portrait', 'owl', 'book', 'fox', 'moon', 'star']))
-        && validElectives(data)
-        && (!('role' in data) || data.role is string)
-        && (!('emailVerified' in data) || data.emailVerified is bool)
-        && (!('profileSetupComplete' in data) || data.profileSetupComplete is bool)
-        && optionalTimestamp(data, 'createdAt')
-        && optionalTimestamp(data, 'updatedAt')
-        && (!('updatedAt' in data) || data.updatedAt == request.time);
-    }
-
-    function validStudentProfileCreate(data, uid) {
-      return data.keys().hasOnly([
-          'uid', 'email', 'name', 'course', 'studentClass', 'division',
-          'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
-          'role', 'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
+    function validStudentProfile(data, uid) {
+      return data.keys().hasAll(['uid', 'role'])
+        && data.keys().hasOnly([
+          'uid', 'email', 'name', 'course', 'studentClass', 'division', 'rollNo',
+          'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives', 'role',
+          'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
         ])
-        && data.keys().hasAll(['uid', 'role'])
-        && data.uid is string && data.uid == uid
-        && data.role is string && data.role == 'Student'
-        && validProfileValues(data, uid)
-        && (!('createdAt' in data) || data.createdAt == request.time);
+        && data.uid == uid
+        && data.role == 'Student'
+        && validOptionalProfileFields(data);
     }
 
-    function validChangedProfileValues(data, uid, changed) {
-      return (!('uid' in changed) || (data.uid is string && data.uid == uid))
-        && (!('role' in changed) || (data.role is string && data.role == 'Student'))
-        && (!('email' in changed) || (data.email is string
-          && data.email.size() <= 254
-          && data.email == request.auth.token.email))
-        && (!('name' in changed) || (data.name is string
-          && data.name.size() >= 1 && data.name.size() <= 100))
-        && (!('division' in changed) || (data.division is string && data.division.size() <= 80))
-        && (!('rollNo' in changed) || (data.rollNo is string && data.rollNo.size() <= 40))
-        && (!('prn' in changed) || (data.prn is string && data.prn.size() <= 40))
-        && (!('whatsapp' in changed) || (data.whatsapp is string && data.whatsapp.size() <= 24))
-        && (!('telegram' in changed) || (data.telegram is string && data.telegram.size() <= 40))
-        && (!('bio' in changed) || (data.bio is string && data.bio.size() <= 500))
-        && (!('avatar' in changed) || (data.avatar is string
-          && data.avatar in ['portrait', 'owl', 'book', 'fox', 'moon', 'star']))
-        && (!('electives' in changed) || validElectives(data))
-        && (!('emailVerified' in changed) || (data.emailVerified is bool && data.emailVerified == true))
-        && (!('profileSetupComplete' in changed) || data.profileSetupComplete is bool)
-        && (!('updatedAt' in changed) || (data.updatedAt is timestamp && data.updatedAt == request.time));
+    function validStudentCreate(data, uid) {
+      return validStudentProfile(data, uid)
+        && data.email == request.auth.token.email
+        && data.emailVerified == true
+        && data.createdAt == request.time
+        && data.updatedAt == request.time;
     }
 
-    function validProfileUpdate(data, uid) {
-      let changed = data.diff(resource.data).affectedKeys();
-      return validChangedProfileValues(data, uid, changed)
-        // Existing identity/role values are immutable. Legacy documents that
-        // lack these fields may only receive their canonical UID / Student role.
-        && ((!('uid' in resource.data) && data.uid == uid)
-          || ('uid' in resource.data && data.uid == resource.data.uid))
-        && ((!('role' in resource.data) && data.role == 'Student')
-          || ('role' in resource.data && data.role == resource.data.role))
-        && ((!('createdAt' in resource.data) && !('createdAt' in data))
-          || ('createdAt' in resource.data && data.createdAt == resource.data.createdAt))
-        && changed.hasOnly([
-          'uid', 'role', 'email', 'name', 'division', 'rollNo', 'prn',
-          'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
-          'emailVerified', 'profileSetupComplete', 'updatedAt'
-        ]);
+    function validProfileUpdateAfter(before, after, uid) {
+      return validStudentProfile(after, uid)
+        // Identity and authorization remain immutable, including legacy backfills.
+        && (!before.keys().hasAny(['uid']) || after.uid == before.uid)
+        && (!before.keys().hasAny(['role']) || after.role == before.role)
+        && after.email == request.auth.token.email
+        && after.emailVerified == true
+        && (!before.keys().hasAny(['createdAt']) || after.createdAt == before.createdAt)
+        && after.updatedAt == request.time;
     }
 
+    function validAdminProfileUpdate(before, after, uid) {
+      return validStudentProfile(after, uid)
+        && (!before.keys().hasAny(['uid']) || after.uid == before.uid)
+        && (!before.keys().hasAny(['role']) || after.role == before.role)
+        && (!before.keys().hasAny(['createdAt']) || after.createdAt == before.createdAt)
+        && after.updatedAt == request.time;
+    }
+
+    function validManagedContent(data) {
+      return data.keys().hasAll(['title', 'status'])
+        && data.keys().hasOnly([
+          'title', 'status', 'description', 'body', 'subject', 'category',
+          'url', 'fileUrl', 'startAt', 'endAt', 'publishedAt', 'createdAt',
+          'updatedAt', 'tags', 'order', 'type'
+        ])
+        && data.title is string && data.title.size() > 0 && data.title.size() <= 180
+        && data.status in ['draft', 'published', 'archived']
+        && (!data.keys().hasAny(['description']) || data.description is string && data.description.size() <= 4000)
+        && (!data.keys().hasAny(['body']) || data.body is string && data.body.size() <= 20000)
+        && (!data.keys().hasAny(['subject']) || data.subject is string && data.subject.size() <= 100)
+        && (!data.keys().hasAny(['category']) || data.category is string && data.category.size() <= 100)
+        && (!data.keys().hasAny(['url']) || data.url is string && data.url.size() <= 2048)
+        && (!data.keys().hasAny(['fileUrl']) || data.fileUrl is string && data.fileUrl.size() <= 2048)
+        && (!data.keys().hasAny(['tags']) || data.tags is list && data.tags.size() <= 30)
+        && (!data.keys().hasAny(['order']) || data.order is int && data.order >= 0)
+        && (!data.keys().hasAny(['type']) || data.type is string && data.type.size() <= 60)
+        && (!data.keys().hasAny(['startAt']) || data.startAt is timestamp)
+        && (!data.keys().hasAny(['endAt']) || data.endAt is timestamp)
+        && (!data.keys().hasAny(['publishedAt']) || data.publishedAt is timestamp)
+        && (!data.keys().hasAny(['createdAt']) || data.createdAt is timestamp)
+        && (!data.keys().hasAny(['updatedAt']) || data.updatedAt is timestamp);
+    }
+
+    function validSubmissionCreate(data) {
+      return data.keys().hasAll(['ownerUid', 'title', 'status', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly([
+          'ownerUid', 'title', 'description', 'subject', 'submissionType', 'fileUrl',
+          'status', 'createdAt', 'updatedAt'
+        ])
+        && data.ownerUid == request.auth.uid
+        && data.title is string && data.title.size() > 0 && data.title.size() <= 160
+        && (!data.keys().hasAny(['description']) || data.description is string && data.description.size() <= 2000)
+        && (!data.keys().hasAny(['subject']) || data.subject is string && data.subject.size() <= 100)
+        && (!data.keys().hasAny(['submissionType']) || data.submissionType in ['note', 'assignment', 'resource', 'question', 'other'])
+        && (!data.keys().hasAny(['fileUrl']) || data.fileUrl is string && data.fileUrl.size() <= 2048)
+        && data.status == 'pending'
+        && data.createdAt == request.time && data.updatedAt == request.time;
+    }
+
+    function validStudentSubmissionUpdate(before, after) {
+      return before.ownerUid == request.auth.uid
+        && before.status == 'pending'
+        && after.ownerUid == before.ownerUid
+        && after.status == 'pending'
+        && after.diff(before).affectedKeys().hasOnly([
+          'title', 'description', 'subject', 'submissionType', 'fileUrl', 'updatedAt'
+        ])
+        && after.title is string && after.title.size() > 0 && after.title.size() <= 160
+        && (!after.keys().hasAny(['description']) || after.description is string && after.description.size() <= 2000)
+        && (!after.keys().hasAny(['subject']) || after.subject is string && after.subject.size() <= 100)
+        && (!after.keys().hasAny(['submissionType']) || after.submissionType in ['note', 'assignment', 'resource', 'question', 'other'])
+        && (!after.keys().hasAny(['fileUrl']) || after.fileUrl is string && after.fileUrl.size() <= 2048)
+        && after.updatedAt == request.time;
+    }
+
+    function validAdminSubmissionReview(before, after) {
+      return after.ownerUid == before.ownerUid
+        && after.status in ['pending', 'approved', 'rejected']
+        && after.diff(before).affectedKeys().hasOnly([
+          'status', 'adminFeedback', 'reviewedAt', 'reviewedBy', 'updatedAt'
+        ])
+        && (!after.keys().hasAny(['adminFeedback']) || after.adminFeedback is string && after.adminFeedback.size() <= 2000)
+        && (!after.keys().hasAny(['reviewedAt']) || after.reviewedAt is timestamp)
+        && (!after.keys().hasAny(['reviewedBy']) || after.reviewedBy == request.auth.uid)
+        && (after.status == 'pending'
+          || (after.keys().hasAll(['reviewedAt', 'reviewedBy'])
+            && after.reviewedAt == request.time
+            && after.reviewedBy == request.auth.uid))
+        && (!after.keys().hasAny(['updatedAt']) || after.updatedAt == request.time);
+    }
+
+    // Student profiles: students can get only their own profile; only Admins can list.
     match /users/{uid} {
-      // Private profile documents are visible only to the verified owner.
-      allow get: if verifiedOwner(uid);
-      allow list: if false;
-
-      allow create: if verifiedOwner(uid)
-        && validStudentProfileCreate(request.resource.data, uid);
-
-      allow update: if verifiedOwner(uid)
-        && validProfileUpdate(request.resource.data, uid);
-
-      allow delete: if false;
+      allow get: if isOwner(uid) || trustedAdmin();
+      allow list: if trustedAdmin();
+      allow create: if (isOwner(uid) && validStudentCreate(request.resource.data, uid))
+        || (trustedAdmin() && validStudentProfile(request.resource.data, uid));
+      allow update: if (isOwner(uid) && validProfileUpdateAfter(resource.data, request.resource.data, uid))
+        || (trustedAdmin() && validAdminProfileUpdate(resource.data, request.resource.data, uid));
+      allow delete: if trustedAdmin();
     }
 
-    // Admin dashboard data is visible only to verified custom-claim Admins.
+    // Published content is visible only to verified students with a canonical Student
+    // profile (or a trusted Admin). Student queries must constrain status == 'published'.
+    match /notices/{noticeId} {
+      allow get, list: if trustedAdmin() || (verifiedStudent() && resource.data.status == 'published');
+      allow create: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow update: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow delete: if trustedAdmin();
+    }
+    match /announcements/{announcementId} {
+      allow get, list: if trustedAdmin() || (verifiedStudent() && resource.data.status == 'published');
+      allow create: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow update: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow delete: if trustedAdmin();
+    }
+    match /communityUpdates/{updateId} {
+      allow get, list: if trustedAdmin() || (verifiedStudent() && resource.data.status == 'published');
+      allow create: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow update: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow delete: if trustedAdmin();
+    }
+    match /studyMaterials/{materialId} {
+      allow get, list: if trustedAdmin() || (verifiedStudent() && resource.data.status == 'published');
+      allow create: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow update: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow delete: if trustedAdmin();
+    }
+    match /timetable/{entryId} {
+      allow get, list: if trustedAdmin() || (verifiedStudent() && resource.data.status == 'published');
+      allow create: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow update: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow delete: if trustedAdmin();
+    }
+    match /scholarships/{scholarshipId} {
+      allow get, list: if trustedAdmin() || (verifiedStudent() && resource.data.status == 'published');
+      allow create: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow update: if trustedAdmin() && validManagedContent(request.resource.data);
+      allow delete: if trustedAdmin();
+    }
+
+    // Student-owned submissions. Students may create/edit/delete only their own pending
+    // records; trusted Admins may review and manage submissions. List queries must constrain
+    // ownerUid for students because Firestore rules do not filter query results.
+    match /submissions/{submissionId} {
+      allow get, list: if trustedAdmin() || (verifiedStudent() && resource.data.ownerUid == request.auth.uid);
+      allow create: if verifiedStudent() && validSubmissionCreate(request.resource.data);
+      allow update: if (trustedAdmin() && validAdminSubmissionReview(resource.data, request.resource.data))
+        || (verifiedStudent() && validStudentSubmissionUpdate(resource.data, request.resource.data));
+      allow delete: if trustedAdmin()
+        || (verifiedStudent() && resource.data.ownerUid == request.auth.uid && resource.data.status == 'pending');
+    }
+
+    // Dashboard statistics and activity are trusted server-owned records. Admin SDK writes
+    // bypass these rules; client writes remain denied to protect integrity.
     match /admin/{document=**} {
       allow get, list: if trustedAdmin();
       allow create, update, delete: if false;
     }
-
-    // Activity is append-only from trusted server code (Admin SDK bypasses rules).
     match /adminActivity/{logId} {
       allow get, list: if trustedAdmin();
       allow create, update, delete: if false;

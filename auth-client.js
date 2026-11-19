@@ -169,6 +169,11 @@ async function ensureStudentProfile(user, seed = {}) {
 
     const profile = snapshot.data();
     const patch = {};
+    // Repair legacy student documents into the minimal rule-enforced identity shape.
+    // UID and role are mandatory for ownership/authorization, but are never inferred
+    // from client input; this path derives both from the verified Firebase session.
+    if (!Object.prototype.hasOwnProperty.call(profile, 'uid')) patch.uid = user.uid;
+    if (!Object.prototype.hasOwnProperty.call(profile, 'role')) patch.role = 'Student';
     if (profile.email !== (user.email || '')) patch.email = user.email || '';
     if (profile.emailVerified !== true) patch.emailVerified = true;
     if ((!profile.name || profile.name === 'Student') && (user.displayName || seed.name)) {
