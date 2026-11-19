@@ -528,7 +528,7 @@
       border-color: rgba(184, 138, 34, 0.62);
     }
     #googleAuthBtn,
-    #demoLoginBtn,
+    #guestLoginBtn,
     .country-select-btn {
       border: 1.25px solid rgba(217, 180, 74, 0.55);
     }
@@ -2144,6 +2144,9 @@
                   </svg>
                   <span id="googleBtnText">Sign in with Google</span>
                 </button>
+                <button id="guestLoginBtn" type="button" class="w-full mt-2.5 py-2.5 rounded-xl border border-[#C6A348]/65 bg-[#F7F2E3]/75 text-[#18304D] font-bold text-xs transition-colors hover:bg-[#F7F2E3]">
+                  Continue as Guest
+                </button>
               </div>
             </form>
           </div>
@@ -2525,6 +2528,11 @@
           else pending.reject(new Error(message.error || 'Authentication could not be completed.'));
           return;
         }
+        if (message.type === 'guest-result') {
+          guestLoginBtn.disabled = false;
+          if (!message.ok) showError(message.error || 'Guest access could not be started. Please try again.');
+          return;
+        }
         if (message.type === 'google-outcome') {
           if (message.ok) completeAuth(message.profile?.name || message.user?.displayName || 'Student', message.user?.email || '', message.flow, message);
           else showError(message.error || 'Google sign-in could not be completed.');
@@ -2762,7 +2770,7 @@ const tabLogin = document.getElementById('tabLogin');
       const welcomeName = document.getElementById('welcomeName');
       const welcomeEmail = document.getElementById('welcomeEmail');
       const logoutBtn = document.getElementById('logoutBtn');
-      const demoLoginBtn = document.getElementById('demoLoginBtn');
+      const guestLoginBtn = document.getElementById('guestLoginBtn');
       const googleAuthBtn = document.getElementById('googleAuthBtn');
       const googleBtnText = document.getElementById('googleBtnText');
 
@@ -2925,6 +2933,7 @@ const tabLogin = document.getElementById('tabLogin');
               confirmPasswordWrap.classList.add('hidden');
               btnForgot.classList.remove('hidden');
             }
+            guestLoginBtn.hidden = isSignup;
             updateGreeting();
 
             // Phase 2: 3D flip-in from opposite side with spring overshoot
@@ -2950,7 +2959,7 @@ const tabLogin = document.getElementById('tabLogin');
               ...(isSignup ? [confirmPasswordWrap] : []),
               submitBtn,
               googleAuthBtn,
-              demoLoginBtn
+              guestLoginBtn
             ];
             gsap.fromTo(staggerTargets,
               { opacity: 0, y: 14 },
@@ -4398,6 +4407,15 @@ const tabLogin = document.getElementById('tabLogin');
           googleAuthBtn.disabled = false;
         }
       });
+      guestLoginBtn.addEventListener('click', () => {
+        clearErrors();
+        guestLoginBtn.disabled = true;
+        showToast('Opening VISH HUB in guest mode…');
+        window.parent.postMessage({
+          source: 'vish-hub-onboarding',
+          type: 'guest-handoff'
+        }, window.location.origin === 'null' ? '*' : window.location.origin);
+      });
       function closeForgot() {
         forgotModal.classList.add('hidden');
       }
@@ -4506,7 +4524,7 @@ const tabLogin = document.getElementById('tabLogin');
             }
           }, { passive: true });
         }
-        document.querySelectorAll('#submitBtn, #googleAuthBtn, #demoLoginBtn, #themeToggle').forEach((btn) => {
+        document.querySelectorAll('#submitBtn, #googleAuthBtn, #guestLoginBtn, #themeToggle').forEach((btn) => {
           btn.addEventListener('pointerdown', () => {
             gsap.to(btn, { scale: 0.97, duration: 0.1, ease: 'power2.out' });
           });

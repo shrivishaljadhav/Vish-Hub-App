@@ -51,7 +51,39 @@
   window.addEventListener('message', async event => {
     const message = event.data;
     if (!onboardingFrame || event.source !== onboardingFrame.contentWindow || event.origin !== window.location.origin ||
-        message?.source !== 'vish-hub-onboarding' || message?.type !== 'handoff-to-app-home') return;
+        message?.source !== 'vish-hub-onboarding') return;
+
+    if (message.type === 'guest-handoff') {
+      // Guest mode is a local, unauthenticated session. It never receives Firebase
+      // credentials or profile privileges, so Firestore rules continue to deny writes.
+      const authApi = window.vishHubAuth;
+      try {
+        await authApi?.ready;
+        if (authApi?.getCurrentUser?.()) await authApi.signOut();
+        if (authApi?.getCurrentUser?.()) throw new Error('Sign-out did not finish.');
+      } catch (_) {
+        onboardingFrame.contentWindow.postMessage({
+          source: 'vish-hub-firebase',
+          type: 'guest-result',
+          ok: false,
+          error: 'Could not start guest mode. Please try again.'
+        }, window.location.origin === 'null' ? '*' : window.location.origin);
+        return;
+      }
+      onboardingFrame.contentWindow.postMessage({
+        source: 'vish-hub-firebase',
+        type: 'guest-result',
+        ok: true
+      }, window.location.origin === 'null' ? '*' : window.location.origin);
+      window.dispatchEvent(new CustomEvent('vishhub-auth-state', {
+        detail: { user: null, profile: null, initial: false, emailVerified: false, profileSetupComplete: false, guest: true }
+      }));
+      body.classList.add('guest-session-active');
+      finishAuthGate();
+      return;
+    }
+
+    if (message.type !== 'handoff-to-app-home') return;
 
     const user = window.vishHubAuth?.getCurrentUser?.();
     if (!user || !user.emailVerified) return;
@@ -78,7 +110,22 @@
     }, reduced ? 0 : 280);
   }
 
-  enterGate();
+  const localInnerPagePreview = window.location.protocol === 'file:' ||
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1';
+
+  if (localInnerPagePreview) {
+    // Keep the local editing copy open on Home. Firebase rules still govern any
+    // protected data, and the hosted production app keeps the normal auth gate.
+    body.classList.remove('auth-gate-pending', 'auth-gate-active');
+    body.classList.add('guest-session-active');
+    app.removeAttribute('inert');
+    page.classList.remove('open', 'auth-gate');
+    page.setAttribute('aria-modal', 'false');
+    authView.hidden = true;
+  } else {
+    enterGate();
+  }
   window.addEventListener('vishhub-auth-state', event => {
     const signedIn = Boolean(event.detail?.user && event.detail?.emailVerified);
     const profileComplete = Boolean(event.detail?.profileSetupComplete || event.detail?.profile?.profileSetupComplete);
