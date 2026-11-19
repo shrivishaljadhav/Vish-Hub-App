@@ -27,6 +27,9 @@ const loginButton = $('#loginButton');
 const googleButton = $('#googleButton');
 let activeAdmin = null;
 let authCheckSequence = 0;
+let studentRecords = [];
+let studentsLoaded = false;
+let studentsLoadSequence = 0;
 
 function setMessage(message, kind = '') {
   authMessage.textContent = message;
@@ -70,6 +73,19 @@ function setGate(view) {
   authGate.hidden = view !== 'auth';
   deniedGate.hidden = view !== 'denied';
   adminLayout.hidden = view !== 'admin';
+}
+
+function clearStudentDirectory() {
+  studentsLoadSequence += 1;
+  studentsLoaded = false;
+  studentRecords = [];
+  $('#studentsTableBody').replaceChildren();
+  $('#studentTotal').textContent = '—';
+  $('#studentComplete').textContent = '—';
+  $('#studentVerified').textContent = '—';
+  $('#studentThisMonth').textContent = '—';
+  $('#studentsTableWrap').hidden = true;
+  $('#exportStudents').disabled = true;
 }
 
 async function assertTrustedAdmin(user) {
@@ -186,6 +202,7 @@ async function refreshDashboard() {
 }
 
 async function showDenied(user, message = '') {
+  clearStudentDirectory();
   activeAdmin = null;
   $('#deniedMessage').textContent = message || (!user.emailVerified
     ? 'A verified email address is required for Admin access.'
@@ -196,6 +213,7 @@ async function showDenied(user, message = '') {
 
 async function acceptUser(user, sequence) {
   if (!user) {
+    clearStudentDirectory();
     activeAdmin = null;
     setGate('auth');
     return;
@@ -213,6 +231,7 @@ async function acceptUser(user, sequence) {
     updateAccountControls(user);
     setGate('admin');
     await refreshDashboard();
+    if (window.location.hash === '#students') await loadStudents();
   } catch (error) {
     if (sequence !== authCheckSequence) return;
     if (error?.code === 'auth/network-request-failed') {
@@ -301,15 +320,35 @@ $('#menuToggle').addEventListener('click', () => {
   $('#menuToggle').setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
 });
 sidebarScrim.addEventListener('click', closeSidebar);
-document.querySelectorAll('.side-link[href^="#"]').forEach(link => link.addEventListener('click', () => {
+function showAdminPage(page, { scroll = false } = {}) {
+  const isStudents = page === 'students';
+  $('#overviewPage').hidden = isStudents;
+  $('#studentsPage').hidden = !isStudents;
   document.querySelectorAll('.side-link[data-page]').forEach(item => {
-    const selected = item === link;
+    const selected = item.dataset.page === (page === 'activity' ? 'activity' : isStudents ? 'students' : 'overview');
     item.classList.toggle('active', selected);
     if (selected) item.setAttribute('aria-current', 'page');
     else item.removeAttribute('aria-current');
   });
+  $('.topbar-title').textContent = isStudents ? 'Student management' : page === 'activity' ? 'Activity log' : 'Management overview';
+  if (isStudents) void loadStudents();
   closeSidebar();
+  if (scroll && page === 'activity') $('#activity').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  else if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.side-link[data-page], [data-scroll-to="students"]').forEach(link => link.addEventListener('click', event => {
+  const page = link.dataset.page || link.dataset.scrollTo;
+  if (!page) return;
+  event.preventDefault();
+  const hash = page === 'activity' ? '#activity' : page === 'students' ? '#students' : '#overview';
+  if (window.location.hash !== hash) history.replaceState(null, '', hash);
+  showAdminPage(page, { scroll: true });
 }));
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.slice(1);
+  showAdminPage(hash === 'students' ? 'students' : hash === 'activity' ? 'activity' : 'overview');
+});
 document.querySelectorAll('[data-scroll-to]').forEach(button => button.addEventListener('click', () => {
   document.getElementById(button.dataset.scrollTo)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }));
@@ -327,3 +366,212 @@ setPersistence(auth, browserLocalPersistence).then(() => {
   setGate('auth');
   setMessage('Firebase session persistence could not be prepared. Reload and try again.');
 });
+
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+const dateValue = value => {
+  if (value && typeof value.toDate === 'function') return value.toDate();
+  if (value instanceof Date) return value;
+  if (typeof value === 'string' || typeof value === 'number') {
+    const date = new Date(value);
+    if (Number.isFinite(date.getTime())) return date;
+  }
+  return null;
+};
+const studentName = profile => typeof profile.name === 'string' && profile.name.trim()
+  ? profile.name.trim()
+  : (typeof profile.email === 'string' && profile.email.includes('@') ? profile.email.split('@')[0] : 'Student');
+const dateFormatter = new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeZone: 'Asia/Kolkata' });
+
+function setStudentLoading() {
+  $('#studentsLoading').hidden = false;
+  $('#studentsError').hidden = true;
+  $('#studentsEmpty').hidden = true;
+  $('#studentsNoResults').hidden = true;
+  $('#studentsTableWrap').hidden = true;
+  $('#exportStudents').disabled = true;
+}
+
+function profileState(profile) {
+  if (typeof profile.profileSetupComplete !== 'boolean') return 'unknown';
+  return profile.profileSetupComplete ? 'complete' : 'incomplete';
+}
+
+function refreshStudentStats(records) {
+  const now = new Date();
+  const monthCount = records.filter(record => {
+    const date = dateValue(record.createdAt);
+    return date && date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth();
+  }).length;
+  $('#studentTotal').textContent = new Intl.NumberFormat('en-IN').format(records.length);
+  $('#studentComplete').textContent = new Intl.NumberFormat('en-IN').format(records.filter(record => record.profileSetupComplete === true).length);
+  $('#studentVerified').textContent = new Intl.NumberFormat('en-IN').format(records.filter(record => record.emailVerified === true).length);
+  $('#studentThisMonth').textContent = new Intl.NumberFormat('en-IN').format(monthCount);
+  $('#studentMonthLabel').textContent = new Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(now);
+}
+
+function filteredStudentRecords() {
+  const search = $('#studentSearch').value.trim().toLocaleLowerCase('en');
+  const completion = $('#studentCompletionFilter').value;
+  const emailState = $('#studentEmailFilter').value;
+  const [sortKey, sortDirection] = $('#studentSort').value.split('-');
+  const direction = sortDirection === 'desc' ? -1 : 1;
+  const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+  return studentRecords.filter(record => {
+    const p = record.profile;
+    const haystack = [studentName(p), p.email, record.uid, p.rollNo, p.division].filter(Boolean).join(' ').toLocaleLowerCase('en');
+    if (search && !haystack.includes(search)) return false;
+    if (completion !== 'all' && profileState(p) !== completion) return false;
+    if (emailState === 'verified' && p.emailVerified !== true) return false;
+    if (emailState === 'unverified' && p.emailVerified !== false) return false;
+    if (emailState === 'unknown' && typeof p.emailVerified === 'boolean') return false;
+    return true;
+  }).sort((a, b) => {
+    if (sortKey === 'createdAt') {
+      const aDate = dateValue(a.createdAt)?.getTime() ?? (sortDirection === 'asc' ? Number.MAX_SAFE_INTEGER : -1);
+      const bDate = dateValue(b.createdAt)?.getTime() ?? (sortDirection === 'asc' ? Number.MAX_SAFE_INTEGER : -1);
+      return (aDate - bDate) * direction;
+    }
+    return collator.compare(String(a.profile[sortKey] || ''), String(b.profile[sortKey] || '')) * direction;
+  });
+}
+
+function showStudentDetail(record) {
+  const p = record.profile;
+  const fields = [
+    ['Full name', studentName(p)], ['Email', p.email || 'Not recorded'], ['Firebase UID', record.uid],
+    ['Role', p.role || 'Not recorded'], ['Roll number', p.rollNo || 'Not recorded'],
+    ['Division', p.division || 'Not recorded'], ['Registered', dateValue(record.createdAt) ? dateFormatter.format(dateValue(record.createdAt)) : 'Not recorded'],
+    ['Email verification', p.emailVerified === true ? 'Verified (profile record)' : p.emailVerified === false ? 'Unverified (profile record)' : 'Not recorded'],
+    ['Profile completion', profileState(p) === 'complete' ? 'Complete' : profileState(p) === 'incomplete' ? 'Incomplete' : 'Not recorded'],
+    ['Course', p.course || 'Shared FYBA academic information'], ['Class', p.studentClass || 'Shared FYBA academic information'],
+    ['WhatsApp', p.whatsapp || 'Not recorded'], ['Telegram', p.telegram || 'Not recorded'],
+    ['Bio', p.bio || 'Not recorded'], ['Avatar', p.avatar || 'Default'],
+    ['Electives', Array.isArray(p.electives) ? p.electives.join(', ') || 'None recorded' : 'Not recorded']
+  ];
+  const content = $('#studentDetailContent');
+  content.replaceChildren();
+  for (const [label, value] of fields) {
+    const row = document.createElement('div');
+    row.className = 'student-detail-row';
+    const key = document.createElement('span');
+    key.textContent = label;
+    const text = document.createElement('strong');
+    text.textContent = value;
+    row.append(key, text);
+    content.append(row);
+  }
+  $('#studentAuthConsoleLink').href = 'https://console.firebase.google.com/project/vish-hub/authentication/users';
+  const dialog = $('#studentDetailDialog');
+  if (typeof dialog.showModal === 'function') dialog.showModal();
+  else dialog.setAttribute('open', '');
+}
+
+function renderStudents() {
+  const records = filteredStudentRecords();
+  const body = $('#studentsTableBody');
+  body.replaceChildren();
+  $('#studentResultCount').textContent = `${records.length} ${records.length === 1 ? 'STUDENT' : 'STUDENTS'}`;
+  $('#studentsNoResults').hidden = records.length !== 0 || studentRecords.length === 0;
+  $('#studentsEmpty').hidden = studentRecords.length !== 0;
+  $('#studentsTableWrap').hidden = records.length === 0;
+  $('#exportStudents').disabled = records.length === 0;
+  $('#studentDirectoryStatus').textContent = `${studentRecords.length} student profiles loaded from Firestore.`;
+  for (const record of records) {
+    const p = record.profile;
+    const tr = document.createElement('tr');
+    const nameCell = document.createElement('td');
+    nameCell.className = 'student-name-cell';
+    const name = document.createElement('strong'); name.textContent = studentName(p);
+    const email = document.createElement('span'); email.textContent = p.email || 'Email not recorded';
+    nameCell.append(name, email);
+    const uid = document.createElement('td'); uid.className = 'student-uid'; uid.textContent = record.uid;
+    const roll = document.createElement('td'); roll.textContent = p.rollNo || '—';
+    const division = document.createElement('td'); division.textContent = p.division || '—';
+    const registered = document.createElement('td'); registered.textContent = dateValue(record.createdAt) ? dateFormatter.format(dateValue(record.createdAt)) : '—';
+    const completion = document.createElement('td'); completion.innerHTML = `<span class="student-badge ${escapeHtml(profileState(p))}">${profileState(p) === 'complete' ? 'Complete' : profileState(p) === 'incomplete' ? 'Incomplete' : 'Not recorded'}</span>`;
+    const emailState = p.emailVerified === true ? 'verified' : p.emailVerified === false ? 'unverified' : 'unknown';
+    const verified = document.createElement('td'); verified.innerHTML = `<span class="student-badge ${emailState}">${emailState === 'verified' ? 'Verified' : emailState === 'unverified' ? 'Unverified' : 'Not recorded'}</span>`;
+    const action = document.createElement('td');
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'student-detail-button'; button.textContent = 'View'; button.setAttribute('aria-label', `View ${studentName(p)} profile`); button.addEventListener('click', () => showStudentDetail(record));
+    action.append(button);
+    tr.append(nameCell, uid, roll, division, registered, completion, verified, action);
+    body.append(tr);
+  }
+}
+
+async function loadStudents(force = false) {
+  if (studentsLoaded && !force) { renderStudents(); return; }
+  const sequence = ++studentsLoadSequence;
+  setStudentLoading();
+  try {
+    const user = auth.currentUser;
+    if (!user || !await assertTrustedAdmin(user)) {
+      if (user) await showDenied(user, 'Admin access has expired or is no longer assigned.');
+      return;
+    }
+    const result = await getDocs(collection(db, 'users'));
+    if (sequence !== studentsLoadSequence) return;
+    studentRecords = result.docs.map(snapshot => ({ uid: snapshot.id, profile: snapshot.data(), createdAt: snapshot.data().createdAt }))
+      .filter(record => record.profile.role === 'Student');
+    studentsLoaded = true;
+    refreshStudentStats(studentRecords);
+    $('#studentsLoading').hidden = true;
+    $('#studentsError').hidden = true;
+    renderStudents();
+  } catch (error) {
+    if (sequence !== studentsLoadSequence) return;
+    $('#studentsLoading').hidden = true;
+    $('#studentsError').hidden = false;
+    $('#studentsEmpty').hidden = true;
+    $('#studentsNoResults').hidden = true;
+    $('#studentsTableWrap').hidden = true;
+    $('#exportStudents').disabled = true;
+    $('#studentsErrorText').textContent = error?.code === 'permission-denied'
+      ? 'Firestore denied the student list. Confirm the deployed rules allow verified Admin claims to list /users.'
+      : 'Could not load student profiles. Check the connection and retry.';
+    $('#studentDirectoryStatus').textContent = 'Directory request failed.';
+  }
+}
+
+function csvCell(value) {
+  let text = String(value ?? '');
+  if (/^[\s]*[=+@\-\t\r]/.test(text)) text = `'${text}`;
+  return `"${text.replace(/"/g, '""')}"`;
+}
+
+function exportStudentsCsv() {
+  if (!auth.currentUser || !activeAdmin || !studentsLoaded) return;
+  const expectedUid = auth.currentUser.uid;
+  void assertTrustedAdmin(auth.currentUser).then(allowed => {
+    if (!allowed || auth.currentUser?.uid !== expectedUid) {
+      if (auth.currentUser) return showDenied(auth.currentUser, 'Admin access has expired or is no longer assigned.');
+      clearStudentDirectory();
+      return;
+    }
+    const records = filteredStudentRecords();
+    if (!records.length) return;
+    const rows = [['Name', 'Email', 'UID', 'Roll number', 'Division', 'Registration date', 'Profile completion', 'Email verification']];
+    for (const record of records) rows.push([
+      studentName(record.profile), record.profile.email || '', record.uid, record.profile.rollNo || '', record.profile.division || '',
+      dateValue(record.createdAt)?.toISOString() || '', profileState(record.profile), record.profile.emailVerified === true ? 'verified' : record.profile.emailVerified === false ? 'unverified' : 'not recorded'
+    ]);
+    const blob = new Blob(['\uFEFF' + rows.map(row => row.map(csvCell).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url; link.download = `vish-hub-students-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.append(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+    $('#studentDirectoryStatus').textContent = `Exported ${records.length} filtered student profiles.`;
+  }).catch(() => { $('#studentDirectoryStatus').textContent = 'Admin authorization could not be refreshed. Sign in again.'; });
+}
+
+$('#studentSearch').addEventListener('input', renderStudents);
+$('#studentCompletionFilter').addEventListener('change', renderStudents);
+$('#studentEmailFilter').addEventListener('change', renderStudents);
+$('#studentSort').addEventListener('change', renderStudents);
+$('#exportStudents').addEventListener('click', exportStudentsCsv);
+$('#refreshStudents').addEventListener('click', () => void loadStudents(true));
+$('#retryStudents').addEventListener('click', () => void loadStudents(true));
+$('#closeStudentDetail').addEventListener('click', () => $('#studentDetailDialog').close());
+$('#closeStudentDetailFooter').addEventListener('click', () => $('#studentDetailDialog').close());
+$('#studentDetailDialog').addEventListener('click', event => { if (event.target === event.currentTarget) event.currentTarget.close(); });
+showAdminPage(window.location.hash.slice(1) === 'students' ? 'students' : window.location.hash.slice(1) === 'activity' ? 'activity' : 'overview');

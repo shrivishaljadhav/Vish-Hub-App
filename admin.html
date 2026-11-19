@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#071D38">
   <meta name="robots" content="noindex,nofollow">
   <title>VISH HUB · Admin Console</title>
-  <link rel="stylesheet" href="admin/admin.css">
+  <link rel="stylesheet" href="admin/admin.css?v=20261119-student-management-1">
 </head>
 <body>
   <main id="authGate" class="auth-screen">
@@ -64,10 +64,10 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5Z"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20M8 7h8M8 10h7"/></svg>
           <span>Activity log</span>
         </a>
-        <button class="side-link side-link-disabled" type="button" disabled aria-disabled="true" title="Planned for a later phase">
+        <a class="side-link" href="#students" data-page="students">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 5.5a3.2 3.2 0 0 1 0 6.2M17 14a5 5 0 0 1 4.5 5"/></svg>
-          <span>Students</span><span class="nav-soon">SOON</span>
-        </button>
+          <span>Students</span>
+        </a>
         <button class="side-link side-link-disabled" type="button" disabled aria-disabled="true" title="Planned for a later phase">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/></svg>
           <span>Resources</span><span class="nav-soon">SOON</span>
@@ -112,6 +112,7 @@
       </header>
 
       <div class="content-wrap">
+        <div id="overviewPage">
         <section id="overview" class="page-heading">
           <div><p class="eyebrow">ADMINISTRATIVE WORKSPACE</p><h1>Good day, <span id="welcomeName">Administrator</span></h1><p>Here’s the current VISH HUB operations snapshot.</p></div>
           <div class="heading-date"><span class="date-dot"></span><span id="todayLabel">Today</span></div>
@@ -141,16 +142,55 @@
               <a class="quick-action" href="index.html"><span class="quick-icon">↗</span><span><strong>Open student portal</strong><small>View the public learning experience</small></span><span class="quick-arrow">→</span></a>
               <button class="quick-action" type="button" data-scroll-to="activity"><span class="quick-icon gold-icon">◷</span><span><strong>Review activity</strong><small>Inspect server-recorded events</small></span><span class="quick-arrow">→</span></button>
               <button id="refreshOverview" class="quick-action" type="button"><span class="quick-icon silver-icon">⟳</span><span><strong>Refresh overview</strong><small>Fetch the latest trusted summary</small></span><span class="quick-arrow">→</span></button>
-              <div class="quick-action quick-action-muted"><span class="quick-icon">＋</span><span><strong>Manage students</strong><small>Administrative tools planned for a later phase</small></span><span class="planned-tag">PHASE 2</span></div>
+              <a class="quick-action" href="#students" data-page="students"><span class="quick-icon gold-icon">＋</span><span><strong>Manage students</strong><small>Search and review student profiles</small></span><span class="quick-arrow">→</span></a>
             </div>
             <p id="refreshStatus" class="refresh-status" role="status" aria-live="polite"></p>
           </section>
         </div>
 
+        </div>
+
+        <section id="studentsPage" class="students-page" hidden aria-labelledby="studentsTitle">
+          <div class="page-heading students-heading">
+            <div><p class="eyebrow">STUDENT DIRECTORY</p><h1 id="studentsTitle">Student management</h1><p>Search and review student profiles from the secured Firestore directory.</p></div>
+            <div class="student-page-actions"><a class="console-link" href="https://console.firebase.google.com/project/vish-hub/authentication/users" target="_blank" rel="noopener noreferrer">Manage Auth accounts ↗</a><button id="exportStudents" class="button button-gold export-button" type="button" disabled>Export CSV</button></div>
+          </div>
+          <section class="stats-grid student-stats" aria-label="Student registration summaries">
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">Student profiles</span><span class="stat-icon icon-students">S</span></div><div class="stat-value" id="studentTotal">—</div><div class="stat-foot">Real Firestore records</div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">Profiles complete</span><span class="stat-icon icon-resources">✓</span></div><div class="stat-value" id="studentComplete">—</div><div class="stat-foot">Setup marked complete</div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">Verified email</span><span class="stat-icon icon-storage">@</span></div><div class="stat-value" id="studentVerified">—</div><div class="stat-foot">Profile verification records</div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">Registered this month</span><span class="stat-icon icon-activity">↗</span></div><div class="stat-value" id="studentThisMonth">—</div><div class="stat-foot" id="studentMonthLabel">Current month</div></article>
+          </section>
+          <p id="studentStatsNote" class="data-note"><span aria-hidden="true">i</span> Summaries and email verification reflect saved Firestore profile records. Firebase Auth account enable/disable state is managed in Firebase Console.</p>
+          <section class="panel students-panel" aria-labelledby="directoryTitle">
+            <div class="panel-head"><div><p class="eyebrow">SECURE FIRESTORE DIRECTORY</p><h2 id="directoryTitle">Students</h2></div><span id="studentResultCount" class="panel-badge">0 STUDENTS</span></div>
+            <div class="student-tools">
+              <label class="student-search"><span class="sr-only">Search students</span><input id="studentSearch" type="search" placeholder="Search name, email, UID, roll number…" autocomplete="off"><span aria-hidden="true">⌕</span></label>
+              <label class="filter-label">Profile status<select id="studentCompletionFilter"><option value="all">All profiles</option><option value="complete">Complete</option><option value="incomplete">Incomplete</option><option value="unknown">Not recorded</option></select></label>
+              <label class="filter-label">Email status<select id="studentEmailFilter"><option value="all">All email states</option><option value="verified">Verified</option><option value="unverified">Unverified</option><option value="unknown">Not recorded</option></select></label>
+              <label class="filter-label">Sort by<select id="studentSort"><option value="createdAt-desc">Newest registration</option><option value="createdAt-asc">Oldest registration</option><option value="name-asc">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="rollNo-asc">Roll number</option><option value="division-asc">Division</option></select></label>
+            </div>
+            <div id="studentsLoading" class="activity-state"><span class="loader"></span> Loading student profiles…</div>
+            <div id="studentsError" class="student-error" hidden><strong>Student directory unavailable</strong><span id="studentsErrorText">Could not load student profiles.</span><button id="retryStudents" class="text-button" type="button">Retry</button></div>
+            <div id="studentsEmpty" class="activity-state" hidden><span class="empty-symbol">◎</span><strong>No student profiles yet</strong><span>Profiles will appear here after they are created in Firestore.</span></div>
+            <div id="studentsNoResults" class="activity-state" hidden><span class="empty-symbol">⌕</span><strong>No matching students</strong><span>Change the search or filters to see more results.</span></div>
+            <div id="studentsTableWrap" class="students-table-wrap" hidden>
+              <table class="students-table"><thead><tr><th scope="col">Student</th><th scope="col">UID</th><th scope="col">Roll no.</th><th scope="col">Division</th><th scope="col">Registered</th><th scope="col">Profile</th><th scope="col">Email</th><th scope="col"><span class="sr-only">Details</span></th></tr></thead><tbody id="studentsTableBody"></tbody></table>
+            </div>
+            <div class="students-footer"><span id="studentDirectoryStatus">Directory is restricted to verified Admin claims.</span><button id="refreshStudents" class="text-button" type="button">Refresh directory</button></div>
+          </section>
+          <p class="account-status-note">Firebase Auth account enable/disable controls are available in the linked Firebase Console. This client does not change authentication account status.</p>
+        </section>
+
         <footer class="admin-footer"><span>VISH HUB · ADMIN CONSOLE</span><span>Restricted to verified Firebase Admin claims</span></footer>
       </div>
     </main>
   </div>
-  <script type="module" src="admin/admin.js"></script>
+  <dialog id="studentDetailDialog" class="student-dialog" aria-labelledby="studentDetailTitle">
+    <div class="student-dialog-head"><div><p class="eyebrow">PRIVATE STUDENT RECORD</p><h2 id="studentDetailTitle">Student profile</h2></div><button id="closeStudentDetail" class="icon-button" type="button" aria-label="Close student details">×</button></div>
+    <div id="studentDetailContent" class="student-detail-content"></div>
+    <div class="student-dialog-actions"><a id="studentAuthConsoleLink" class="console-link" href="https://console.firebase.google.com/project/vish-hub/authentication/users" target="_blank" rel="noopener noreferrer">Open Firebase Auth ↗</a><button id="closeStudentDetailFooter" class="button button-secondary" type="button">Close</button></div>
+  </dialog>
+  <script type="module" src="admin/admin.js?v=20261119-student-management-1"></script>
 </body>
 </html>
