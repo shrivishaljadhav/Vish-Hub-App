@@ -1,0 +1,14 @@
+{
+  "name": "vish-hub-admin-api",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "22" },
+  "main": "index.js",
+  "scripts": { "check": "node --check index.js && node --check validation.js && node --test validation.test.js" },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.850.0",
+    "@aws-sdk/s3-request-presigner": "^3.850.0",
+    "firebase-admin": "^13.0.0",
+    "firebase-functions": "^6.4.0"
+  }
+}

@@ -1,0 +1,12 @@
+.published-academic-content{margin:22px 0 8px;padding:18px;border:1px solid rgba(198,163,72,.4);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(245,243,235,.92));box-shadow:0 10px 24px rgba(7,29,56,.08)}
+.published-academic-content[hidden]{display:none}
+.published-academic-section+.published-academic-section{margin-top:22px}
+.published-academic-heading{margin:0 0 12px;color:#10294b;font-size:1.1rem}
+.published-academic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.published-academic-card{display:flex;flex-direction:column;gap:7px;min-width:0;padding:15px;border:1px solid #e0d2a8;border-radius:14px;background:#fffdf7;color:#10294b;box-shadow:0 4px 12px rgba(16,41,75,.06)}
+.published-academic-card h4,.published-academic-card p{margin:0;overflow-wrap:anywhere}
+.published-academic-card h4{font-size:1rem}
+.published-academic-title,.published-academic-description{color:#485a73;font-size:.9rem;line-height:1.55}
+.published-academic-meta{margin-top:auto;padding-top:4px;color:#89702e;font-size:.76rem;line-height:1.5}
+.published-academic-status,.published-academic-empty{margin:0;padding:18px;color:#53627a;text-align:center}
+@media(max-width:600px){.published-academic-content{padding:13px}.published-academic-grid{grid-template-columns:1fr}}
