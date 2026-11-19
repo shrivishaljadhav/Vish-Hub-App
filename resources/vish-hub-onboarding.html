@@ -2435,6 +2435,9 @@
                 </button>
               </div>
             </div>
+            <button id="skipProfileSetupBtn" type="button" class="w-full py-2 text-xs font-semibold text-[#F4DE94]/85 underline underline-offset-4 hover:text-[#FFF1BC]">
+              Continue without optional profile details
+            </button>
           </form>
         </div>
       </section>
@@ -4260,6 +4263,20 @@ const tabLogin = document.getElementById('tabLogin');
             showToast(error.message || 'Could not save your student profile.');
           } finally {
             if (submit) submit.disabled = false;
+          }
+        });
+      }
+      if (skipProfileSetupBtn) {
+        skipProfileSetupBtn.addEventListener('click', async () => {
+          skipProfileSetupBtn.disabled = true;
+          try {
+            await requestFirebaseAuth('save-student-profile', { profileSetupComplete: true });
+            currentUser.isNewSignup = false;
+            openAppHomePage(profileSetupCard);
+          } catch (error) {
+            showToast(error.message || 'Could not continue without optional profile details.');
+          } finally {
+            skipProfileSetupBtn.disabled = false;
           }
         });
       }

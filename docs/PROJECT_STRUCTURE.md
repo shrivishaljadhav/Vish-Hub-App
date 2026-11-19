@@ -15,6 +15,7 @@ VISHU/
 ├── admin-tools/               Trusted Admin SDK utility
 ├── css/                       App styles and SVG design assets
 ├── js/                        App behavior and vendor libraries
+│   └── student-config.js      Shared FYBA academic labels
 ├── resources/                 Images, books, and onboarding experience
 └── docs/                       Setup guides and project documentation
 ```

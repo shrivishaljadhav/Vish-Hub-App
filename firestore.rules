@@ -5,14 +5,14 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function verifiedStudent(uid) {
+    function verifiedOwner(uid) {
       return signedIn()
         && request.auth.uid == uid
         && request.auth.token.email_verified == true;
     }
 
-    // Admin status comes only from a trusted Firebase Admin SDK custom claim.
-    // The client-writable users/{uid}.role field is never an authorization source.
+    // Admin authorization is exclusively a trusted Firebase Auth custom claim.
+    // A users/{uid}.role field is profile data and is never used for access.
     function trustedAdmin() {
       return signedIn()
         && request.auth.token.admin == true
@@ -24,8 +24,8 @@ service cloud.firestore {
         || (data[field] is string && data[field].size() <= maxLength);
     }
 
-    function optionalBoolean(data, field) {
-      return !(field in data) || data[field] is bool;
+    function optionalTimestamp(data, field) {
+      return !(field in data) || data[field] is timestamp;
     }
 
     function validElectives(data) {
@@ -41,20 +41,13 @@ service cloud.firestore {
           ]));
     }
 
-    function validProfileKeys(data) {
-      return data.keys().hasOnly([
-        'uid', 'email', 'name', 'course', 'studentClass', 'division',
-        'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
-        'role', 'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
-      ]);
-    }
-
-    // A profile update may come from an older account that predates optional
-    // fields. Validate every supplied field, while the update allowlist below
-    // ensures a student cannot add, remove, or change unknown/privileged data.
-    function validProfileFields(data, uid) {
+    // Validate any supported profile data without requiring optional details.
+    // Course and class remain accepted for legacy profiles but new app profiles
+    // use the shared academic configuration instead.
+    function validProfileValues(data, uid) {
       return (!('uid' in data) || (data.uid is string && data.uid == uid))
-        && data.email is string && data.email.size() <= 254
+        && optionalString(data, 'email', 254)
+        && (!('email' in data) || data.email == request.auth.token.email)
         && optionalString(data, 'name', 100)
         && optionalString(data, 'course', 80)
         && optionalString(data, 'studentClass', 40)
@@ -64,103 +57,91 @@ service cloud.firestore {
         && optionalString(data, 'whatsapp', 24)
         && optionalString(data, 'telegram', 40)
         && optionalString(data, 'bio', 500)
-        && optionalString(data, 'avatar', 32)
+        && (!('avatar' in data) || (data.avatar is string
+          && data.avatar in ['portrait', 'owl', 'book', 'fox', 'moon', 'star']))
         && validElectives(data)
-        // Profile roles are display data only. If present, they must remain
-        // unchanged by the affectedKeys check; authorization uses custom claims.
         && (!('role' in data) || data.role is string)
-        && data.emailVerified is bool && data.emailVerified == true
-        && optionalBoolean(data, 'profileSetupComplete')
-        && data.updatedAt is timestamp
-        && data.updatedAt == request.time;
+        && (!('emailVerified' in data) || data.emailVerified is bool)
+        && (!('profileSetupComplete' in data) || data.profileSetupComplete is bool)
+        && optionalTimestamp(data, 'createdAt')
+        && optionalTimestamp(data, 'updatedAt')
+        && (!('updatedAt' in data) || data.updatedAt == request.time);
     }
 
     function validStudentProfileCreate(data, uid) {
-      return validProfileKeys(data)
-        && data.keys().hasAll([
+      return data.keys().hasOnly([
           'uid', 'email', 'name', 'course', 'studentClass', 'division',
-          'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar',
+          'rollNo', 'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
           'role', 'emailVerified', 'profileSetupComplete', 'createdAt', 'updatedAt'
         ])
-        && validProfileFields(data, uid)
+        && data.keys().hasAll(['uid', 'role'])
         && data.uid is string && data.uid == uid
-        && data.name is string && data.name.size() >= 2 && data.name.size() <= 100
-        && data.course is string && data.course.size() >= 1 && data.course.size() <= 80
-        && data.studentClass is string
-        && data.studentClass.size() >= 1 && data.studentClass.size() <= 40
-        && data.division is string && data.division.size() <= 80
-        && data.rollNo is string && data.rollNo.size() <= 40
-        && data.prn is string && data.prn.size() <= 40
-        && data.whatsapp is string && data.whatsapp.size() <= 24
-        && data.telegram is string && data.telegram.size() <= 40
-        && data.bio is string && data.bio.size() <= 500
-        && data.avatar is string
-        && data.avatar in ['portrait', 'owl', 'book', 'fox', 'moon', 'star']
         && data.role is string && data.role == 'Student'
-        && data.profileSetupComplete is bool && data.profileSetupComplete == false
-        && data.createdAt is timestamp && data.createdAt == request.time;
+        && validProfileValues(data, uid)
+        && (!('createdAt' in data) || data.createdAt == request.time);
     }
 
-    function validSetupCompletion(data) {
-      return !('profileSetupComplete' in data)
-        || (data.profileSetupComplete is bool && data.profileSetupComplete == false)
-        || (data.profileSetupComplete is bool && data.profileSetupComplete == true
-          && data.name is string && data.name.size() >= 2 && data.name != 'Student'
-          && data.division is string
-          && data.division.size() > 0
-          && data.electives is list
-          && data.electives.size() > 0);
+    function validChangedProfileValues(data, uid, changed) {
+      return (!('uid' in changed) || (data.uid is string && data.uid == uid))
+        && (!('role' in changed) || (data.role is string && data.role == 'Student'))
+        && (!('email' in changed) || (data.email is string
+          && data.email.size() <= 254
+          && data.email == request.auth.token.email))
+        && (!('name' in changed) || (data.name is string
+          && data.name.size() >= 1 && data.name.size() <= 100))
+        && (!('division' in changed) || (data.division is string && data.division.size() <= 80))
+        && (!('rollNo' in changed) || (data.rollNo is string && data.rollNo.size() <= 40))
+        && (!('prn' in changed) || (data.prn is string && data.prn.size() <= 40))
+        && (!('whatsapp' in changed) || (data.whatsapp is string && data.whatsapp.size() <= 24))
+        && (!('telegram' in changed) || (data.telegram is string && data.telegram.size() <= 40))
+        && (!('bio' in changed) || (data.bio is string && data.bio.size() <= 500))
+        && (!('avatar' in changed) || (data.avatar is string
+          && data.avatar in ['portrait', 'owl', 'book', 'fox', 'moon', 'star']))
+        && (!('electives' in changed) || validElectives(data))
+        && (!('emailVerified' in changed) || (data.emailVerified is bool && data.emailVerified == true))
+        && (!('profileSetupComplete' in changed) || data.profileSetupComplete is bool)
+        && (!('updatedAt' in changed) || (data.updatedAt is timestamp && data.updatedAt == request.time));
     }
 
     function validProfileUpdate(data, uid) {
-      return validProfileFields(data, uid)
-        && data.email == request.auth.token.email
-        // Preserve UID, role, and creation metadata exactly as stored. In
-        // particular, a missing legacy role cannot be added by a student.
-        && (!('uid' in resource.data) || data.uid == resource.data.uid)
-        && (!('role' in resource.data) || data.role == resource.data.role)
+      let changed = data.diff(resource.data).affectedKeys();
+      return validChangedProfileValues(data, uid, changed)
+        // Existing identity/role values are immutable. Legacy documents that
+        // lack these fields may only receive their canonical UID / Student role.
+        && ((!('uid' in resource.data) && data.uid == uid)
+          || ('uid' in resource.data && data.uid == resource.data.uid))
+        && ((!('role' in resource.data) && data.role == 'Student')
+          || ('role' in resource.data && data.role == resource.data.role))
         && ((!('createdAt' in resource.data) && !('createdAt' in data))
-          || (('createdAt' in resource.data) && data.createdAt == resource.data.createdAt))
-        && (!('profileSetupComplete' in resource.data)
-          || resource.data.profileSetupComplete != true
-          || data.profileSetupComplete == true)
-        && ((('profileSetupComplete' in resource.data)
-          && resource.data.profileSetupComplete == true)
-          || !('profileSetupComplete' in data)
-          || data.profileSetupComplete != true
-          || validSetupCompletion(data))
-        && data.diff(resource.data).affectedKeys().hasOnly([
-          'email', 'name', 'course', 'studentClass', 'division', 'rollNo',
-          'prn', 'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
+          || ('createdAt' in resource.data && data.createdAt == resource.data.createdAt))
+        && changed.hasOnly([
+          'uid', 'role', 'email', 'name', 'division', 'rollNo', 'prn',
+          'whatsapp', 'telegram', 'bio', 'avatar', 'electives',
           'emailVerified', 'profileSetupComplete', 'updatedAt'
         ]);
     }
 
     match /users/{uid} {
       // Private profile documents are visible only to the verified owner.
-      allow get: if verifiedStudent(uid);
+      allow get: if verifiedOwner(uid);
       allow list: if false;
 
-      allow create: if verifiedStudent(uid)
-        && validStudentProfileCreate(request.resource.data, uid)
-        && request.resource.data.email == request.auth.token.email
-        && request.resource.data.profileSetupComplete == false
-        && request.resource.data.updatedAt == request.time;
+      allow create: if verifiedOwner(uid)
+        && validStudentProfileCreate(request.resource.data, uid);
 
-      allow update: if verifiedStudent(uid)
+      allow update: if verifiedOwner(uid)
         && validProfileUpdate(request.resource.data, uid);
 
       allow delete: if false;
     }
 
-    // Admin overview aggregates are written only by trusted server processes.
+    // Admin dashboard data is visible only to verified custom-claim Admins.
     match /admin/{document=**} {
       allow get, list: if trustedAdmin();
       allow create, update, delete: if false;
     }
 
-    // Activity entries are append-only from trusted server code (Admin SDK bypasses
-    // client rules). Admin clients may inspect them but cannot forge or edit history.
+    // Activity is append-only from trusted server code (Admin SDK bypasses rules).
     match /adminActivity/{logId} {
       allow get, list: if trustedAdmin();
       allow create, update, delete: if false;

@@ -29,7 +29,7 @@ const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 const PROFILE_EDIT_FIELDS = [
-  'name', 'course', 'studentClass', 'division', 'rollNo', 'prn',
+  'name', 'division', 'rollNo', 'prn',
   'whatsapp', 'telegram', 'bio', 'avatar', 'electives', 'profileSetupComplete'
 ];
 const profileSeeds = new Map();
@@ -149,22 +149,16 @@ async function ensureStudentProfile(user, seed = {}) {
         uid: user.uid,
         email: user.email || '',
         name: user.displayName || defaults.name || seed.name || 'Student',
-        course: seed.course || defaults.course || 'FYBA · First Year',
-        studentClass: seed.studentClass || defaults.studentClass || 'FYBA',
-        division: seed.division || defaults.division || '',
-        rollNo: seed.rollNo || defaults.rollNo || '',
-        prn: seed.prn || defaults.prn || '',
-        whatsapp: seed.whatsapp || defaults.whatsapp || '',
-        telegram: seed.telegram || defaults.telegram || '',
-        bio: seed.bio || defaults.bio || '',
-        avatar: seed.avatar || defaults.avatar || 'portrait',
-        electives: seed.electives || defaults.electives || ['AEC', 'VEC', 'IKS'],
         role: 'Student',
         emailVerified: true,
         profileSetupComplete: false,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       };
+      const contactNumber = defaults.whatsapp || seed.whatsapp;
+      if (typeof contactNumber === 'string' && contactNumber.trim()) {
+        profile.whatsapp = contactNumber.trim();
+      }
       await runTransaction(db, async transaction => {
         const fresh = await transaction.get(ref);
         if (!fresh.exists()) transaction.set(ref, profile);
@@ -199,7 +193,7 @@ async function createAccount({ email, password, name, whatsapp }) {
   await persistenceReady;
   const credential = await createUserWithEmailAndPassword(auth, email, password);
   const user = credential.user;
-  profileSeeds.set(user.uid, { name, whatsapp, course: 'FYBA · First Year', studentClass: 'FYBA' });
+  profileSeeds.set(user.uid, { name, whatsapp });
   if (name) await updateProfile(user, { displayName: name });
   let emailVerificationSent = false;
   let verificationNotice = '';
@@ -317,12 +311,17 @@ async function saveStudentProfile(profile) {
   for (const key of PROFILE_EDIT_FIELDS) {
     if (Object.prototype.hasOwnProperty.call(profile, key)) updates[key] = profile[key];
   }
+  const existingProfile = snapshot.data();
+  // Legacy documents may predate the canonical UID and Student role fields.
+  // Only fill missing values; never replace a stored identity or role.
+  if (!Object.prototype.hasOwnProperty.call(existingProfile, 'uid')) updates.uid = user.uid;
+  if (!Object.prototype.hasOwnProperty.call(existingProfile, 'role')) updates.role = 'Student';
   // Keep account-owned identity fields in sync when saving an older profile
   // that predates email verification metadata or has a stale email address.
   updates.email = user.email || '';
   updates.emailVerified = true;
   if (!Object.prototype.hasOwnProperty.call(updates, 'profileSetupComplete')) {
-    updates.profileSetupComplete = Boolean(snapshot.data().profileSetupComplete);
+    updates.profileSetupComplete = Boolean(existingProfile.profileSetupComplete);
   }
   updates.updatedAt = serverTimestamp();
   await updateDoc(ref, updates);
